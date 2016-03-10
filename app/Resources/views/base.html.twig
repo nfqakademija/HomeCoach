@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
-        {#<link rel="stylesheet" href="{{ asset('css/style.css') }}"/>#}
+        <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('headerStyle.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bodyStyle.css') }}"/>
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
@@ -23,7 +25,8 @@
 {% include "::inc/footer.html.twig" %}
 {% endblock %}
 {% block javascripts %}
-    {#<script src="{{ asset('js/script.js') }}"></script>#}
+    <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 {% endblock %}
 </body>
 </html>
