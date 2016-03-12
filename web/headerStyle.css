@@ -1,8 +1,14 @@
-.navbar-default
+.navbar-fixed
 {
-    background-color: rgba(188, 158, 108, 0.28);
+    background-color: rgba(25, 188, 134, 0.28);
     z-index: 9;
     width: 100%;
+    margin-bottom: 0px;
+}
+
+.navbar
+{
+    margin-bottom: 0px;
 }
 
 .container
@@ -40,12 +46,16 @@
 
 nav div ul li
 {
-    border: 2px solid;
-    margin:5px;
+    margin:3px;
     margin-right: 0px;
-    border-radius:20px;
-    background-color: rgba(136, 156, 107, 0.47);
+    border-radius:10px;
+    background-color: rgba(156, 139, 137, 0.47);
     transition: all 1.5s;
+}
+
+nav div ul li a
+{
+    text-align: center;
 }
 
 nav div ul .loginForm
@@ -70,7 +80,7 @@ h1
 
 .container
 {
-    padding:0px;
+    padding:10px;
 }
 
 .searchBar
@@ -79,4 +89,11 @@ h1
     padding:10px;
     background-color: #2e6da4;
     border-radius: 25px;
+    width: auto;
+}
+
+.name
+{
+    font-size:30px;
+    font-family: \0000327;
 }
