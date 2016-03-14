@@ -1,0 +1,95 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Homepage - {{ parent() }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-3 sideNav">
+                <div class="profile">
+                    <nav>
+                        <ul>
+                            <li> <a href="">Treniruočių programos</a> </li>
+                            <li> <a href="">Reitinguotos programos</a> </li>
+                            <li> <a href="">Rodyti progresa</a> </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-sm-7 text-left">
+                <nav class="searchNav">
+                    <ul class="searchBar">
+                        <li><input class="searchText" type="text" placeholder="Iveskite paieškos raktą" /></li>
+                        <li><p>Minimalus reitingas:</p></li>
+                        <li><select>
+                                <option>1</option>
+                                <option>2</option>
+                                <option selected="selected">3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select></li>
+                        <li><input type="submit" value="Ieskoti" /></li>
+                    </ul>
+                </nav>
+                <hr>
+                <div class="program">
+                    <div class="header">
+                        <h2>Programos pavadinimas <span class="coachInfo"> Treneris: <a href=""> Vardas/Pavarde </a></span> </h2>
+                    </div>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <hr>
+                    <div class="buttons">
+                        <a href="" class="actionLink"> Daugiau informacijos</a>
+                        <a href="" class="actionLink"> Pasiimti programa</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="program">
+                    <h2>Programos pavadinimas <span class="coachInfo"> Treneris: <a href=""> Vardas/Pavarde </a></span> </h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <a href="" class="actionLink"> Daugiau informacijos</a>
+                    <a href="" class="actionLink"> Pasiimti programa</a>
+                </div>
+                <hr>
+                <div class="program">
+                    <h2>Programos pavadinimas <span class="coachInfo"> Treneris: <a href=""> Vardas/Pavarde </a></span> </h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <a href="" class="actionLink"> Daugiau informacijos</a>
+                    <a href="" class="actionLink"> Pasiimti programa</a>
+                </div>
+                <hr>
+                <div class="program">
+                    <h2>Programos pavadinimas <span class="coachInfo"> Treneris: <a href=""> Vardas/Pavarde </a></span> </h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <a href="" class="actionLink"> Daugiau informacijos</a>
+                    <a href="" class="actionLink"> Pasiimti programa</a>
+                </div>
+                <hr>
+            </div>
+            <div class="col-sm-2">
+                <h3> Top 3 treneriai</h3>
+                <div class="profile">
+                    <p>Kazkas1</p>
+                    <a href="" class="actionLink"> Susisiekite</a>
+                </div>
+                <div class="profile">
+                    <p>Kazkas2</p>
+                    <a href="" class="actionLink"> Susisiekite</a>
+                </div>
+                <div class="profile">
+                    <p>Kazkas3</p>
+                    <a href="" class="actionLink"> Susisiekite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
