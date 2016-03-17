@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{{ "NFQ #5" }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('headerStyle.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bodyStyle.css') }}"/>
+    {% endblock %}
+    {% block canonical_meta %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    {% block container %}
+        {% block header %}
+            {% include "::inc/header.html.twig" %}
+        {% endblock %}
+        {% block body %}
+            {% include ':inc:left_column.html.twig' %}
+            {% include ':inc:right_column.html.twig' %}
+        {% endblock %}
+    {% endblock %}
+</div>
+{% block footer %}
+{% include "::inc/footer.html.twig" %}
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>

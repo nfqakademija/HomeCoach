@@ -1,0 +1,25 @@
+app.index:
+    path:     /
+    defaults: { _controller: AppBundle:Home:index }
+
+app.regimes:
+    path:     /regimes
+    defaults: { _controller: AppBundle:Home:showRegimes}
+
+app.createRegime:
+    path:     /createRegime
+    defaults: { _controller: AppBundle:Home:createRegime}
+
+app.showRegime:
+    path:     /regime/{id}
+    defaults: { _controller: AppBundle:Home:showRegime}
+
+app.taskSuccess:
+    path:     /success
+    defaults: { _controller: AppBundle:Home:taskSuccess}
+app.rateRegime:
+    path:     /{id}/{user}
+    defaults: { _controller: AppBundle:Home:rateRegime}
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

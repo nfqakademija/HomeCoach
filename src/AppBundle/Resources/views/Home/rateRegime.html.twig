@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    </br>
+    {{ regime.id }}
+    {{ regime.title }}
+    {{ regime.describtion }}
+    {{ regime.rating }}
+{% endblock %}

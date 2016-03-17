@@ -1,0 +1,124 @@
+.navbar-fixed
+{
+    background-color: rgba(25, 188, 134, 0.28);
+    z-index: 9;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.navbar
+{
+    margin-bottom: 0px;
+}
+
+.container
+{
+    width:100%;
+}
+
+.btn-default
+{
+    border-radius: 15px;
+    transition: all 1s;
+}
+
+.btn-default:hover
+{
+    color:white;
+    background-color: #212a18;
+}
+
+.navbar-toggle
+{
+    border:3px solid;
+    background-color: #8c8c8c;
+}
+
+.loginInput:hover
+{
+    background-color: rgba(75, 168, 96, 0.15);
+}
+
+.loginInput:focus
+{
+    background-color:white;
+}
+
+nav div ul li
+{
+    margin:3px;
+    margin-right: 0px;
+    border-radius:10px;
+    background-color: rgba(156, 139, 137, 0.47);
+    transition: all 1.5s;
+}
+
+nav div ul li a
+{
+    text-align: center;
+}
+
+nav div ul .loginForm
+{
+    border:1px solid;
+}
+
+nav div ul li:hover
+{
+    background-color: #2aabd2;
+}
+
+.navbar-form
+{
+    margin-top:15px;
+}
+
+h1
+{
+    text-align: center;
+}
+
+.container
+{
+    padding:10px;
+}
+
+.name
+{
+    font-size:30px;
+    font-family: \0000327;
+}
+
+.row
+{
+    margin-bottom: 15px;
+}
+
+.modal-body
+{
+    background-color: rgba(153, 242, 232, 0.33);
+}
+
+.registrationButton
+{
+    background-color: #46aa75;
+    color:white;
+    font-family: Dialog;
+    transition: 1.5s all;
+}
+
+.registrationButton:hover
+{
+    color: #27983f;
+    background-color: #dfdfdf;
+}
+
+.popup:hover
+{
+    cursor: pointer;
+}
+
+h3
+{
+    text-align: center;
+}

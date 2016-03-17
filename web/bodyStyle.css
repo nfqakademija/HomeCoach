@@ -1,0 +1,142 @@
+.coachInfo
+{
+    text-align: right;
+    font-size:16px;
+}
+
+.program
+{
+    border: 1px solid;
+    border-color: #17e6ff;
+    padding:10px;
+    background-color: #aedaff;
+    transition:1.5s all;
+}
+
+.program:hover
+{
+    background-color: #e5fdff;
+}
+
+body
+{
+    background-color: #e5fdff;
+    margin-top:75px;
+}
+
+.nav.affix {
+    position: fixed;
+    top: 50;
+    width:55%;
+}
+
+.fixed
+{
+    position: fixed;
+}
+
+
+.profile
+{
+    background-color: #e5fdff;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow: 7px 7px 2px #2f6288;
+}
+
+.profile a
+{
+    color: #5c5c5c;
+    border:1px solid;
+    padding:10px;
+    background-color: #e6deff;
+    transition: 2s all;
+    border-radius: 5px;
+}
+
+.profile a:hover
+{
+    color: #d2d2d2;
+    background-color: rgb(67, 67, 67);
+    text-decoration: none;
+}
+
+.actionLink
+{
+    color: #062725;
+    border:1px solid;
+    padding:10px;
+    background-color: #d9fff7;
+    transition: 2s all;
+    border-radius: 15px;
+    margin:15px;
+    transition: 2s all;
+}
+
+.actionLink:hover
+{
+    color: #808080;
+    background-color: #1af1e4;
+    text-decoration: none;
+}
+
+h3
+{
+    margin-bottom:20px;
+    margin-top:0px;
+}
+
+.col-sm-3, .col-sm-7, .col-sm-2
+{
+    margin-top:25px;
+}
+
+.fixed
+{
+    position:fixed;
+}
+
+.sideNav .profile nav ul
+{
+    list-style-type: none;
+    width: 100%;
+    padding:0px;
+    margin:0px;
+}
+
+.sideNav .profile nav ul li
+{
+    margin-bottom:25px;
+}
+
+.sideNav .profile nav ul li a
+{
+    display:block;
+}
+
+nav .searchBar li
+{
+    list-style-type: none;
+    display: inline;
+    float:left;
+    height: 30px;
+}
+
+nav .searchBar
+{
+    padding:0px;
+    margin:0px;
+    height: 50px;
+}
+
+.searchText
+{
+    height:40px;
+}
+
+.searchNav
+{
+    background-color: #64dce4;
+    width: 100%;
+}
