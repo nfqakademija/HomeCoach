@@ -1,3 +1,7 @@
+.container
+{
+    padding:0px;
+}
 .coachInfo
 {
     text-align: right;
@@ -7,27 +11,24 @@
 .program
 {
     border: 1px solid;
-    border-color: #17e6ff;
+    border-color: rgba(3, 167, 169, 0.78);
     padding:10px;
-    background-color: #aedaff;
+    background-color:white;
     transition:1.5s all;
+    margin:20px;
+    border-radius: 15px;
 }
 
 .program:hover
 {
     background-color: #e5fdff;
+    border-color:white;
 }
 
 body
 {
-    background-color: #e5fdff;
-    margin-top:75px;
-}
-
-.nav.affix {
-    position: fixed;
-    top: 50;
-    width:55%;
+    background-color: rgba(119, 176, 145, 0.17);
+    margin-top:55px;
 }
 
 .fixed
@@ -38,7 +39,7 @@ body
 
 .profile
 {
-    background-color: #e5fdff;
+    background-color: rgba(14, 25, 39, 0.27);
     padding:20px;
     border-radius:10px;
     margin-bottom:15px;
@@ -65,19 +66,16 @@ body
 .actionLink
 {
     color: #062725;
-    border:1px solid;
     padding:10px;
     background-color: #d9fff7;
     transition: 2s all;
-    border-radius: 15px;
-    margin:15px;
-    transition: 2s all;
+    text-align: center;
 }
 
 .actionLink:hover
 {
-    color: #808080;
-    background-color: #1af1e4;
+    color: white;
+    background-color: rgba(7, 29, 24, 0.9);
     text-decoration: none;
 }
 
@@ -110,6 +108,11 @@ h3
     margin-bottom:25px;
 }
 
+.sideNav .profile nav ul li:last-child
+{
+    margin-bottom:0px;
+}
+
 .sideNav .profile nav ul li a
 {
     display:block;
@@ -140,3 +143,15 @@ nav .searchBar
     background-color: #64dce4;
     width: 100%;
 }
+
+.buttonRow
+{
+    margin-bottom: 0px;
+}
+
+.programName
+{
+    font-family: Padauk;
+    font-size: 35px;
+}
+
