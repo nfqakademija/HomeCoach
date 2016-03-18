@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity()
@@ -29,9 +30,19 @@ class Regime
     protected $title;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $difficulty;
+
+    /**
      * @ORM\Column(type="text")
      */
-    protected $describtion;
+    protected $description;
+
+    /**
+     * @ORM\Column(type="array", nullable=TRUE)
+     */
+    protected $schedule;
 
     /**
      * @ORM\Column(type="array", nullable=TRUE)
@@ -39,10 +50,24 @@ class Regime
     protected $user_ratings;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=TRUE)
      */
     protected $rating;
 
+    /**
+     * @ORM\Column(type="array", nullable=TRUE)
+     */
+    protected $comments;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $data_created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $data_updated;
     /**
      * Get id
      *
@@ -71,7 +96,7 @@ class Regime
      */
     public function setUserRating($user_id, $user_rating)
     {
-        //Nereikia kiekviena karta per nauja viso skaiciuot, bet nezinau, ar nenukentes tikslumas.
+
         if (!isset($this->user_ratings[$user_id])) {
             $this->rating = ($this->rating*count($this->user_ratings)+$user_rating)/(count($this->user_ratings)+1);
         } else {
@@ -81,6 +106,30 @@ class Regime
 
         return $this;
     }
+
+    /**
+     * Get day schedule
+     *
+     *
+     *
+     * @return array
+     */
+    public function getSchedule() {
+        return $this->schedule;
+    }
+
+
+    /**
+     * Set schedule
+     * @param array $schedule
+     * @return Regime
+     */
+    public function setSchedule($schedule) {
+        $this->schedule = $schedule;
+        return $this;
+    }
+
+
     /**
      * Get rating
      *
@@ -121,13 +170,13 @@ class Regime
     /**
      * Set describtion
      *
-     * @param string $describtion
+     * @param string $description
      *
      * @return Regime
      */
-    public function setDescribtion($describtion)
+    public function setDescription($description)
     {
-        $this->describtion = $describtion;
+        $this->description = $description;
 
         return $this;
     }
@@ -137,8 +186,114 @@ class Regime
      *
      * @return string
      */
-    public function getDescribtion()
+    public function getDescription()
     {
-        return $this->describtion;
+        return $this->description;
+    }
+    /**
+     * Get difficulty
+     *
+     * @return string
+     */
+    public function getDifficulty()
+    {
+        return $this->difficulty;
+    }
+
+    /**
+     * Set difficulty
+     *
+     * @param integer $difficulty
+     *
+     * @return Regime
+     */
+    public function setDifficulty($difficulty)
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @param integer $index
+     *
+     * @return Comments
+     */
+    public function getComment($index)
+    {
+        return $this->comments[$index];
+    }
+
+    /**
+     * Set comment
+     *
+     * @param integer $index
+     * @param Comments $comment
+     * @return Regime
+     */
+    public function setComment($index, $comment)
+    {
+        $this->comments[$index]=$comment;
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @param Comments $comment
+     *
+     * @return Regime
+     */
+    public function createComment($comment)
+    {
+        $this->comments[count($this->comments)]=$comment;
+        return $this;
+    }
+    /**
+     * Set DataCreated
+     *
+     * @param DateTime $date
+     *
+     * @return Regime
+     */
+    public function setDataCreated ($date)
+    {
+        $this->data_created = $date;
+        return $this;
+    }
+    /**
+     * Get DataCreated
+     *
+     *
+     * @return DateTime
+     */
+    public function getDataCreated ()
+    {
+        return $this->data_created;
+    }
+
+    /**
+     * Set DataUpdated
+     *
+     * @param DateTime $date
+     *
+     * @return Regime
+     */
+    public function setDataUpdated ($date)
+    {
+        $this->data_updated = $date;
+        return $this;
+    }
+    /**
+     * Get DataUpdated
+     *
+     *
+     * @return DateTime
+     */
+    public function getDataUpdated ()
+    {
+        return $this->data_updated;
     }
 }

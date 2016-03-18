@@ -4,9 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Regime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class HomeController extends Controller
@@ -48,12 +49,31 @@ class HomeController extends Controller
     public function createRegimeAction(Request $request)
     {
         $regime = new Regime();
+        $regime->setDataCreated(new \DateTime());
+        $regime->setDataUpdated($regime->getDataCreated());
 
         $form = $this->createFormBuilder($regime)
             ->add('title', TextType::class)
-            ->add('Describtion', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'create regime'))
+            ->add('difficulty', ChoiceType::class, array(
+                'choices' => array(
+                    1   => 'Labai lengva',
+                    2   => 'Lengva',
+                    3   => 'Vidutine',
+                    4   => 'Sunki',
+                    5   => 'Labai sunki'
+                ), 'expanded' => true,
+            ))
+            ->add('description', TextType::class)
             ->getForm();
+            $schedule = array (null, null, null, null, null, null, null);
+            $regime->setSchedule($schedule);
+
+            $form->add('schedule', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'required' => false
+            ));
+
+        $form->add('save', SubmitType::class, array('label' => 'create regime'));
 
         $form->handleRequest($request);
 
@@ -95,7 +115,8 @@ class HomeController extends Controller
                     '3'   => '3',
                     '4'   => '4',
                     '5'   => '5',
-                )))
+                ), 'expanded' => true,
+                    'required' => false))
             ->add('save', SubmitType::class, array('label' => 'rate regime'))
             ->getForm();
 
@@ -125,7 +146,10 @@ class HomeController extends Controller
         }
 
         //padaryti su twigo template'u, o visa info perduoti i renderio array() argumentus
-        return new Response('regime info: '.$regime->getId().' '.$regime->getTitle().' '.$regime->getDescribtion());
+        //return new Response('regime info: '.$regime->getId().' '.$regime->getTitle().' '.$regime->getDescription());
+        return $this->render('@App/Home/showRegime.html.twig', array(
+            'regime' => $regime
+        ));
     }
 
     public function taskSuccessAction()
