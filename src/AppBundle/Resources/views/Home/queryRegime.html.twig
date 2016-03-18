@@ -3,7 +3,17 @@
 {% block body %}
     {{ parent() }}
     <h1>Regime info!</h1>
-    {{ regime.id }}
-    {{ regime.title }}
-    {{ regime.describtion }} <br>
+    {{ regime.id }} <br>
+    Data created: {{ regime.dataCreated.format('H:i:s Y-m-d') }} <br>
+    Last updated: {{ regime.dataUpdated.format('H:i:s Y-m-d') }} <br>
+    Difficulty: {{ regime.difficulty }} <br>
+    Title: {{ regime.title }} <br>
+    Description: {{ regime.description }} <br>
+    {% for i in 0..6 %}
+        {% if regime.schedule[i] != null %}
+            Day {{ i+1 }}: {{ regime.schedule[i] }} <br>
+        {% else %}
+            Day {{ i+1 }}: Nothing to do ;) <br>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
