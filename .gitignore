@@ -8,6 +8,7 @@
 /vendor/
 /bin/
 /node_modules/
+web/bower_components/
 /bower_components/
 /web/css/
 /web/js/
