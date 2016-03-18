@@ -124,8 +124,9 @@ class HomeController extends Controller
             );
         }
 
-        //padaryti su twigo template'u, o visa info perduoti i renderio array() argumentus
-        return new Response('regime info: '.$regime->getId().' '.$regime->getTitle().' '.$regime->getDescribtion());
+        return $this->render('@App/Home/queryRegime.html.twig', array(
+           "regime" => $regime 
+        ));
     }
 
     public function taskSuccessAction()
