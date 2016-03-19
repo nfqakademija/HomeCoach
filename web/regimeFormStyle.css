@@ -1,0 +1,67 @@
+textarea {
+    resize: none;
+}
+.container .btn-group .hard
+{
+    background-color: #f00000;
+    border: 0px;
+}
+
+.container .btn-group .medium
+{
+    background-color: #b4b400;
+    border: 0px;
+}
+
+.container .btn-group .easy
+{
+    background-color: #009100;
+    border: 0px;
+}
+
+.container .btn-group .veryEasy
+{
+    background-color: #00c600;
+    border: 0px;
+}
+
+.container .btn-group .veryHard
+{
+    background-color: #990000;
+    border: 0px;
+}
+
+.container .btn-group .active
+{
+    background-color:blue;
+    color:black;
+}
+
+.submitConfirmed
+{
+    width:100%;
+    margin-top:15px;
+    height: 40px;
+    background-color: #007cae;
+    border:0px;
+    border-radius: 5px;
+    font-size: larger;
+    color: #171b1a;
+    transition: 1.5s all;
+}
+
+.submitConfirmed:hover
+{
+    background-color: #2aabd2;
+}
+
+.description
+{
+    font-family: "DejaVu Sans Mono";
+    text-align: center;
+}
+
+.radios
+{
+    margin-bottom: 5px;
+}

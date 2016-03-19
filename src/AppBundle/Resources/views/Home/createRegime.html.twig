@@ -1,8 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ parent() }}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <form name="form" method="post">
+        <div class="container" id="form">
+            <h2 class="description"> Programos pavadinimas</h2>
+            <input class="form-control" type="text" id="form_title" name="form[title]" required="required" />
+            <h2 class="description"> Programos sudėtingumas </h2>
+            <div id="form_difficulty" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary veryEasy"> <input type="radio" id="form_difficulty_0" name="form[difficulty]" required="required" value="1" /> Labai lengva </label>
+                <label class="btn btn-primary easy"> <input type="radio" id="form_difficulty_1" name="form[difficulty]" required="required" value="2" /> Lengva </label>
+                <label class="btn btn-primary active medium"> <input type="radio" id="form_difficulty_2" name="form[difficulty]" required="required" value="3" /> Vidutine </label>
+                <label class="btn btn-primary hard"> <input type="radio" id="form_difficulty_3" name="form[difficulty]" required="required" value="4" /> Sunki </label>
+                <label class="btn btn-primary veryHard"> <input type="radio" id="form_difficulty_4" name="form[difficulty]" required="required" value="5" /> Labai sunki </label>
+            </div>
+            <h2 class="description"> Programos aprašymas</h2>
+            <textarea class="form-control" type="text" id="form_description" name="form[description]" required="required"></textarea>
+            <h2 class="description"> Programos tvarkaraštis </h2>
+            <ul class="nav nav-pills radios">
+                <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
+                <li><a data-toggle="pill" href="#day2">Antr.</a></li>
+                <li><a data-toggle="pill" href="#day3">Treč.</a></li>
+                <li><a data-toggle="pill" href="#day4">Ketv.</a></li>
+                <li><a data-toggle="pill" href="#day5">Penkt.</a></li>
+                <li><a data-toggle="pill" href="#day6">Šešt.</a></li>
+                <li><a data-toggle="pill" href="#day7">Sekm.</a></li>
+            </ul>
+                <div class="tab-content" id="form_schedule">
+                    <div id="day1" class="tab-pane fade in active">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_0" name="form[schedule][0]" placeholder="Pirmadienio tvarkaraštis" ></textarea>
+                    </div>
+                    <div id="day2" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_1" name="form[schedule][1]" placeholder="Antradienio tvarkaraštis" ></textarea>
+                    </div>
+                    <div id="day3" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_2" name="form[schedule][2]" placeholder="Trečiadienio tvarkaraštis" ></textarea>
+                    </div>
+                    <div id="day4" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_3" name="form[schedule][3]" placeholder="Ketvirtadienio tvarkaraštis" ></textarea>
+                    </div>
+                    <div id="day5" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_4" name="form[schedule][4]" placeholder="Penktadienio tvarkaraštis"></textarea>
+                    </div>
+                    <div id="day6" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_5" name="form[schedule][5]" placeholder="Šeštadienio tvarkaraštis" ></textarea>
+                    </div>
+                    <div id="day7" class="tab-pane fade">
+                        <textarea class="form-control" rows="4" cols="90" type="text" id="form_schedule_6" name="form[schedule][6]" placeholder="Sekmadienio tvarkaraštis"></textarea>
+                    </div>
+                </div>
+            <div>
+                <button class="submitConfirmed" type="submit" id="form_save" name="form[save]">Pridėti programą</button>
+            </div>
+            <input class="form-control" type="hidden" id="form__token" name="form[_token]" value="pQTtLxc5Y6C7NV0dpfen5Pp4fOCuxCnPSwqoHzVFnwc" />
+        </div>
+    </form>
 {% endblock %}
