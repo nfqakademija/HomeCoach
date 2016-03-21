@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    {{ parent() }}
     <h1>Users list!</h1>
     {% for user in users %}
         {{ user.id }}
