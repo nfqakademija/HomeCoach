@@ -13,7 +13,7 @@
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
-<body>
+{% block body %}
 <div class="container">
     {% block container %}
         {% block header %}
@@ -25,7 +25,7 @@
                 {% include "::inc/left_column.html.twig" %}
             {% endblock %}
             <div class="col-sm-7 text-left">
-                {% block body %}
+                {% block content %}
                 {% endblock %}
             </div>
 
@@ -44,5 +44,5 @@
     <script src="{{ asset('jquery.min.js') }}"></script>
     <script src="{{ asset('bootstrap.min.js') }}"></script>
 {% endblock %}
-</body>
+{% endblock %}
 </html>
