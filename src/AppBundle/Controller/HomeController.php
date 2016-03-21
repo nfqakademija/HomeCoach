@@ -36,9 +36,10 @@ class HomeController extends Controller
             ->getRepository('AppBundle:Regime');
 
         $regimes = $repository->findAll();
+        $json = json_encode($regimes);
 
-        return $this->render('AppBundle:Home:hotRegimes.html.twig', array(
-            'regimes' => $regimes
+        return $this->render(':Home:index.html.twig', array(
+            'regimes' => $json
         ));
     }
 
@@ -151,10 +152,69 @@ class HomeController extends Controller
         ));
     }
 
+    /**
+     * Displayed after successfully logging in, registering, creating or updating a regime
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function taskSuccessAction()
     {
         //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto regime'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
+    }
+
+    /**
+     * Used when searching for regimes
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function browseRegimesAction() {
+        $repository = $this->getDoctrine()
+            ->getRepository('AppBundle:Regime');
+
+        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
+        $regimes = $repository->findAll();
+        $json = json_encode($regimes);
+
+        return $this->render('@App/Home/browseRegimes.html.twig', array(
+            'regimes' => $json
+        ));
+    }
+
+    /**
+     * Shows most popular coaches in right sidebar of all pages
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showCoachesAction() {
+        $repository = $this->getDoctrine()
+            ->getRepository('UserBundle:User');
+
+        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
+        $coaches = $repository->findAll();
+        $json = json_encode($coaches);
+
+        return $this->render('base.html.twig', array(
+            'coaches' => $json
+        ));
+    }
+
+    /**
+     * Used when searching for users
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function browseUsersAction() {
+        $repository = $this->getDoctrine()
+            ->getRepository('UserBundle:User');
+
+        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
+        $users = $repository->findAll();
+        $json = json_encode($users);
+
+        return $this->render('@App/Home/browseUsers.html.twig', array(
+            'users' => $json
+        ));
     }
 
 }
