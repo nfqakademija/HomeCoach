@@ -6,6 +6,7 @@ use AppBundle\Entity\Regime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,17 +66,17 @@ class HomeController extends Controller
                     5   => 'Labai sunki'
                 ), 'expanded' => true,
             ))
-            ->add('description', TextType::class)
+            ->add('description', TextareaType::class)
             ->getForm();
             $schedule = array (null, null, null, null, null, null, null);
             $regime->setSchedule($schedule);
 
             $form->add('schedule', CollectionType::class, array(
-                'entry_type' => TextType::class,
+                'entry_type' => TextareaType::class,
                 'required' => false
             ));
 
-        $form->add('save', SubmitType::class, array('label' => 'create regime'));
+        $form->add('save', SubmitType::class, array('label' => 'Pridėti programą'));
 
         $form->handleRequest($request);
 

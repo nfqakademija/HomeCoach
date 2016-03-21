@@ -1,18 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h1>Regime info!</h1>
-    {{ regime.id }} <br>
-    Data created: {{ regime.dataCreated.format('H:i:s Y-m-d') }} <br>
-    Last updated: {{ regime.dataUpdated.format('H:i:s Y-m-d') }} <br>
-    Difficulty: {{ regime.difficulty }} <br>
-    Title: {{ regime.title }} <br>
-    Description: {{ regime.description }} <br>
-    {% for i in 0..6 %}
-        {% if regime.schedule[i] != null %}
-            Day {{ i+1 }}: {{ regime.schedule[i] }} <br>
-        {% else %}
-            Day {{ i+1 }}: Nothing to do ;) <br>
-        {% endif %}
-    {% endfor %}
+    {{ parent() }}
+    <h1>{{ regime.title }}</h1>
+    <div class="row">
+        <div class="col-md-5">
+            Sukurta: {{ regime.dataCreated.format('H:i:s Y-m-d') }}
+        </div>
+        <div class="col-md-7">
+            <div class="center-block">
+                {{ regime.difficulty | difficulty  }}
+            </div>
+        </div>
+    </div>
+    <textarea readonly rows="6" class="form-control readonly"> {{ regime.description }} </textarea>
+    <h2 class="description"> Programos tvarkaraštis</h2>
+    <ul class="nav nav-pills radios">
+        <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
+        <li><a data-toggle="pill" href="#day2">Antr.</a></li>
+        <li><a data-toggle="pill" href="#day3">Treč.</a></li>
+        <li><a data-toggle="pill" href="#day4">Ketv.</a></li>
+        <li><a data-toggle="pill" href="#day5">Penkt.</a></li>
+        <li><a data-toggle="pill" href="#day6">Šešt.</a></li>
+        <li><a data-toggle="pill" href="#day7">Sekm.</a></li>
+    </ul>
+    <div class="tab-content" id="form_schedule">
+        <div id="day1" class="tab-pane fade in active">
+            {% if regime.schedule[0] != null %}
+                <textarea rows="4" readonly="readonly" class="form-control"> {{ regime.schedule[0] }} </textarea>
+            {% else %}
+                <textarea rows="4" readonly="readonly" class="form-control"> Ši diena laisva </textarea>
+            {% endif %}
+        </div>
+        {% for i in 1..6 %}
+            <div id="day{{ i+1 }}" class="tab-pane fade">
+                {% if regime.schedule[i] != null %}
+                    <textarea rows="4" readonly="readonly" class="form-control"> {{ regime.schedule[i] }} </textarea>
+                {% else %}
+                    <textarea rows="4" readonly="readonly" class="form-control"> Ši diena laisva </textarea>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
