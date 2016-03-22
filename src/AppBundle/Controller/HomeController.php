@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Regime;
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -25,7 +26,7 @@ class HomeController extends Controller
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Regime');
 
-        $regimes = $repository->findAll();
+        $regimes = $repository->findBy(array(), array('rating' => 'DESC'),5);
         $json = json_encode($regimes);
 
         return $this->render('@App/Home/index.html.twig', array(
