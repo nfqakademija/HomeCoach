@@ -15,23 +15,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class HomeController extends Controller
 {
     /**
-     * Home page index action.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return $this->render('AppBundle:Home:index.html.twig', array(
-            // ...
-        ));
-    }
-
-    /**
+     * Home page index action. 
      * Shows currently popular regimes
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showRegimesAction()
+    public function indexAction()
     {
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Regime');
@@ -39,8 +28,8 @@ class HomeController extends Controller
         $regimes = $repository->findAll();
         $json = json_encode($regimes);
 
-        return $this->render(':Home:index.html.twig', array(
-            'regimes' => $json
+        return $this->render('@App/Home/index.html.twig', array(
+            'regimes' => $regimes
         ));
     }
 

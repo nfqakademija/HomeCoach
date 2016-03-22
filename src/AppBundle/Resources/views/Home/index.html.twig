@@ -2,19 +2,12 @@
 
 {% block title %}Homepage - {{ parent() }}{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
-{% block sideBarLeft %}
-    {{ parent() }}
-{% endblock %}
-
 {% block content %}
+    {% for regime in regimes %}
+        {{ regime.id }} <br>
+        {{ regime.title }} <br>
+        {{ regime.description }} <br><br>
+    {% endfor %}
         <nav class="searchNav">
             <div class="row">
                 <form>
@@ -95,8 +88,4 @@
             </div>
         </div>
         <hr>
-{% endblock %}
-
-{% block sideBarRight %}
-    {{ parent() }}
 {% endblock %}
