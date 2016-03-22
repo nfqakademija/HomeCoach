@@ -182,7 +182,7 @@ class HomeController extends Controller
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Regime');
 
-        $regimes = $repository->find(1);
+        $regimes = $repository->findAll();
 
         $serializer = $this->get('jms_serializer');
 

@@ -8,9 +8,9 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="/"><span class="glyphicon glyphicon-home"></span> Namai</a></li>
+                <li><a href="/"> Namai</a></li>
                 <li><a href="/about">Apie</a></li>
-                <li><a class="popup" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span> Registracija</a></li>
+                <li><a class="popup" data-toggle="modal" data-target="#myModal"> Registracija</a></li>
             </ul>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |

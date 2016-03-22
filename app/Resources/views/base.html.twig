@@ -41,8 +41,11 @@
 {% include "::inc/footer.html.twig" %}
 {% endblock %}
 {% block javascripts %}
+    <script src="{{ asset('angular.min.js') }}"></script>
     <script src="{{ asset('jquery.min.js') }}"></script>
     <script src="{{ asset('bootstrap.min.js') }}"></script>
+    <script src="{{ asset('getJson.js') }}"></script>
+
 {% endblock %}
 {% endblock %}
 </html>
