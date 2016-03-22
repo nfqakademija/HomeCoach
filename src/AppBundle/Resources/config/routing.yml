@@ -21,9 +21,14 @@ app.showRegime:
 app.taskSuccess:
     path:     /success
     defaults: { _controller: AppBundle:Home:taskSuccess}
+
 app.rateRegime:
     path:     /rating/{id}/{user}
     defaults: { _controller: AppBundle:Home:rateRegime}
+
+app.showRegimes:
+    path:     /showRegimes
+    defaults: { _controller: AppBundle:Home:showRegimes}
 
 _user_bundle:
     resource: "@UserBundle/Resources/config/routing.yml"

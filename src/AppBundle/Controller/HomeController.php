@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
@@ -170,6 +171,23 @@ class HomeController extends Controller
         return $this->render('@App/Home/browseRegimes.html.twig', array(
             'regimes' => $json
         ));
+    }
+
+    /**
+     * Responds with json of regimes
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showRegimesAction() {
+        $repository = $this->getDoctrine()
+            ->getRepository('AppBundle:Regime');
+
+        $regimes = $repository->find(1);
+
+        $serializer = $this->get('jms_serializer');
+
+        $json = $serializer->serialize($regimes, 'json');
+        return new Response($json);
     }
 
     /**
