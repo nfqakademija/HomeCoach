@@ -42,8 +42,8 @@ class HomeController extends Controller
      */
     public function createRegimeAction(Request $request)
     {
-        $regime = new Regime();
-        $regime->setDataCreated(new \DateTime());
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $regime = new Regime($user, new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());
 
         $form = $this->createFormBuilder($regime)

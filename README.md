@@ -1,4 +1,6 @@
 NFQ Akademija
 ============
 
-Startinis projekto template.
+HomeCoach
+
+Kaunas. 5 komanda

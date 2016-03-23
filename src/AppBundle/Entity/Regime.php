@@ -24,6 +24,11 @@ class Regime
      */
     protected $id;
 
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $creator_id;
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -68,6 +73,19 @@ class Regime
      * @ORM\Column(type="datetime")
      */
     protected $data_updated;
+
+    /**
+     * Regime constructor.
+     * @param $creator_id
+     * @param $data_created
+     */
+    public function __construct($creator_id, $data_created)
+    {
+        $this->creator_id = $creator_id;
+        $this->data_created = $data_created;
+    }
+
+
     /**
      * Get id
      *
@@ -295,5 +313,10 @@ class Regime
     public function getDataUpdated ()
     {
         return $this->data_updated;
+    }
+
+    public function getUser ()
+    {
+       return $this->creator_id;
     }
 }

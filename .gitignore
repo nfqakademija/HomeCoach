@@ -12,6 +12,7 @@ web/bower_components/
 /bower_components/
 /web/css/
 /web/js/
+/web/assets/
 /web/images/
 /web/fonts/
 /.idea/
