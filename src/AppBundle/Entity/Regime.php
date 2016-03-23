@@ -315,8 +315,19 @@ class Regime
         return $this->data_updated;
     }
 
+    /**
+     * @return User
+     */
     public function getUser ()
     {
        return $this->creator_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

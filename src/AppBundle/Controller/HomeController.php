@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Model\UserInterface;
 
 class HomeController extends Controller
 {
@@ -42,8 +45,8 @@ class HomeController extends Controller
      */
     public function createRegimeAction(Request $request)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $regime = new Regime($user, new \DateTime());
+        $user = $this->getUser();
+        $regime = new Regime($user->getId(), new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());
 
         $form = $this->createFormBuilder($regime)
@@ -186,8 +189,12 @@ class HomeController extends Controller
 
         $serializer = $this->get('jms_serializer');
 
-        $json = $serializer->serialize($regimes, 'json');
-        return new Response($json);
+        $json = $serializer->toArray($regimes);
+        for ($i = 0; $i<count($json); $i++) {
+            $json[$i]["user"] = $regime = $this->getDoctrine()->getRepository('UserBundle:User')->find($json[$i]["creator_id"]);
+        }
+
+        return new Response($serializer->serialize($json, 'json'));
     }
 
     /**
