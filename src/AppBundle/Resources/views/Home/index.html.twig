@@ -25,19 +25,26 @@
         </div>
     </nav>
     <div ng-app="regimeApp" ng-controller="regimesController">
-        <hr>
-        <div class="program row" ng-repeat="regime in regimes">
-            <h2> <span class="programName">{[{ regime.title }]}</span> <span class="coachInfo"> Treneris: <a href=""> Vardas/Pavarde </a></span> </h2>
-            <hr>
-            <p> {[{ regime.description }]}</p>
-            <div class="row buttonRow">
-                <div class="col-md-12">
-                    <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-4"> Daugiau informacijos</a>
-                    <a href="activate/{[{ regime.id }]}" class="actionLink col-md-4"> Aktyvuoti programa</a>
-                    <a href="comment/{[{ regime.id }]}" class="actionLink col-md-4"> Komentuoti</a>
+        <div class="clearfix single_content" ng-repeat="regime in regimes | orderBy:'id':true">
+            <div class="clearfix post_date floatleft">
+                <div class="date">
+                    <h3>27</h3>
+                    <p>January</p>
                 </div>
             </div>
+            <div class="clearfix post_detail">
+                <h2><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]} </a></h2>
+                <div class="clearfix post-meta">
+                    <p><span><i class="fa fa-user"></i> {[{ regime.user.username }]}</span> <span><i class="fa fa-clock-o"></i> 20 Jan 2014</span> <span><i class="fa fa-comment"></i> 4 comments</span> <span><i class="fa fa-folder"></i> Category</span></p>
+                </div>
+                <div class="clearfix post_excerpt">
+                    <img src="images/thumb.png" alt=""/>
+                    <p>{[{ regime.description }]}</p>
+                </div>
+                <a href="comment/{[{ regime.id }]}" class="actionLink col-md-4"> Komentuoti</a>
+                <a href="activate/{[{ regime.id }]}" class="actionLink col-md-4"> Aktyvuoti programa</a>
+                <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-4"> Daugiau informacijos</a>
+            </div>
         </div>
-        <hr>
     </div>
 {% endblock %}

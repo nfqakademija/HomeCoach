@@ -34,7 +34,15 @@ gulp.task('assets',function()
         .pipe(gulp.dest(dir.dist + 'assets'));
 });
 
-gulp.task('default', ['styles', 'scripts', 'assets']);
+gulp.task('fonts',function()
+{
+   gulp.src(dir.node +'bootstrap/fonts/glyphicons-halflings-regular.ttf')
+       .pipe(gulp.dest(dir.dist +'fonts'));
+    gulp.src(dir.assets + 'fonts/*.ttf')
+        .pipe(gulp.dest(dir.dist +'fonts'));
+});
+
+gulp.task('default', ['styles', 'scripts', 'assets','fonts']);
 
 
 

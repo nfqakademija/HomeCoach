@@ -1,3 +1,8 @@
+@font-face
+{
+    font-family: Oswald;
+    src: url(../fonts/Oswald-Light.ttf)
+}
 .navbar-fixed
 {
     background-color: rgba(25, 188, 134, 0.28);
@@ -9,6 +14,29 @@
 .navbar
 {
     margin-bottom: 0px;
+}
+
+.home
+{
+    color:rgb(255, 213, 0);
+    font-size:34px;
+    font-weight: 700;
+    line-height: 40px;
+    text-align:center;
+    transition: 1.5s all;
+    font-family:Oswald;
+}
+
+.homeSpan
+{
+    color:white;
+}
+
+.home:hover
+{
+    -ms-transform: rotate(-7deg); /* IE 9 */
+    -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
+    transform: rotate(-7deg);
 }
 
 .container
@@ -34,11 +62,6 @@
     background-color: #8c8c8c;
 }
 
-.loginInput:hover
-{
-    background-color: rgba(75, 168, 96, 0.15);
-}
-
 .loginInput:focus
 {
     background-color:white;
@@ -49,13 +72,14 @@ nav div ul li
     margin:3px;
     margin-right: 0px;
     border-radius:10px;
-    background-color: rgba(156, 139, 137, 0.47);
+    background-color: rgb(255, 213, 0);
     transition: all 1.5s;
 }
 
 nav div ul li a
 {
-    text-align: center;
+    color:black !important;
+    transition: all 1.5s;
 }
 
 nav div ul .loginForm
@@ -65,7 +89,12 @@ nav div ul .loginForm
 
 nav div ul li:hover
 {
-    background-color: #2aabd2;
+    background-color: #676767;
+}
+
+nav div ul li:hover a
+{
+    color: #c0c0c0 !important;
 }
 
 .navbar-form

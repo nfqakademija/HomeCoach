@@ -1,22 +1,23 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a id="brand" class="navbar-brand name" href="#">Namu treneris</a>
+            <a id="brand" class="navbar-brand name" href="/"> <h3 class="home"> HOME <span class="homeSpan">COACH</span> </h3>  </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 Meniu
             </button>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="/"> Namai</a></li>
-                <li><a href="/about">Apie</a></li>
                 <li><a class="popup" data-toggle="modal" data-target="#myModal"> Registracija</a></li>
             </ul>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                <a href="{{ path('fos_user_security_logout') }}">
-                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                </a>
+                <div class="navbar-form navbar-right">
+                    <span class="loginInfo"> {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} </span> |
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        <span class="glyphicon glyphicon-off"></span>
+                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
+                </div>
             {% else %}
                 <form action="{{ path("fos_user_security_check") }}" method="post" class="navbar-form navbar-right">
                     <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.generateCsrfToken('authenticate') }}" />

@@ -1,28 +1,9 @@
 .container
 {
     padding:0px;
-}
-.coachInfo
-{
-    text-align: right;
-    font-size:16px;
-}
-
-.program
-{
-    border: 1px solid;
-    border-color: rgba(3, 167, 169, 0.78);
-    padding:10px;
-    background-color:white;
-    transition:1.5s all;
-    margin:20px;
-    border-radius: 15px;
-}
-
-.program:hover
-{
-    background-color: #e5fdff;
-    border-color:white;
+    background:url('../images/body_top_bg.png');
+    background-size:100% 100%;
+    background-repeat: no-repeat;
 }
 
 body
@@ -39,43 +20,25 @@ body
 
 .profile
 {
-    background-color: rgba(14, 25, 39, 0.27);
     padding:20px;
+    padding-top:0px;
     border-radius:10px;
     margin-bottom:15px;
-    box-shadow: 7px 7px 2px #2f6288;
 }
 
 .profile a
 {
     color: #5c5c5c;
-    border:1px solid;
+    border:0px solid;
     padding:10px;
-    background-color: #e6deff;
-    transition: 2s all;
-    border-radius: 5px;
+    background-color: white;
+    transition: 1s all;
+    border-radius: 2px;
 }
 
 .profile a:hover
 {
-    color: #d2d2d2;
-    background-color: rgb(67, 67, 67);
-    text-decoration: none;
-}
-
-.actionLink
-{
-    color: #062725;
-    padding:10px;
-    background-color: #d9fff7;
-    transition: 2s all;
-    text-align: center;
-}
-
-.actionLink:hover
-{
-    color: white;
-    background-color: rgba(7, 29, 24, 0.9);
+    background-color: orange;
     text-decoration: none;
 }
 
@@ -151,7 +114,29 @@ nav .searchBar
 
 .programName
 {
-    font-family: Padauk;
     font-size: 35px;
 }
 
+.info
+{
+    background: none repeat scroll 0 0 #222222;
+    color: #fff;
+    font-size: 26px;
+    margin-top:0px;
+    padding: 14px;
+    text-transform: uppercase;
+    width: 100%;
+    font-family:Oswald;
+}
+
+.loginInfo
+{
+    color:orange;
+    font-size:20px;
+}
+
+.col-sm-2
+{
+    background: url('../images/slider_bg.png');
+    padding:0px;
+}
