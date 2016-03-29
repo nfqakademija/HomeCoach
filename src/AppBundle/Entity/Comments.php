@@ -27,19 +27,29 @@ class Comments
     protected $comment;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="Comments")
      */
-    protected $user_id;
+    protected $parent;
 
     /**
-     * @ORM\Column(type="array", nullable=TRUE)
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    protected $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Comments")
      */
     protected $sub_comments;
 
-    public function __construct($user_id, $comment)
+    /**
+     * @ORM\ManyToOne(targetEntity="Regime")
+     */
+    private $regime;
+
+    public function __construct($user, $comment)
     {
-        $this->setUser($user_id);
-        $this->setComment($comment);
+        $this->user = $user;
+        $this->comment = $comment;
     }
 
     /**
@@ -74,33 +84,11 @@ class Comments
     }
 
     /**
-     * Set user
-     *
-     * @param integer $user_id
-     *
-     * @return Comments
-     */
-    public function setUser($user_id)
-    {
-        $this->user_id=$user_id;
-        return $this;
-    }
-
-    /**
-     * Get user id
-     * @return integer
-     */
-    public function getUser()
-    {
-        return $this->user_id;
-    }
-
-    /**
      * Set subcomment
      * @param integer $id
-     * @param Comments $comment
+     * @param integer $comment
      *
-     * @return Comments
+     * @return integer
      */
     public function setSubComment($id, $comment)
     {
@@ -108,7 +96,7 @@ class Comments
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getSubComments()
     {
@@ -116,21 +104,51 @@ class Comments
     }
 
     /**
-     * @return mixed
+     * @param array $sub_comments
      */
-    public function getUserId()
+    public function setSubComments($sub_comments)
     {
-        return $this->user_id;
+        $this->sub_comments = $sub_comments;
     }
 
     /**
-     * Get subcomment
-     * @param integer $id
+     * @return integer
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
      * @return Comments
      */
-    public function getSubComment($id)
+    public function getParent()
     {
-        return $this->sub_comments[$id];
+        return $this->parent;
+    }
+
+    /**
+     * @param Comments $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return Regime
+     */
+    public function getRegime()
+    {
+        return $this->regime;
+    }
+
+    /**
+     * @param Regime $regime
+     */
+    public function setRegime($regime)
+    {
+        $this->regime = $regime;
     }
 
 }
