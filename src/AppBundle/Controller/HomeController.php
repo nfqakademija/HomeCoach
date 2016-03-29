@@ -232,9 +232,6 @@ class HomeController extends Controller
         $serializer = $this->get('jms_serializer');
 
         $json = $serializer->toArray($regimes);
-        for ($i = 0; $i<count($json); $i++) {
-            $json[$i]["user"] = $regime = $this->getDoctrine()->getRepository('UserBundle:User')->find($json[$i]["creator_id"]);
-        }
 
         return new Response($serializer->serialize($json, 'json'));
     }
