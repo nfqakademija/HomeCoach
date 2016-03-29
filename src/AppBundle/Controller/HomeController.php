@@ -2,12 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Comments;
 use AppBundle\Entity\Regime;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,7 +48,10 @@ class HomeController extends Controller
     public function createRegimeAction(Request $request)
     {
         $user = $this->getUser();
-        $regime = new Regime($user->getId(), new \DateTime());
+        if ($user==null) {
+            return new Response("Prisijunk!");
+        }
+        $regime = new Regime($user, new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());
 
         $form = $this->createFormBuilder($regime)
@@ -130,7 +135,7 @@ class HomeController extends Controller
         ));
     }
 
-    public function showRegimeAction($id)
+    public function showRegimeAction($id, Request $request)
     {
         $regime = $this->getDoctrine()
             ->getRepository('AppBundle:Regime')
@@ -141,9 +146,46 @@ class HomeController extends Controller
                 'No regime found for id '.$id
             );
         }
+        //Komentaru forma imest.
+        $user = $this->getUser();
+        $comment = new Comments($user, "");
 
+        $form = $this->createFormBuilder($comment)
+            ->add('comment', TextType::class)
+            ->getForm();
+        $form->add('parent', HiddenType::class, array (
+            'data' => null
+        ));
+        $form->add('save', SubmitType::class, array('label' => 'Komentuoti'));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $parent = $this->get('request')->get('parent');
+            if ($parent==null) {
+                $comment->setRegime($regime);
+                $comments = $regime->getComments();
+                $comments[] = $comment;
+                $regime->setComments($comments);
+                $em->persist($regime);
+            } else {
+
+                $parent_comm = $this->getDoctrine()
+                    ->getRepository('AppBundle:Comments')
+                    ->find($parent);
+                $comment->setParent($parent_comm);
+                $comments = $parent_comm->getSubComments();
+                $comments[] = $comment;
+                $parent_comm->setSubComments($comments);
+                $em->persist($parent_comm);
+            }
+            $em->persist($comment);
+            $em->flush();
+
+        }
         return $this->render('@App/Home/queryRegime.html.twig', array(
-           "regime" => $regime
+           "regime" => $regime,
+            "form" => $form->createView()
         ));
     }
 

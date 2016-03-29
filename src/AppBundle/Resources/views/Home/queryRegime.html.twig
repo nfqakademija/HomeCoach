@@ -41,4 +41,9 @@
             </div>
         {% endfor %}
     </div>
+    {% if app.user is not null %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+        {% endif %}
 {% endblock %}

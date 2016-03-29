@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
+use UserBundle\Entity\User;
 
 /**
  * @ORM\Entity()
@@ -24,11 +25,10 @@ class Regime
      */
     protected $id;
 
-
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
-    protected $creator_id;
+    protected $creator;
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -60,7 +60,7 @@ class Regime
     protected $rating;
 
     /**
-     * @ORM\Column(type="array", nullable=TRUE)
+     * @ORM\OneToMany(targetEntity="Comments", mappedBy="regime")
      */
     protected $comments;
 
@@ -76,12 +76,12 @@ class Regime
 
     /**
      * Regime constructor.
-     * @param $creator_id
+     * @param $creator
      * @param $data_created
      */
-    public function __construct($creator_id, $data_created)
+    public function __construct($creator, $data_created)
     {
-        $this->creator_id = $creator_id;
+        $this->creator = $creator;
         $this->data_created = $data_created;
     }
 
@@ -103,6 +103,14 @@ class Regime
     public function getRating()
     {
         return $this->rating;
+    }
+
+    /**
+     * @return User
+     */
+    public function getCreator()
+    {
+        return $this->creator;
     }
     /**
      * Set user rating
@@ -126,10 +134,7 @@ class Regime
     }
 
     /**
-     * Get day schedule
-     *
-     *
-     *
+     * Get schedule
      * @return array
      */
     public function getSchedule() {
@@ -233,43 +238,6 @@ class Regime
     }
 
     /**
-     * Get comment
-     *
-     * @param integer $index
-     *
-     * @return Comments
-     */
-    public function getComment($index)
-    {
-        return $this->comments[$index];
-    }
-
-    /**
-     * Set comment
-     *
-     * @param integer $index
-     * @param Comments $comment
-     * @return Regime
-     */
-    public function setComment($index, $comment)
-    {
-        $this->comments[$index]=$comment;
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @param Comments $comment
-     *
-     * @return Regime
-     */
-    public function createComment($comment)
-    {
-        $this->comments[count($this->comments)]=$comment;
-        return $this;
-    }
-    /**
      * Set DataCreated
      *
      * @param DateTime $date
@@ -316,18 +284,33 @@ class Regime
     }
 
     /**
-     * @return User
+     * @return array
      */
-    public function getUser ()
+    public function getUserRatings()
     {
-       return $this->creator_id;
+        return $this->user_ratings;
     }
-
     /**
-     * @return mixed
+     * @return array
      */
     public function getComments()
     {
         return $this->comments;
     }
+
+    /**
+     * @param array $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+    /**
+     * @param Comments $comments
+     */
+    public function addComment($comments)
+    {
+        $this->comments[] = $comments;
+    }
+
 }

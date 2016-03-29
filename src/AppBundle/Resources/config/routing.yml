@@ -30,5 +30,9 @@ app.showRegimes:
     path:     /showRegimes
     defaults: { _controller: AppBundle:Home:showRegimes}
 
+app.showComments:
+    path:     /showComments/{id}
+    defaults: { _controller: AppBundle:Comment:showComments}
+
 _user_bundle:
     resource: "@UserBundle/Resources/config/routing.yml"
