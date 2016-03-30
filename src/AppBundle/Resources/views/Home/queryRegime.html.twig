@@ -41,6 +41,10 @@
             </div>
         {% endfor %}
     </div>
+    Komentarai: <br>
+    {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
+
+    <br>
     {% if app.user is not null %}
     {{ form_start(form) }}
     {{ form_widget(form) }}
