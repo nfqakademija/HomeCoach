@@ -42,7 +42,13 @@ gulp.task('fonts',function()
         .pipe(gulp.dest(dir.dist +'fonts'));
 });
 
-gulp.task('default', ['styles', 'scripts', 'assets','fonts']);
+gulp.task('images', function()
+{
+   gulp.src(dir.assets + 'images/*.png')
+       .pipe(gulp.dest(dir.dist + 'images'));
+});
+
+gulp.task('default', ['styles', 'scripts', 'assets','fonts','images']);
 
 
 

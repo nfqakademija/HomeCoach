@@ -1,3 +1,9 @@
+@font-face
+{
+    font-family: Oswald;
+    src: url(../fonts/Oswald-Bold.ttf)
+}
+
 .container
 {
     padding:0px;
@@ -79,6 +85,8 @@ h3
 .sideNav .profile nav ul li a
 {
     display:block;
+    font-family:Oswald;
+    font-size:18px;
 }
 
 nav .searchBar li

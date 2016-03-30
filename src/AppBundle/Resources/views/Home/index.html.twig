@@ -28,22 +28,21 @@
         <div class="clearfix single_content" ng-repeat="regime in regimes | orderBy:'id':true">
             <div class="clearfix post_date floatleft">
                 <div class="date">
-                    <h3>27</h3>
-                    <p>January</p>
+                    <h3 ng-bind="regime.data_created | date:'d'"></h3>
+                    <p ng-bind="regime.data_created | date:'MMMM'"></p>
+                    <p ng-bind="regime.data_created | date:'yyyy'"></p>
                 </div>
             </div>
             <div class="clearfix post_detail">
                 <h2><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]} </a></h2>
                 <div class="clearfix post-meta">
-                    <p><span><i class="fa fa-user"></i> {[{ regime.user.username }]}</span> <span><i class="fa fa-clock-o"></i> 20 Jan 2014</span> <span><i class="fa fa-comment"></i> 4 comments</span> <span><i class="fa fa-folder"></i> Category</span></p>
+                    <p><i class="fa fa-user">Autorius:</i> <a href="showProfile/{[{ regime.creator.id }]}"> {[{ regime.creator.username }]}</a> <span><i class="fa fa-comment"></i> {[{ regime.comments.length }]} komentarai</span> <span><i class="fa fa-folder"></i> {[{ regime.difficulty | showDifficulty }]}</span></p>
                 </div>
                 <div class="clearfix post_excerpt">
-                    <img src="images/thumb.png" alt=""/>
                     <p>{[{ regime.description }]}</p>
                 </div>
-                <a href="comment/{[{ regime.id }]}" class="actionLink col-md-4"> Komentuoti</a>
-                <a href="activate/{[{ regime.id }]}" class="actionLink col-md-4"> Aktyvuoti programa</a>
-                <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-4"> Daugiau informacijos</a>
+                <a href="activate/{[{ regime.id }]}" class="actionLink col-md-6"> Aktyvuoti programa</a>
+                <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-6"> Daugiau informacijos</a>
             </div>
         </div>
     </div>
