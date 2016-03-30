@@ -1,0 +1,17 @@
+{% block content %}
+
+    {% for comment in comments %}
+        <div id="comment">
+            {{ comment.user.username }}: {{ comment.comment }}
+
+            {% if comment.subComments is not null %}
+                <ul>
+                    {% include "AppBundle:Home:showComment.html.twig" with {'comments': comment.subComments} %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+
