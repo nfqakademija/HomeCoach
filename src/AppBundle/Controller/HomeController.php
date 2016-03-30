@@ -151,7 +151,7 @@ class HomeController extends Controller
         $comment = new Comments($user, "");
 
         $form = $this->createFormBuilder($comment)
-            ->add('comment', TextType::class)
+            ->add('comment', TextareaType::class)
             ->getForm();
         $form->add('parent', HiddenType::class, array (
             'data' => null

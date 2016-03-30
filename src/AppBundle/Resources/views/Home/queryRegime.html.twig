@@ -47,7 +47,8 @@
     <br>
     {% if app.user is not null %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
+        {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
     {{ form_end(form) }}
         {% endif %}
 {% endblock %}
