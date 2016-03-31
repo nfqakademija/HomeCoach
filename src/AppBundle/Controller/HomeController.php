@@ -272,4 +272,10 @@ class HomeController extends Controller
         ));
     }
 
+    public function showProfileAction($id)
+    {
+        return $this->render('@App/Home/showUser.html.twig', array(
+            'id' => $id
+        ));
+    }
 }

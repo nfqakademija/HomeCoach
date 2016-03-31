@@ -1,0 +1,25 @@
+@font-face
+{
+    font-family: Oswald;
+    src: url(../fonts/Oswald-Light.ttf)
+}
+
+.commentAuthor
+{
+    font-size:22px;
+    font-family: Oswald;
+}
+
+.comment
+{
+    word-wrap: break-word;
+    margin-left:10px;
+}
+
+a.morelink {
+    text-decoration:none;
+    outline: none;
+}
+.morecontent span {
+    display: none;
+}

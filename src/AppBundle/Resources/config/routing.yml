@@ -30,6 +30,10 @@ app.showRegimes:
     path:     /showRegimes
     defaults: { _controller: AppBundle:Home:showRegimes}
 
+app.showProfile:
+    path:     /showProfile/{id}
+    defaults: { _controller: AppBundle:Home:showProfile}
+
 app.showComments:
     path:     /showComments/{id}
     defaults: { _controller: AppBundle:Comment:showComments}

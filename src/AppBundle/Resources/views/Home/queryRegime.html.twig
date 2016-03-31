@@ -41,10 +41,13 @@
             </div>
         {% endfor %}
     </div>
-    Komentarai: <br>
-    {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
+    {% if regime.comments|length > 0 %}
+        <h2 class="description"> Komentarai <span class="badge alert-info">{{ regime.comments|length }}</span></h2>
+        {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
+    {% else %}
+        <h2 class="description"> Komentarų dar nėra </h2>
+    {% endif %}
 
-    <br>
     {% if app.user is not null %}
     {{ form_start(form) }}
     {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
