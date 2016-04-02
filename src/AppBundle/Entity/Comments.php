@@ -46,10 +46,22 @@ class Comments
      */
     private $regime;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $data_created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $data_updated;
+
     public function __construct($user, $comment)
     {
         $this->user = $user;
         $this->comment = $comment;
+        $this->data_created=$this->data_updated=new \DateTime();
+
     }
 
     /**
@@ -149,6 +161,38 @@ class Comments
     public function setRegime($regime)
     {
         $this->regime = $regime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDataCreated()
+    {
+        return $this->data_created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDataUpdated()
+    {
+        return $this->data_updated;
+    }
+
+    /**
+     * @param \DateTime $data_created
+     */
+    public function setDataCreated($data_created)
+    {
+        $this->data_created = $data_created;
+    }
+
+    /**
+     * @param \DateTime $data_updated
+     */
+    public function setDataUpdated($data_updated)
+    {
+        $this->data_updated = $data_updated;
     }
 
 }

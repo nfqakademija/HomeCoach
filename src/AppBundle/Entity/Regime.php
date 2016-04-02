@@ -9,7 +9,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
 use UserBundle\Entity\User;
 
 /**
@@ -115,14 +114,14 @@ class Regime
     /**
      * Set user rating
      *
-     * @param integer $user_id
+     * @param User $user
      * @param integer $user_rating
      *
      * @return Regime
      */
-    public function setUserRating($user_id, $user_rating)
+    public function setUserRating($user, $user_rating)
     {
-
+        $user_id = $user->getId();
         if (!isset($this->user_ratings[$user_id])) {
             $this->rating = ($this->rating*count($this->user_ratings)+$user_rating)/(count($this->user_ratings)+1);
         } else {
@@ -240,7 +239,7 @@ class Regime
     /**
      * Set DataCreated
      *
-     * @param DateTime $date
+     * @param \DateTime $date
      *
      * @return Regime
      */
@@ -253,7 +252,7 @@ class Regime
      * Get DataCreated
      *
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDataCreated ()
     {
@@ -263,7 +262,7 @@ class Regime
     /**
      * Set DataUpdated
      *
-     * @param DateTime $date
+     * @param \DateTime $date
      *
      * @return Regime
      */
@@ -276,7 +275,7 @@ class Regime
      * Get DataUpdated
      *
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDataUpdated ()
     {

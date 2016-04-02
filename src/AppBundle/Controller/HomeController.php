@@ -97,7 +97,7 @@ class HomeController extends Controller
      * Rates regime.
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function rateRegimeAction($id, $user, Request $request)
+    public function rateRegimeAction($id, Request $request)
     {
         $regime = $this->getDoctrine()
             ->getRepository('AppBundle:Regime')
@@ -117,14 +117,13 @@ class HomeController extends Controller
                     '3'   => '3',
                     '4'   => '4',
                     '5'   => '5',
-                ), 'expanded' => true,
-                    'required' => false))
+                ), 'expanded' => true))
             ->getForm();
 
         $form->handleRequest($request);
         $data = $form->getData();
         if (isset($data['rating'])) {
-            $regime->setUserRating($user, $data['rating']);
+            $regime->setUserRating($this->getUser(), $data['rating']);
             $doc = $this->getDoctrine()->getManager();
             $doc->persist($regime);
             $doc->flush();
