@@ -9,3 +9,8 @@ services:
          public: false
          tags:
              - { name: twig.extension }
+services:
+    app.form.registration:
+        class: UserBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }

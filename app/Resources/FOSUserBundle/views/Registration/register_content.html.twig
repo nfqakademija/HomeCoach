@@ -1,0 +1,49 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            {{ form_widget(form.name, {'attr':{'class':'form-control' , 'placeholder':'Vardas'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_widget(form.surname, {'attr':{'class':'form-control' , 'placeholder':'Pavardė'}}) }}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {{ form_widget(form.email, {'attr':{'class':'form-control' , 'placeholder':'Email'}}) }}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {{ form_widget(form.username, {'attr':{'class':'form-control' , 'placeholder':'Prisijungimo vardas'}}) }}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            {{ form_widget(form.plainPassword.first, {'attr':{'class':'form-control' , 'placeholder':'Slaptažodis'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_widget(form.plainPassword.second, {'attr':{'class':'form-control' , 'placeholder':'Pakartokite Slaptažodį'}}) }}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <input type="submit" class="form-control registrationButton" value="{{ 'registration.submit'|trans }}" />
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+     {{ form_end(form) }}
+{% endblock %}

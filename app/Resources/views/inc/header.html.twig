@@ -1,14 +1,14 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a id="brand" class="navbar-brand name" href="/"> <h3 class="home"> HOME <span class="homeSpan">COACH</span> </h3>  </a>
+            <a id="brand" class="navbar-brand name" href="/"> <h3 class="home"> HOME <span class="homeSpan">COACH</span> </h3> </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 Meniu
             </button>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a class="popup" data-toggle="modal" data-target="#myModal"> Registracija</a></li>
+                <li><a href="/register"> Registracija</a></li>
             </ul>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <div class="navbar-form navbar-right">
@@ -33,52 +33,3 @@
         </div>
     </div>
 </nav>
-
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Registracijos forma</h3>
-            </div>
-            <div class="modal-body">
-                <form method="post">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Vardas"/>
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Pavardė" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="email" class="form-control" placeholder="El. paštas" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" placeholder="Prisijungimo vardas" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="password" class="form-control" placeholder="Slaptažodis" />
-                        </div>
-                        <div class="col-md-6">
-                            <input type="password" class="form-control" placeholder="Pakartokite slaptažodi" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="submit" class="form-control registrationButton" value="Registruotis"/>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-    </div>
-</div>

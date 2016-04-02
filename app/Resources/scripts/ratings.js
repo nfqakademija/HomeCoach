@@ -1,3 +1,3 @@
-$('input[type=radio]').on('change', function() {
+$('input[class=radio_item]').on('change', function() {
     $(this).closest("form").submit();
 });
