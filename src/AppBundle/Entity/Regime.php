@@ -115,14 +115,14 @@ class Regime
     /**
      * Set user rating
      *
-     * @param integer $user_id
+     * @param User $user
      * @param integer $user_rating
      *
      * @return Regime
      */
-    public function setUserRating($user_id, $user_rating)
+    public function setUserRating($user, $user_rating)
     {
-
+        $user_id = $user->getId();
         if (!isset($this->user_ratings[$user_id])) {
             $this->rating = ($this->rating*count($this->user_ratings)+$user_rating)/(count($this->user_ratings)+1);
         } else {

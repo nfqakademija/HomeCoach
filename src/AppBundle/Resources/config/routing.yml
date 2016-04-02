@@ -23,7 +23,7 @@ app.taskSuccess:
     defaults: { _controller: AppBundle:Home:taskSuccess}
 
 app.rateRegime:
-    path:     /rating/{id}/{user}
+    path:     /rating/{id}
     defaults: { _controller: AppBundle:Home:rateRegime}
 
 app.showRegimes:
