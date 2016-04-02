@@ -13,6 +13,7 @@
     "gulp-sass": "^2.2.0",
     "gulp-uglify": "^1.5.3",
     "jquery": "^2.2.2",
+    "ng-infinite-scroll": "^1.1.2",
     "node-sass": "^3.4.2"
   }
 }

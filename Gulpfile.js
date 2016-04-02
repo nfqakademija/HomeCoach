@@ -32,6 +32,8 @@ gulp.task('assets',function()
         .pipe(gulp.dest(dir.dist +'assets'));
     gulp.src(dir.node + 'jquery/dist/jquery.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.node + 'ng-infinite-scroll/build/ng-infinite-scroll.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
 });
 
 gulp.task('fonts',function()

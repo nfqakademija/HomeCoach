@@ -2,7 +2,16 @@
 
 {% block content %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="rating">
+        {{ form_widget(form.rating.4, {'attr':{'class':'radio_item'}}) }}
+        {{ form_widget(form.rating.3, {'attr':{'class':'radio_item'}}) }}
+        {{ form_widget(form.rating.2, {'attr':{'class':'radio_item'}}) }}
+        {{ form_widget(form.rating.1, {'attr':{'class':'radio_item'}}) }}
+        {{ form_widget(form.rating.0, {'attr':{'class':'radio_item'}}) }}
+        {% for i in [4,3,2,1,0] %}
+            <label id="{{ i+1 }}" class="label_item {% if regime.rating > i %} coloredStar {% endif %}" for="form_rating_{{ i }}"> <span>&#9734</span> </label>
+        {% endfor %}
+    </div>
     {{ form_end(form) }}
     <br>
     {{ regime.id }}

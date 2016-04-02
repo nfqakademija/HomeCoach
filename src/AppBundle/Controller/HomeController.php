@@ -119,7 +119,6 @@ class HomeController extends Controller
                     '5'   => '5',
                 ), 'expanded' => true,
                     'required' => false))
-            ->add('save', SubmitType::class, array('label' => 'rate regime'))
             ->getForm();
 
         $form->handleRequest($request);
