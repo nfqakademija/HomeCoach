@@ -179,11 +179,32 @@ class HomeController extends Controller
             }
             $em->persist($comment);
             $em->flush();
-
         }
+
+        $data = array();
+        $formRate = $this->createFormBuilder($data)
+            ->add('rating', 'choice',
+                array('choices' => array(
+                    '1'   => '1',
+                    '2'   => '2',
+                    '3'   => '3',
+                    '4'   => '4',
+                    '5'   => '5',
+                ), 'expanded' => true))
+            ->getForm();
+
+        $formRate->handleRequest($request);
+        $data = $formRate->getData();
+        if (isset($data['rating'])) {
+            $regime->setUserRating($this->getUser(), $data['rating']);
+            $doc = $this->getDoctrine()->getManager();
+            $doc->persist($regime);
+            $doc->flush();
+        }
+
         return $this->render('@App/Home/queryRegime.html.twig', array(
            "regime" => $regime,
-            "form" => $form->createView()
+            "form" => $form->createView(),"formRate" => $formRate->createView()
         ));
     }
 

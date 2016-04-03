@@ -41,6 +41,24 @@
             </div>
         {% endfor %}
     </div>
+    {% if app.user is not null %}
+        <h2 class="description"> Įvertinkite programą </h2>
+        <p>Programos reitingas: {{ regime.rating }}</p>
+        {{ form_start(formRate) }}
+        <div class="rating">
+            {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
+            {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}
+            {{ form_widget(formRate.rating.2, {'attr':{'class':'radio_item'}}) }}
+            {{ form_widget(formRate.rating.1, {'attr':{'class':'radio_item'}}) }}
+            {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
+            {% for i in [4,3,2,1,0] %}
+                <label id="{{ i+1 }}" class="label_item {% if regime.rating > i %} coloredStar {% endif %}" for="form_rating_{{ i }}"> <span>&#9734</span> </label>
+            {% endfor %}
+        </div>
+        {{ form_end(formRate) }}
+        <br>
+    {% endif %}
+
     {% if regime.comments|length > 0 %}
         <h2 class="description"> Komentarai <span class="badge alert-info">{{ regime.comments|length }}</span></h2>
         {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
