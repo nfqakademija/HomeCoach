@@ -34,7 +34,7 @@ class HomeController extends Controller
         $regimes = $repo->getHotRegimes();
 
         //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
-        return $this->render('@App/Home/index.html.twig', array(
+        return $this->render('@App/Home/indexShow.html.twig', array(
             'regimes' => $regimes
         ));
     }
