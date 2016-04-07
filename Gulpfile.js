@@ -48,6 +48,8 @@ gulp.task('images', function()
 {
    gulp.src(dir.assets + 'images/*.png')
        .pipe(gulp.dest(dir.dist + 'images'));
+   gulp.src(dir.assets + 'images/*.jpg')
+       .pipe(gulp.dest(dir.dist + 'images'));
 });
 
 gulp.task('default', ['styles', 'scripts', 'assets','fonts','images']);

@@ -31,8 +31,12 @@ class HomeController extends Controller
     public function indexAction()
     {
         $repo = $this->get('app.repo');
-        $repo->showHotRegimes();
+        $regimes = $repo->getHotRegimes();
 
+        //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
+        return $this->render('@App/Home/index.html.twig', array(
+            'regimes' => $regimes
+        ));
     }
 
     /**
@@ -44,7 +48,7 @@ class HomeController extends Controller
     {
         $user = $this->getUser();
         if ($user==null) {
-            return new Response("Prisijunk!");
+            return new Response('Prisijunk!');
         }
         $regime = new Regime($user, new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());

@@ -6,9 +6,10 @@ parameters:
 services:
     app.repo:
         class: AppBundle\Service\Repo
+        arguments: [ @doctrine.orm.entity_manager ]
 services:
      app.twig_extension:
-         class: AppBundle\DifficultyExtension
+         class: AppBundle\Twig\DifficultyExtension
          public: false
          tags:
              - { name: twig.extension }

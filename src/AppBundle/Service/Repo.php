@@ -9,23 +9,27 @@
 namespace AppBundle\Service;
 
 
+use Doctrine\ORM\EntityManager;
+
 class Repo
 {
+    public $entityManager;
     /**
      * Repo constructor.
      */
-    public function __construct()
+    public function __construct(EntityManager $entityManager)
     {
+        $this->entityManager = $entityManager;
     }
-    public function showHotRegimes() {
-        $repository = $this->getDoctrine()
+    public function getHotRegimes() {
+        $repository = $this->entityManager
             ->getRepository('AppBundle:Regime');
-
+        
         $regimes = $repository->findBy(array(), array('rating' => 'DESC'),5);
+        
+        //TODO padaryti su JSONResponse
         $json = json_encode($regimes);
 
-        return $this->render('@App/Home/index.html.twig', array(
-            'regimes' => $regimes
-        ));
+        return $json;
     }
 }
