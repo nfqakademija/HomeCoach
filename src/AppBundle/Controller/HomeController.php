@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
+use AppBundle\Service\Repo;
 
 class HomeController extends Controller
 {
@@ -29,15 +30,9 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime');
+        $repo = $this->get('app.repo');
+        $repo->showHotRegimes();
 
-        $regimes = $repository->findBy(array(), array('rating' => 'DESC'),5);
-        $json = json_encode($regimes);
-
-        return $this->render('@App/Home/index.html.twig', array(
-            'regimes' => $regimes
-        ));
     }
 
     /**

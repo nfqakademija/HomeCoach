@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.repo:
+        class: AppBundle\Service\Repo
+services:
      app.twig_extension:
          class: AppBundle\DifficultyExtension
          public: false
@@ -14,3 +17,4 @@ services:
         class: UserBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
+
