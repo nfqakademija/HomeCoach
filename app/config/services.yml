@@ -5,7 +5,7 @@ parameters:
 
 services:
      app.twig_extension:
-         class: AppBundle\DifficultyExtension
+         class: AppBundle\Twig\DifficultyExtension
          public: false
          tags:
              - { name: twig.extension }

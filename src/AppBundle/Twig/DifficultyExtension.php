@@ -6,7 +6,7 @@
  * Time: 12.53
  */
 
-namespace AppBundle;
+namespace AppBundle\Twig;
 
 class DifficultyExtension extends \Twig_Extension
 {

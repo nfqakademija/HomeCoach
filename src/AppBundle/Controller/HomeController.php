@@ -35,9 +35,7 @@ class HomeController extends Controller
         $regimes = $repository->findBy(array(), array('rating' => 'DESC'),5);
         $json = json_encode($regimes);
 
-        return $this->render('@App/Home/index.html.twig', array(
-            'regimes' => $regimes
-        ));
+        return $this->render('@App/Home/indexShow.html.twig');
     }
 
     /**
@@ -49,7 +47,7 @@ class HomeController extends Controller
     {
         $user = $this->getUser();
         if ($user==null) {
-            return new Response("Prisijunk!");
+            return new Response('Prisijunk!');
         }
         $regime = new Regime($user, new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());

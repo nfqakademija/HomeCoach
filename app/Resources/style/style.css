@@ -8,6 +8,12 @@ http://www.tooplate.com/view/2077-modern-town
 
 /* Body 
 ------------------------------------- */
+@font-face
+{
+  font-family: Oswald;
+  src: url(../fonts/Oswald-Bold.ttf)
+}
+
 body {
 		background: #ffffff;
     font-family: 'Open Sans', sans-serif;
@@ -452,4 +458,20 @@ footer a:hover {
   #home h5 {
     font-size: 9px;
   }
+}
+
+.home
+{
+  color:rgb(255, 213, 0);
+  font-size:90px;
+  font-weight: 700;
+  line-height: 40px;
+  text-align:center;
+  transition: 1.5s all;
+  font-family:Oswald;
+}
+
+.homeSpan
+{
+  color: #ffffff;
 }
