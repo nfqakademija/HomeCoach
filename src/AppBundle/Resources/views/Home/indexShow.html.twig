@@ -19,24 +19,26 @@
 </section>
 
     <div ng-app="regimeApp" ng-controller="regimesController">
-        <div class="clearfix single_content" ng-repeat="regime in regimes | orderBy:'id':true">
-            <div class="clearfix post_date floatleft">
-                <div class="date">
-                    <h3 ng-bind="regime.data_created | date:'d'"></h3>
-                    <p ng-bind="regime.data_created | date:'MMMM'"></p>
-                    <p ng-bind="regime.data_created | date:'yyyy'"></p>
+        <div infinite-scroll='loadMore()' infinite-scroll-distance='0'>
+            <div class="clearfix single_content" ng-repeat="regime in regimes | orderBy:'id':true">
+                <div class="clearfix post_date floatleft">
+                    <div class="date">
+                        <h3 ng-bind="regime.data_created | date:'d'"></h3>
+                        <p ng-bind="regime.data_created | date:'MMMM'"></p>
+                        <p ng-bind="regime.data_created | date:'yyyy'"></p>
+                    </div>
                 </div>
-            </div>
-            <div class="clearfix post_detail">
-                <h2><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]} </a></h2>
-                <div class="clearfix post-meta">
-                    <p><i class="fa fa-user">Autorius:</i> <a href="showProfile/{[{ regime.creator.id }]}"> {[{ regime.creator.username }]}</a> <span><i class="fa fa-comment"></i> {[{ regime.comments.length }]} komentarai</span> <span><i class="fa fa-folder"></i> {[{ regime.difficulty | showDifficulty }]}</span></p>
+                <div class="clearfix post_detail">
+                    <h2><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]} </a></h2>
+                    <div class="clearfix post-meta">
+                        <p><i class="fa fa-user">Autorius:</i> <a href="showProfile/{[{ regime.creator_id }]}"> {[{ regime.username }]}</a> <span><i class="fa fa-comment"></i> {[{ regime.comments.length }]} komentarai</span> <span><i class="fa fa-folder"></i> {[{ regime.difficulty | showDifficulty }]}</span></p>
+                    </div>
+                    <div class="clearfix post_excerpt">
+                        <p>{[{ regime.description }]}</p>
+                    </div>
+                    <a href="activate/{[{ regime.id }]}" class="actionLink col-md-6"> Aktyvuoti programa</a>
+                    <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-6"> Daugiau informacijos</a>
                 </div>
-                <div class="clearfix post_excerpt">
-                    <p>{[{ regime.description }]}</p>
-                </div>
-                <a href="activate/{[{ regime.id }]}" class="actionLink col-md-6"> Aktyvuoti programa</a>
-                <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-6"> Daugiau informacijos</a>
             </div>
         </div>
     </div>

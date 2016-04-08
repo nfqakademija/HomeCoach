@@ -254,6 +254,26 @@ class HomeController extends Controller
         return new Response($serializer->serialize($json, 'json'));
     }
 
+    public function showRegimesPageAction($page) {
+        $start = $page*4;
+
+        $query = "SELECT Regimes.id,title,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
+        LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id LIMIT " . $start . ",4";
+
+        $stmt = $this->getDoctrine()->getEntityManager()
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        $regimes = $stmt->fetchAll();
+
+        $serializer = $this->get('jms_serializer');
+
+        $json = $serializer->toArray($regimes);
+
+        return new Response($serializer->serialize($json, 'json'));
+    }
+
     /**
      * Shows most popular coaches in right sidebar of all pages
      *

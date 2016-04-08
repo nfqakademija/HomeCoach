@@ -30,6 +30,10 @@ app.showRegimes:
     path:     /showRegimes
     defaults: { _controller: AppBundle:Home:showRegimes}
 
+app.showRegimePage:
+    path:     /showRegimesPage/{page}
+    defaults: { _controller: AppBundle:Home:showRegimesPage}
+
 app.showProfile:
     path:     /showProfile/{id}
     defaults: { _controller: AppBundle:Home:showProfile}
