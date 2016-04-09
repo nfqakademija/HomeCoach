@@ -10,40 +10,34 @@
                 <h1 class="home wow fadeInDown"> HOME <span class="homeSpan">COACH</span></h1>
                 <a href="/login" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.4s">PRISIJUNGTI</a>
                 <a href="/register" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">REGISTRUOTIS</a>
-                <a href="{{ path('app.createRegime') }}" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">SUKURTI PROGRAMĄ</a>
+                {% if app.user is not null %}
+                    <a href="{{ path('app.createRegime') }}" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">SUKURTI PROGRAMĄ</a>
+                {% else %}
+                    <a class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s" title="Prisijunkite!" data-toggle="popover" data-content="Norėdami kurti programas turite turėti paskyrą." data-placement="bottom" data-trigger="hover"> SUKURTI PROGRAMĄ </a>
+                {% endif %}
                 <a href="" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">RODYTI PROGRAMAS</a>
             </div>
 
         </div>
     </div>
 </section>
-
+<div class="container">
     <div ng-app="regimeApp" ng-controller="regimesController">
         <div infinite-scroll='loadMore()' infinite-scroll-distance='0'>
-            <div class="clearfix single_content" ng-repeat="regime in regimes | orderBy:'id':true">
-                <div class="clearfix post_date floatleft">
-                    <div class="date">
-                        <h3 ng-bind="regime.data_created | date:'d'"></h3>
-                        <p ng-bind="regime.data_created | date:'MMMM'"></p>
-                        <p ng-bind="regime.data_created | date:'yyyy'"></p>
+            <div class="row no-collapse-1">
+                <section class="col-md-4" ng-repeat="regime in regimes">
+                    <div class="box">
+                        <h2 style="font-family: Oswald"><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]}</a></h2>
+                        <p> Autorius: <a href="showProfile/{[{ regime.creator_id }]}"> {[{ regime.username }]}</a></p>
+                        <p> {[{ regime.data_created }]}</p>
+                        <p class="description">{[{ regime.description | limitTo:150 }]}</p>
+                        <a href="regimes/{[{ regime.id }]}" class="button">Daugiau</a>
                     </div>
-                </div>
-                <div class="clearfix post_detail">
-                    <h2><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]} </a></h2>
-                    <div class="clearfix post-meta">
-                        <p><i class="fa fa-user">Autorius:</i> <a href="showProfile/{[{ regime.creator_id }]}"> {[{ regime.username }]}</a> <span><i class="fa fa-comment"></i> {[{ regime.comments.length }]} komentarai</span> <span><i class="fa fa-folder"></i> {[{ regime.difficulty | showDifficulty }]}</span></p>
-                    </div>
-                    <div class="clearfix post_excerpt">
-                        <p>{[{ regime.description }]}</p>
-                    </div>
-                    <a href="activate/{[{ regime.id }]}" class="actionLink col-md-6"> Aktyvuoti programa</a>
-                    <a href="regimes/{[{ regime.id }]}" class="actionLink col-md-6"> Daugiau informacijos</a>
-                </div>
+                </section>
             </div>
         </div>
     </div>
-
-    {#
+</div>
     <section class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
         <div class="container">
 
@@ -53,21 +47,18 @@
                     <span class="icon icon-bar"></span>
                     <span class="icon icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Modern Town</a>
+                <a href="" class="navbar-brand"> <span style="color:orange"> HOME </span> COACH </a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right main-navigation">
-                    <li><a href="#home" class="smoothScroll">HOME</a></li>
-                    <li><a href="#about" class="smoothScroll">ABOUT</a></li>
-                    <li><a href="#testimonial" class="smoothScroll">TESTIMONIALS</a></li>
-                    <li><a href="#blog" class="smoothScroll">BLOG</a></li>
-                    <li><a href="#contact" class="smoothScroll">CONTACT</a></li>
+                    <li><a href="/login" class="smoothScroll">PRISIJUNGTI</a></li>
+                    <li><a href="/register" class="smoothScroll">REGISTRUOTIS</a></li>
+                    <li><a href="{{ path('app.createRegime') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
                 </ul>
             </div>
 
         </div>
     </section>
-    #}
 
 
 {% endblock %}

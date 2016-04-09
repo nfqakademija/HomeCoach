@@ -2,6 +2,13 @@
 
 {% block content %}
     {{ form_start(form) }}
+
+    {% if not form.vars.valid %}
+        <div class="alert alert-danger alert-dissmissible" role="alert">
+            {{ form_errors(form.description) }}
+        </div>
+    {% endif %}
+
     <h2 class="description"> Programos pavadinimas</h2>
     {{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
     <h2 class="description"> Programos sudėtingumas </h2>

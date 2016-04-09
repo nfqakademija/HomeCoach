@@ -47,9 +47,6 @@ class HomeController extends Controller
     public function createRegimeAction(Request $request)
     {
         $user = $this->getUser();
-        if ($user==null) {
-            return new Response('Prisijunk!');
-        }
         $regime = new Regime($user, new \DateTime());
         $regime->setDataUpdated($regime->getDataCreated());
 
