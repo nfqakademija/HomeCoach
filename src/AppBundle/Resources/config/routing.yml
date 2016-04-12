@@ -31,7 +31,7 @@ app.showRegimes:
     defaults: { _controller: AppBundle:Home:showRegimes}
 
 app.showRegimePage:
-    path:     /showRegimesPage/{page}
+    path:     /showRegimesPage/{page}/{sort}
     defaults: { _controller: AppBundle:Home:showRegimesPage}
 
 app.showProfile:

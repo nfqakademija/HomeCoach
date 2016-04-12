@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base3.html.twig' %}
 
 {% block content %}
     {{ form_start(form) }}
@@ -15,7 +15,7 @@
     <div id="form_difficulty" class="btn-group" data-toggle="buttons">
         <label class="btn btn-primary veryEasy"> {{ form_widget(form.difficulty.0) }} Labai lengva</label>
         <label class="btn btn-primary easy"> {{ form_widget(form.difficulty.1) }} Lengva </label>
-        <label class="btn btn-primary active medium"> {{ form_widget(form.difficulty.2) }} Vidutinė</label>
+        <label class="btn btn-primary active medium"> {{ form_widget(form.difficulty.2,{'attr':{'checked':'checked'}}) }} Vidutinė</label>
         <label class="btn btn-primary hard"> {{ form_widget(form.difficulty.3) }} Sunki</label>
         <label class="btn btn-primary veryHard"> {{ form_widget(form.difficulty.4) }} Labai sunki</label>
     </div>

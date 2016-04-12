@@ -21,16 +21,22 @@
         </div>
     </div>
 </section>
+
 <div class="container">
     <div ng-app="regimeApp" ng-controller="regimesController">
-        <div infinite-scroll='loadMore()' infinite-scroll-distance='0'>
+
+        <input type="text" id="search">
+        <input type="button" id="dateButton" value="Pagal data" ng-click="sortByDate()">  </input>
+        <input type="button" id="ratingButton" value="Pagal reitinga" ng-click="sortByRatings()">  </input>
+
+        <div infinite-scroll='loadMore()' infinite-scroll-distance='1'>
             <div class="row no-collapse-1">
                 <section class="col-md-4" ng-repeat="regime in regimes">
                     <div class="box">
-                        <h2 style="font-family: Oswald"><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]}</a></h2>
+                        <h2 style="font-family: Oswald"><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]}</a> {[{ regime.rating }]}</h2>
                         <p> Autorius: <a href="showProfile/{[{ regime.creator_id }]}"> {[{ regime.username }]}</a></p>
                         <p> {[{ regime.data_created }]}</p>
-                        <p class="description">{[{ regime.description | limitTo:150 }]}</p>
+                        <p class="description">{[{ regime.description | limitTo:100 }]}</p>
                         <a href="regimes/{[{ regime.id }]}" class="button">Daugiau</a>
                     </div>
                 </section>
@@ -53,7 +59,9 @@
                 <ul class="nav navbar-nav navbar-right main-navigation">
                     <li><a href="/login" class="smoothScroll">PRISIJUNGTI</a></li>
                     <li><a href="/register" class="smoothScroll">REGISTRUOTIS</a></li>
-                    <li><a href="{{ path('app.createRegime') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
+                    {% if app.user is not null %}
+                        <li><a href="{{ path('app.createRegime') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
+                    {% endif %}
                 </ul>
             </div>
 

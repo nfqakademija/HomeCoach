@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\User;
 
 /**
@@ -40,6 +41,7 @@ class Regime
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=150, minMessage="Turi būti mažiausiai 150 simboliai")
      */
     protected $description;
 

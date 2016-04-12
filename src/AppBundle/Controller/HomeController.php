@@ -251,11 +251,19 @@ class HomeController extends Controller
         return new Response($serializer->serialize($json, 'json'));
     }
 
-    public function showRegimesPageAction($page) {
+    public function showRegimesPageAction($page, $sort) {
         $start = $page*4;
-
-        $query = "SELECT Regimes.id,title,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
-        LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id LIMIT " . $start . ",4";
+        
+        if($sort=="rating")
+        {
+            $query = "SELECT Regimes.id,title, Regimes.rating,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
+            LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id ORDER BY Regimes.rating DESC LIMIT " . $start . ",4";
+        }
+        else
+        {
+            $query = "SELECT Regimes.id,title, Regimes.rating,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
+            LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id ORDER BY Regimes.data_created DESC LIMIT " . $start . ",4";
+        }
 
         $stmt = $this->getDoctrine()->getEntityManager()
             ->getConnection()

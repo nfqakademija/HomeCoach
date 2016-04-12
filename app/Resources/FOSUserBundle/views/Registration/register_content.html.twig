@@ -1,48 +1,68 @@
+
+
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block content %}
-    {{ form_errors(form) }}
+
+<div class="form">
+
+    <ul class="tab-group">
+        <li class="tab active"><a>Registruotis</a></li>
+        <li class="tab"><a href="/login">Prisijungti</a></li>
+    </ul>
     {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4">
-            {{ form_widget(form.name, {'attr':{'class':'form-control' , 'placeholder':'Vardas'}}) }}
+    {% if not form.vars.valid %}
+        {{ form_errors(form) }}
+    {% endif %}
+    <div class="top-row">
+        <div class="field-wrap">
+            <label>
+                Vardas<span class="req">*</span>
+            </label>
+            {{ form_widget(form.name, {'attr':{'autocomplete':'off'}}) }}
         </div>
-        <div class="col-md-4">
-            {{ form_widget(form.surname, {'attr':{'class':'form-control' , 'placeholder':'Pavardė'}}) }}
+
+        <div class="field-wrap">
+            <label>
+                Pavardė<span class="req">*</span>
+            </label>
+            {{ form_widget(form.surname, {'attr':{'autocomplete':'off'}}) }}
         </div>
-        <div class="col-md-2"></div>
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            {{ form_widget(form.email, {'attr':{'class':'form-control' , 'placeholder':'Email'}}) }}
-        </div>
-        <div class="col-md-2"></div>
+
+    <div class="field-wrap">
+        <label>
+            Prisijungimo vardas<span class="req">*</span>
+        </label>
+        {{ form_widget(form.username, {'attr':{'autocomplete':'off'}}) }}
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            {{ form_widget(form.username, {'attr':{'class':'form-control' , 'placeholder':'Prisijungimo vardas'}}) }}
-        </div>
-        <div class="col-md-2"></div>
+
+    <div class="field-wrap">
+        <label>
+            Email<span class="req">*</span>
+        </label>
+        {{ form_widget(form.email, {'attr':{'autocomplete':'off'}}) }}
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4">
-            {{ form_widget(form.plainPassword.first, {'attr':{'class':'form-control' , 'placeholder':'Slaptažodis'}}) }}
+
+    <div class="top-row">
+
+        <div class="field-wrap">
+            <label>
+                Slaptažodis<span class="req">*</span>
+            </label>
+            {{ form_widget(form.plainPassword.first, {'attr':{'autocomplete':'off'}}) }}
         </div>
-        <div class="col-md-4">
-            {{ form_widget(form.plainPassword.second, {'attr':{'class':'form-control' , 'placeholder':'Pakartokite Slaptažodį'}}) }}
+
+        <div class="field-wrap">
+            <label>
+                Pakartokite<span class="req">*</span>
+            </label>
+            {{ form_widget(form.plainPassword.second, {'attr':{'autocomplete':'off'}}) }}
         </div>
-        <div class="col-md-2"></div>
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <input type="submit" class="form-control registrationButton" value="{{ 'registration.submit'|trans }}" />
-        </div>
-        <div class="col-md-2"></div>
+    <div>
+        <input type="submit" class="button button-block" value="{{ 'registration.submit'|trans }}" />
     </div>
-     {{ form_end(form) }}
-{% endblock %}
+    {{ form_end(form) }}
+</div>
+
+
