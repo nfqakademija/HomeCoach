@@ -2,7 +2,7 @@ $('input[class=radio_item]').on('change', function() {
     $(this).closest("form").submit();
 });
 
-$('form').submit(function(e) {
+$('#rating').submit(function(e) {
     e.preventDefault();
     var form = $(this);
     $.ajax({

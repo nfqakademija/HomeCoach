@@ -94,6 +94,7 @@
 		text-align: center;
 		border-radius: 0px 0px 6px 6px;
 		word-wrap: break-word;
+		height:500px;
 	}
 
 	div section
@@ -106,3 +107,9 @@
 	{
 		text-decoration: none;
 	}
+
+.infoStar
+{
+	font-size:200%;
+	color:orange;
+}

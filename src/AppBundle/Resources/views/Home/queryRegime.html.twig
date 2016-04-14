@@ -44,7 +44,7 @@
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
         <p>Programos reitingas: {{ regime.rating }}</p>
-        {{ form_start(formRate) }}
+        {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
         <div class="rating">
             {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
             {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}

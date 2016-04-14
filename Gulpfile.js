@@ -53,6 +53,8 @@ gulp.task('images', function()
        .pipe(gulp.dest(dir.dist + 'images'));
    gulp.src(dir.assets + 'images/*.jpg')
        .pipe(gulp.dest(dir.dist + 'images'));
+    gulp.src(dir.assets + 'images/*.gif')
+        .pipe(gulp.dest(dir.dist + 'images'));
 });
 
 gulp.task('default', ['styles', 'scripts', 'assets','fonts','images']);

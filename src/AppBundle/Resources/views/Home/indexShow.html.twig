@@ -15,28 +15,39 @@
                 {% else %}
                     <a class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s" title="Prisijunkite!" data-toggle="popover" data-content="Norėdami kurti programas turite turėti paskyrą." data-placement="bottom" data-trigger="hover"> SUKURTI PROGRAMĄ </a>
                 {% endif %}
-                <a href="" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">RODYTI PROGRAMAS</a>
+                <a href="#mainSection" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">RODYTI PROGRAMAS</a>
             </div>
 
         </div>
     </div>
 </section>
 
-<div class="container">
+<div class="container" id="mainSection">
     <div ng-app="regimeApp" ng-controller="regimesController">
 
-        <input type="text" id="search">
-        <input type="button" id="dateButton" value="Pagal data" ng-click="sortByDate()">  </input>
-        <input type="button" id="ratingButton" value="Pagal reitinga" ng-click="sortByRatings()">  </input>
+        <div>
+            <input type="text" id="search">
 
+            <select id="selectBox" ng-model="diffucultySelected" ng-change="difficultyChange()">
+                <option value="all" selected="selected"> Visos </option>
+                <option value="5"> Labai sunki </option>
+                <option value="4"> Sunki </option>
+                <option value="3"> Vidutinė </option>
+                <option value="2"> Lengva </option>
+                <option value="1"> Labai lengva </option>
+            </select>
+
+            <input type="button" id="dateButton" value="Pagal data" ng-click="sortByDate()">  </input>
+            <input type="button" id="ratingButton" value="Pagal reitinga" ng-click="sortByRatings()">  </input>
+        </div>
         <div infinite-scroll='loadMore()' infinite-scroll-distance='1'>
             <div class="row no-collapse-1">
                 <section class="col-md-4" ng-repeat="regime in regimes">
                     <div class="box">
-                        <h2 style="font-family: Oswald"><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]}</a> {[{ regime.rating }]}</h2>
+                        <h2 style="font-family: Oswald"><a href="regimes/{[{ regime.id }]}"> {[{ regime.title }]}</a> <span ng-if="regime.rating" class="infoStar">{[{ regime.rating }]} &starf;</span> </h2>
                         <p> Autorius: <a href="showProfile/{[{ regime.creator_id }]}"> {[{ regime.username }]}</a></p>
                         <p> {[{ regime.data_created }]}</p>
-                        <p class="description">{[{ regime.description | limitTo:100 }]}</p>
+                        <p class="description">{[{ regime.description | limitTo:150 }]}</p>
                         <a href="regimes/{[{ regime.id }]}" class="button">Daugiau</a>
                     </div>
                 </section>

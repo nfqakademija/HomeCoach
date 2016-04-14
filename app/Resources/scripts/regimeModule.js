@@ -31,12 +31,9 @@ regimeApp.filter('showDifficulty', function()
 
 regimeApp.controller('regimesController', function ($scope, $http) {
     var page=0;
-    var url = "/showRegimesPage/"+page +"/" + sortBy;
-    $http.get(url).success(function (data) {
-        $scope.regimes = data;
-    }).error(function () {
-        alert('Failed to get api');
-    });
+    var difficulty='all';
+    var url = "/showRegimesPage/"+page +"/" + sortBy + "/" + difficulty;
+    loadScope($scope,$http,url);
 
     $scope.loadMore = function()
     {
@@ -44,15 +41,8 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
         if(scrollTop!=0) {
             page++;
-            var url = "/showRegimesPage/" + page +"/" + sortBy;
-            $http.get(url).success(function (data) {
-                var data = data;
-                for (var i = 0; i < data.length; i++) {
-                    $scope.regimes.push(data[i]);
-                }
-            }).error(function () {
-                alert('Failed to get api');
-            });
+            var url = "/showRegimesPage/" + page +"/" + sortBy + "/" + difficulty;
+            pushToScope($scope,$http,url);
         }
     }
 
@@ -60,26 +50,47 @@ regimeApp.controller('regimesController', function ($scope, $http) {
     {
         page=0;
         sortBy='rating';
-        console.log(sortBy);
-        var url = "/showRegimesPage/"+page + "/" +sortBy;
-        $http.get(url).success(function (data) {
-            $scope.regimes = data;
-        }).error(function () {
-            alert('Failed to get api');
-        });
+        var url = "/showRegimesPage/"+page + "/" +sortBy + "/" + difficulty;
+        loadScope($scope,$http,url);
     }
     
     $scope.sortByDate = function()
     {
         page=0;
         sortBy='date';
-        console.log(sortBy);
-        var url = "/showRegimesPage/" + page + "/" +sortBy;
-        $http.get(url).success(function (data) {
-            $scope.regimes = data;
-        }).error(function () {
-            alert('Failed to get api');
-        });
+        var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
+        loadScope($scope,$http,url);
+    }
+
+    $scope.difficultyChange = function()
+    {
+        page=0;
+        difficulty = document.getElementById('selectBox').value;
+        var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
+        loadScope($scope,$http,url);
+        console.log(difficulty);
     }
 });
+
+function loadScope(scope,http,url)
+{
+    http.get(url).success(function (data) {
+        scope.regimes = data;
+    }).error(function () {
+        alert('Failed to get api');
+    });
+}
+
+function pushToScope(scope,http,url)
+{
+    http.get(url).success(function (data) {
+        var data = data;
+        for (var i = 0; i < data.length; i++) {
+            scope.regimes.push(data[i]);
+        }
+    }).error(function () {
+        alert('Failed to get api');
+    });
+}
+
 
