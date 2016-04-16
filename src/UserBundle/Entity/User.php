@@ -44,6 +44,7 @@ class User extends BaseUser
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Regime")
+     * @ORM\JoinTable(name="users_regimes_history")
      */
     protected $regime_history;
     /**
@@ -136,6 +137,9 @@ class User extends BaseUser
      */
     public function setActiveRegime($active_regime)
     {
+        if ($this->active_regime!=null) {
+            $this->regime_history[] = $this->active_regime;
+        }
         $this->active_regime = $active_regime;
     }
 
