@@ -104,7 +104,7 @@ class HomeController extends Controller
                 'No regime found for id '.$id
             );
         }
-        $data = array();
+        $data = [];
         $form = $this->createFormBuilder($data)
             ->add('rating', 'choice',
                 array('choices' => array(
@@ -327,5 +327,13 @@ class HomeController extends Controller
         return $this->render('@App/Home/showUser.html.twig', array(
             'id' => $id
         ));
+    }
+
+    public function RegimeActivationAction($id, Request $request)
+    {
+        $regime = $this->getDoctrine()
+            ->getRepository('AppBundle:Regime')
+            ->find($id);
+
     }
 }
