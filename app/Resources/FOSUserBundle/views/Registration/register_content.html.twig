@@ -1,63 +1,71 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% extends '@FOSUser/layout.html.twig' %}
 
-<div class="form">
+{% block fos_user_content %}
+    <div class="form">
+        {% if not form.vars.valid %}
+            <div class="alert alert-danger alert-dissmissible" role="alert">
+                {{ form_errors(form.username) }}
+                {{ form_errors(form.email) }}
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+        {% endif %}
+        <ul class="tab-group">
+            <li class="tab active"><a>Registruotis</a></li>
+            <li class="tab"><a href="/login">Prisijungti</a></li>
+        </ul>
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        <div class="top-row">
+            <div class="field-wrap">
+                <label>
+                    Vardas<span class="req">*</span>
+                </label>
+                {{ form_widget(form.name, {'attr':{'autocomplete':'off'}}) }}
+            </div>
 
-    <ul class="tab-group">
-        <li class="tab active"><a>Registruotis</a></li>
-        <li class="tab"><a href="/login">Prisijungti</a></li>
-    </ul>
-    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    <div class="top-row">
-        <div class="field-wrap">
-            <label>
-                Vardas<span class="req">*</span>
-            </label>
-            {{ form_widget(form.name, {'attr':{'autocomplete':'off'}}) }}
+            <div class="field-wrap">
+                <label>
+                    Pavardė<span class="req">*</span>
+                </label>
+                {{ form_widget(form.surname, {'attr':{'autocomplete':'off'}}) }}
+            </div>
         </div>
 
         <div class="field-wrap">
             <label>
-                Pavardė<span class="req">*</span>
+                Prisijungimo vardas<span class="req">*</span>
             </label>
-            {{ form_widget(form.surname, {'attr':{'autocomplete':'off'}}) }}
-        </div>
-    </div>
-
-    <div class="field-wrap">
-        <label>
-            Prisijungimo vardas<span class="req">*</span>
-        </label>
-        {{ form_widget(form.username, {'attr':{'autocomplete':'off'}}) }}
-    </div>
-
-    <div class="field-wrap">
-        <label>
-            Email<span class="req">*</span>
-        </label>
-        {{ form_widget(form.email, {'attr':{'autocomplete':'off'}}) }}
-    </div>
-
-    <div class="top-row">
-
-        <div class="field-wrap">
-            <label>
-                Slaptažodis<span class="req">*</span>
-            </label>
-            {{ form_widget(form.plainPassword.first, {'attr':{'autocomplete':'off'}}) }}
+            {{ form_widget(form.username, {'attr':{'autocomplete':'off'}}) }}
         </div>
 
         <div class="field-wrap">
             <label>
-                Pakartokite<span class="req">*</span>
+                Email<span class="req">*</span>
             </label>
-            {{ form_widget(form.plainPassword.second, {'attr':{'autocomplete':'off'}}) }}
+            {{ form_widget(form.email, {'attr':{'autocomplete':'off'}}) }}
         </div>
-    </div>
-    <div>
-        <input type="submit" class="button button-block" value="{{ 'registration.submit'|trans }}" />
-    </div>
-    {{ form_end(form) }}
-</div>
 
+        <div class="top-row">
 
+            <div class="field-wrap">
+                <label>
+                    Slaptažodis<span class="req">*</span>
+                </label>
+                {{ form_widget(form.plainPassword.first, {'attr':{'autocomplete':'off'}}) }}
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Pakartokite slaptažodį <span class="req">*</span>
+                </label>
+                {{ form_widget(form.plainPassword.second, {'attr':{'autocomplete':'off'}}) }}
+            </div>
+        </div>
+        <div>
+            <input type="submit" class="button button-block" value="{{ 'registration.submit'|trans }}" />
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock fos_user_content %}

@@ -1,4 +1,4 @@
-$('.form').find('input, textarea').on('keyup blur focus', function (e) {
+$('.form').find('input, textarea').on('keyup blur focus change', function (e) {
 
     var $this = $(this),
         label = $this.prev('label');
@@ -28,6 +28,18 @@ $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
 $(document).ready(function() {
     $("form input").each(function()
+    {
+        var $this = $(this),
+            label = $this.prev('label');
+
+        if ($this.val() === '') {
+            label.removeClass('active highlight');
+        } else {
+            label.addClass('active highlight');
+        }
+    });
+
+    $("form input").change(function()
     {
         var $this = $(this),
             label = $this.prev('label');

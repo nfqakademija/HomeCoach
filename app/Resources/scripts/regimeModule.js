@@ -74,15 +74,18 @@ regimeApp.controller('regimesController', function ($scope, $http) {
 
 function loadScope(scope,http,url)
 {
+    document.getElementsByTagName("BODY")[0].className="lowOpacity";
     http.get(url).success(function (data) {
         scope.regimes = data;
     }).error(function () {
         alert('Failed to get api');
     });
+    document.getElementsByTagName("BODY")[0].className="";
 }
 
 function pushToScope(scope,http,url)
 {
+    document.getElementsByTagName("BODY")[0].className="lowOpacity";
     http.get(url).success(function (data) {
         var data = data;
         for (var i = 0; i < data.length; i++) {
@@ -91,6 +94,7 @@ function pushToScope(scope,http,url)
     }).error(function () {
         alert('Failed to get api');
     });
+    document.getElementsByTagName("BODY")[0].className="";
 }
 
 

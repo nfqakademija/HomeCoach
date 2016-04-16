@@ -1,13 +1,3 @@
-/*
-
-Template 2077 Modern Town
-
-http://www.tooplate.com/view/2077-modern-town
-
-*/
-
-/* Body 
-------------------------------------- */
 @font-face
 {
   font-family: Oswald;
@@ -19,6 +9,11 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     position: relative;
+}
+
+.noOverflow
+{
+  overflow-y: hidden;
 }
 
 html,body {
@@ -474,4 +469,23 @@ footer a:hover {
 .homeSpan
 {
   color: #ffffff;
+}
+
+.lowOpacity
+{
+  opacity:0.5;
+}
+
+select
+{
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+    outline: 0;
+    background: rgb(245, 202, 35);
+    font-size:25px;
+    font-family:Oswald;
 }
