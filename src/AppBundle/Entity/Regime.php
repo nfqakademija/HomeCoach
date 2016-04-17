@@ -133,7 +133,7 @@ class Regime
 
         $sum=0;
         foreach ($this->user_ratings as $i) {
-            $sum+=$this->user_ratings[$i];
+            $sum+=$i;
         }
         $this->rating=round($sum/count($this->user_ratings), 2);
 
