@@ -5,7 +5,11 @@
     <div class="row">
         <div class="col-md-5">
             Sukurta: {{ regime.dataCreated.format('H:i:s Y-m-d') }}
+            <br><br>
+            Siuo metu programa aktyvave {{ regime.activations|length }} zmones!
+            {% include 'AppBundle:Home:activateRegime.html.twig' with {'form': activateForm} only %}
         </div>
+
         <div class="col-md-7">
             <div class="center-block">
                 {{ regime.difficulty | difficulty  }}
@@ -43,6 +47,10 @@
     </div>
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
+        {% if app.user is not null %}
+        Tavo ivertinimas: {{ regime.userRating(app.user.id) }}
+        {% endif %}
+        <br>
         <p>Programos reitingas: {{ regime.rating }}</p>
         {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
         <div class="rating">

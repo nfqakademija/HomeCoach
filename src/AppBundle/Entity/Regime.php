@@ -76,6 +76,11 @@ class Regime
     protected $data_updated;
 
     /**
+     * @var array
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_regime")
+     */
+    protected $activations;
+    /**
      * Regime constructor.
      * @param $creator
      * @param $data_created
@@ -124,12 +129,13 @@ class Regime
     public function setUserRating($user, $user_rating)
     {
         $user_id = $user->getId();
-        if (!isset($this->user_ratings[$user_id])) {
-            $this->rating = ($this->rating*count($this->user_ratings)+$user_rating)/(count($this->user_ratings)+1);
-        } else {
-            $this->rating = ($this->rating*count($this->user_ratings)+$user_rating-$this->user_ratings[$user_id])/count($this->user_ratings);
-        }
         $this->user_ratings[$user_id] = $user_rating;
+
+        $sum=0;
+        foreach ($this->user_ratings as $i) {
+            $sum+=$i;
+        }
+        $this->rating=round($sum/count($this->user_ratings), 2);
 
         return $this;
     }
@@ -312,6 +318,22 @@ class Regime
     public function addComment($comments)
     {
         $this->comments[] = $comments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getActivations()
+    {
+        return $this->activations;
+    }
+
+    /**
+     * @param array $activations
+     */
+    public function setActivations($activations)
+    {
+        $this->activations = $activations;
     }
 
 }
