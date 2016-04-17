@@ -5,7 +5,11 @@
     <div class="row">
         <div class="col-md-5">
             Sukurta: {{ regime.dataCreated.format('H:i:s Y-m-d') }}
+            <br><br>
+            Siuo metu programa aktyvave {{ regime.activations|length }} zmones!
+            {% include 'AppBundle:Home:activateRegime.html.twig' with {'form': activateForm} only %}
         </div>
+
         <div class="col-md-7">
             <div class="center-block">
                 {{ regime.difficulty | difficulty  }}

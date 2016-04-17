@@ -108,7 +108,7 @@ class HomeController extends Controller
                 'No regime found for id '.$id
             );
         }
-        $data = array();
+        $data = [];
         $form = $this->createFormBuilder($data)
             ->add('rating', 'choice',
                 array('choices' => array(
@@ -181,7 +181,12 @@ class HomeController extends Controller
             $em->flush();
         }
 
-        $data = array();
+        $activationForm = null;
+        if ($this->getUser() != null) {
+            $activationForm = $this->activateRegime($regime->getId(), $request);
+        }
+
+        $data = [];
         $formRate = $this->createFormBuilder($data)
             ->add('rating', 'choice',
                 array('choices' => array(
@@ -204,7 +209,9 @@ class HomeController extends Controller
 
         return $this->render('@App/Home/queryRegime.html.twig', array(
            "regime" => $regime,
-            "form" => $form->createView(),"formRate" => $formRate->createView()
+            "form" => $form->createView(),
+            "formRate" => $formRate->createView(),
+            "activateForm" => $activationForm
         ));
     }
 
@@ -331,5 +338,41 @@ class HomeController extends Controller
         return $this->render('@App/Home/showUser.html.twig', array(
             'id' => $id
         ));
+    }
+
+    public function activateRegime($id, Request $request)
+    {
+        $regime = $this->getDoctrine()
+            ->getRepository('AppBundle:Regime')
+            ->find($id);
+        $disabled = false;
+        if ($request->getContent("Hidden")!=null) {
+            $disabled=true;
+        }
+        if ($this->getUser()->getActiveRegime()!=null)
+        if ($this->getUser()->getActiveRegime()->getId()==$id) {
+            $disabled=true;
+
+        }
+        $form = $this->createFormBuilder()
+            ->add('Hidden', HiddenType::class, array(
+                'data' => '0'
+            ))
+            ->add('Activate', SubmitType::class, array (
+                'disabled'=>$disabled
+            ))
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if ($user!=null) {
+                $user->setActiveRegime($regime);
+                $doc = $this->getDoctrine()->getManager();
+                $doc->persist($user);
+                $doc->flush();
+            }
+        }
+        return $form->createView();
     }
 }

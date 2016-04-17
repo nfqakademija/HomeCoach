@@ -3,6 +3,7 @@
 
 namespace UserBundle\Entity;
 
+use AppBundle\Entity\Regime;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,6 +35,18 @@ class User extends BaseUser
      */
     protected $surname;
 
+    /**
+     * @var Regime
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Regime")
+     */
+    protected $active_regime;
+
+    /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Regime")
+     * @ORM\JoinTable(name="users_regimes_history")
+     */
+    protected $regime_history;
     /**
      * Get ID
      *
@@ -110,4 +123,40 @@ class User extends BaseUser
     {
         return $this->surname;
     }
+
+    /**
+     * @return Regime
+     */
+    public function getActiveRegime()
+    {
+        return $this->active_regime;
+    }
+
+    /**
+     * @param Regime $active_regime
+     */
+    public function setActiveRegime($active_regime)
+    {
+        if ($this->active_regime!=null) {
+            $this->regime_history[] = $this->active_regime;
+        }
+        $this->active_regime = $active_regime;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegimeHistory()
+    {
+        return $this->regime_history;
+    }
+
+    /**
+     * @param array $regime_history
+     */
+    public function setRegimeHistory($regime_history)
+    {
+        $this->regime_history = $regime_history;
+    }
+
 }
