@@ -75,7 +75,7 @@ h1 {
     margin: 0 0 40px;
 }
 
-label {
+.field-wrap label {
     position: absolute;
     -webkit-transform: translateY(6px);
     transform: translateY(6px);
@@ -94,7 +94,7 @@ label .req {
     color: #fcbe07;
 }
 
-label.active {
+.field-wrap label.active {
     -webkit-transform: translateY(50px);
     transform: translateY(50px);
     left: 2px;
@@ -179,4 +179,9 @@ textarea {
 .forgot {
     margin-top: -20px;
     text-align: right;
+}
+
+label .btn
+{
+
 }
