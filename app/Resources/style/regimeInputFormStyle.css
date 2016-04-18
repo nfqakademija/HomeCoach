@@ -57,11 +57,16 @@ textarea {
 
 .description
 {
-    font-family: "DejaVu Sans Mono";
+    font-family: Oswald;
     text-align: center;
 }
 
 .radios
 {
     margin-bottom: 5px;
+}
+
+.tab-content
+{
+    margin-bottom:20px;
 }

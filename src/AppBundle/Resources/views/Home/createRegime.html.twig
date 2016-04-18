@@ -1,60 +1,84 @@
-{% extends 'base3.html.twig' %}
+{% extends 'newRegimeTemplate.html.twig' %}
 
 {% block content %}
-    {{ form_start(form) }}
+    <div class="form">
+        {{ form_start(form) }}
 
-    {% if not form.vars.valid %}
-        <div class="alert alert-danger alert-dissmissible" role="alert">
-            {{ form_errors(form.description) }}
+        {% if not form.vars.valid %}
+            <div class="alert alert-danger alert-dissmissible" role="alert">
+                {{ form_errors(form.description) }}
+            </div>
+        {% endif %}
+        <div class="field-wrap">
+            <label>
+                Pavadinimas <span class="req">*</span>
+            </label>
+            {{ form_widget(form.title, {'attr':{'autocomplete':'off'}}) }}
         </div>
-    {% endif %}
 
-    <h2 class="description"> Programos pavadinimas</h2>
-    {{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
-    <h2 class="description"> Programos sudėtingumas </h2>
-    <div id="form_difficulty" class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary veryEasy"> {{ form_widget(form.difficulty.0) }} Labai lengva</label>
-        <label class="btn btn-primary easy"> {{ form_widget(form.difficulty.1) }} Lengva </label>
-        <label class="btn btn-primary active medium"> {{ form_widget(form.difficulty.2,{'attr':{'checked':'checked'}}) }} Vidutinė</label>
-        <label class="btn btn-primary hard"> {{ form_widget(form.difficulty.3) }} Sunki</label>
-        <label class="btn btn-primary veryHard"> {{ form_widget(form.difficulty.4) }} Labai sunki</label>
+        <h1> Programos sudėtingumas </h1>
+        <div id="form_difficulty" class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary veryEasy"> {{ form_widget(form.difficulty.0) }} Labai lengva</label>
+            <label class="btn btn-primary easy"> {{ form_widget(form.difficulty.1) }} Lengva </label>
+            <label class="btn btn-primary active medium"> {{ form_widget(form.difficulty.2,{'attr':{'checked':'checked'}}) }} Vidutinė</label>
+            <label class="btn btn-primary hard"> {{ form_widget(form.difficulty.3) }} Sunki</label>
+            <label class="btn btn-primary veryHard"> {{ form_widget(form.difficulty.4) }} Labai sunki</label>
+        </div>
+        {{ form_widget(form.difficulty, {'attr':{'class':'btn-group' , 'data-toggle':'buttons'}}) }}
+        <h1> Programos aprašymas <span class="req">*</span> </h1>
+        <div class="field-wrap">
+            {{ form_widget(form.description, {'attr':{'autocomplete':'off', 'rows':6}}) }}
+        </div>
+
+        <h1> Programos tvarkaraštis </h1>
+        <ul class="nav nav-pills radios">
+            <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
+            <li><a data-toggle="pill" href="#day2">Antr.</a></li>
+            <li><a data-toggle="pill" href="#day3">Treč.</a></li>
+            <li><a data-toggle="pill" href="#day4">Ketv.</a></li>
+            <li><a data-toggle="pill" href="#day5">Penkt.</a></li>
+            <li><a data-toggle="pill" href="#day6">Šešt.</a></li>
+            <li><a data-toggle="pill" href="#day7">Sekm.</a></li>
+        </ul>
+        <div class="tab-content" id="form_schedule">
+            <div id="day1" class="tab-pane fade in active">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.0, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Pirmadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day2" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.1, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Antradienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day3" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.2, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Trečiadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day4" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.3, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Ketvirtadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day5" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.4, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Penktadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day6" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.5, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Šeštadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+            <div id="day7" class="tab-pane fade">
+                <div class="field-wrap">
+                    {{ form_widget(form.schedule.6, {'attr':{'autocomplete':'off','rows':5,'placeholder':'Sekmadienio tvarkaraštis'}}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_widget(form.save, {'attr':{'class':'button button-block'}}) }}
+        {{ form_end(form) }}
     </div>
-    {{ form_widget(form.difficulty, {'attr':{'class':'btn-group' , 'data-toggle':'buttons'}}) }}
-    <h2 class="description"> Programos aprašymas</h2>
-    {{ form_widget(form.description, {'attr':{'class':'form-control', 'rows':6}}) }}
-    <h2 class="description"> Programos tvarkaraštis </h2>
-    <ul class="nav nav-pills radios">
-        <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
-        <li><a data-toggle="pill" href="#day2">Antr.</a></li>
-        <li><a data-toggle="pill" href="#day3">Treč.</a></li>
-        <li><a data-toggle="pill" href="#day4">Ketv.</a></li>
-        <li><a data-toggle="pill" href="#day5">Penkt.</a></li>
-        <li><a data-toggle="pill" href="#day6">Šešt.</a></li>
-        <li><a data-toggle="pill" href="#day7">Sekm.</a></li>
-    </ul>
-    <div class="tab-content" id="form_schedule">
-        <div id="day1" class="tab-pane fade in active">
-            {{ form_widget(form.schedule.0, {'attr':{'class':'form-control','rows':5,'placeholder':'Pirmadienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day2" class="tab-pane fade">
-            {{ form_widget(form.schedule.1, {'attr':{'class':'form-control','rows':5,'placeholder':'Antradienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day3" class="tab-pane fade">
-            {{ form_widget(form.schedule.2, {'attr':{'class':'form-control','rows':5,'placeholder':'Trečiadienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day4" class="tab-pane fade">
-            {{ form_widget(form.schedule.3, {'attr':{'class':'form-control','rows':5,'placeholder':'Ketvirtadienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day5" class="tab-pane fade">
-            {{ form_widget(form.schedule.4, {'attr':{'class':'form-control','rows':5,'placeholder':'Penktadienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day6" class="tab-pane fade">
-            {{ form_widget(form.schedule.5, {'attr':{'class':'form-control','rows':5,'placeholder':'Šeštadienio tvarkaraštis'}}) }}
-        </div>
-        <div id="day7" class="tab-pane fade">
-            {{ form_widget(form.schedule.6, {'attr':{'class':'form-control','rows':5,'placeholder':'Sekmadienio tvarkaraštis'}}) }}
-        </div>
-    </div>
-    {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
-    {{ form_end(form) }}
 {% endblock %}
