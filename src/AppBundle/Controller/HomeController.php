@@ -270,7 +270,7 @@ class HomeController extends Controller
         }
         else
         {
-            $whereState = "WHERE Regimes.difficulty=".$difficulty;
+            $whereState = "WHERE Regimes.difficulty= :diff";
         }
         if($sort=="rating")
         {
@@ -286,6 +286,8 @@ class HomeController extends Controller
         $stmt = $this->getDoctrine()->getEntityManager()
             ->getConnection()
             ->prepare($query);
+        $stmt->bindValue('diff',$difficulty);
+
         $stmt->execute();
 
         $regimes = $stmt->fetchAll();

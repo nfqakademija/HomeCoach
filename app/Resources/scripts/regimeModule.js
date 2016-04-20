@@ -31,6 +31,7 @@ regimeApp.filter('showDifficulty', function()
 
 regimeApp.controller('regimesController', function ($scope, $http) {
     var page=0;
+    var dataLeft=true;
     var difficulty='all';
     var url = "/showRegimesPage/"+page +"/" + sortBy + "/" + difficulty;
     loadScope($scope,$http,url);
@@ -42,13 +43,29 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         if(scrollTop!=0) {
             page++;
             var url = "/showRegimesPage/" + page +"/" + sortBy + "/" + difficulty;
-            pushToScope($scope,$http,url);
+            document.getElementsByTagName("BODY")[0].className="lowOpacity";
+            if(dataLeft) {
+                $http.get(url).success(function (data) {
+                    console.log(dataLeft);
+                    var data = data;
+                    if (data.length == 0) {
+                        dataLeft = false;
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        $scope.regimes.push(data[i]);
+                    }
+                }).error(function () {
+                    alert('Failed to get api');
+                });
+            }
+            document.getElementsByTagName("BODY")[0].className="";
         }
     }
 
     $scope.sortByRatings = function()
     {
         page=0;
+        dataLeft=true;
         sortBy='rating';
         var url = "/showRegimesPage/"+page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
@@ -57,6 +74,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
     $scope.sortByDate = function()
     {
         page=0;
+        dataLeft=true;
         sortBy='date';
         var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
@@ -65,10 +83,10 @@ regimeApp.controller('regimesController', function ($scope, $http) {
     $scope.difficultyChange = function()
     {
         page=0;
+        dataLeft=true;
         difficulty = document.getElementById('selectBox').value;
         var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
-        console.log(difficulty);
     }
 });
 
@@ -82,19 +100,3 @@ function loadScope(scope,http,url)
     });
     document.getElementsByTagName("BODY")[0].className="";
 }
-
-function pushToScope(scope,http,url)
-{
-    document.getElementsByTagName("BODY")[0].className="lowOpacity";
-    http.get(url).success(function (data) {
-        var data = data;
-        for (var i = 0; i < data.length; i++) {
-            scope.regimes.push(data[i]);
-        }
-    }).error(function () {
-        alert('Failed to get api');
-    });
-    document.getElementsByTagName("BODY")[0].className="";
-}
-
-
