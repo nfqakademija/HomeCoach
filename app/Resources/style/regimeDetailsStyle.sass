@@ -1,0 +1,106 @@
+@import font
+
+$veryEasy: #09ff15
+$easy: #09d815
+$medium: #fffa3d
+$hard: #ff3026
+$veryHard: #c52821
+
+.center-block span
+  display: table-cell
+  vertical-align: middle
+
+.coloredStar:before
+  content: "\2605"
+  position: absolute
+  cursor: pointer
+  color: yellow
+
+.rating
+  unicode-bidi: bidi-override
+  direction: rtl
+  text-align: center
+  label
+    display: inline-block
+    position: relative
+    font-size: 50px
+  label:hover:before,label:hover ~ label:before
+    content: "\2605"
+    position: absolute
+    cursor: pointer
+    color: yellow
+
+.radio_item
+  display: none !important
+
+=bubble($color)
+  display: block
+  background: black
+  border-radius: 100%
+  height: 30px
+  width: 30px
+  margin: 0
+  background: radial-gradient(circle at 10px 10px, $color, #000)
+  margin-right: 15px
+
+.circleVeryEasy
+  +bubble($veryEasy)
+
+.circleEasy
+  +bubble($easy)
+
+.circleMedium
+  +bubble($medium)
+
+.circleHard
+  +bubble($hard)
+
+.circleVeryHard
+  +bubble($veryHard)
+
+figure
+  width: 100%
+  margin: 0
+  text-align: center
+  padding: 0
+
+.description
+  font-family: Oswald
+  font-size: 50px
+  text-align: center
+
+.form
+  background: rgba(19, 35, 47, 0.9)
+  padding: 40px
+  margin: 40px auto
+  border-radius: 4px
+  box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3)
+
+body
+  background: #c1bdba
+  color: white
+  font-family: Oswald
+  font-size: 18px
+
+.button
+  border: 0
+  outline: none
+  border-radius: 0
+  padding: 15px 0
+  font-size: 2rem
+  font-weight: 600
+  text-transform: uppercase
+  letter-spacing: .1em
+  background: #f5ca23
+  color: #ffffff
+  -webkit-transition: all 0.5s ease
+  transition: all 0.5s ease
+  -webkit-appearance: none
+
+div.inline
+  float: left
+
+.clearBoth
+  clear: both
+
+

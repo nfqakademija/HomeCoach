@@ -1,23 +1,29 @@
 {% extends 'base3.html.twig' %}
 
 {% block content %}
-    <h1>{{ regime.title }}</h1>
+        <div class="inline">
+            <h1 class="description">{{ regime.title }} </h1>
+        </div>
+        <div class="inline">
+            {{ regime.difficulty | difficulty }}
+        </div>
+    <br class="clearBoth" />
     <div class="row">
-
         <div class="col-md-5">
             Sukurta: {{ regime.dataCreated.format('H:i:s Y-m-d') }}
             <br><br>
             Siuo metu programa aktyvave {{ regime.activations|length }} zmones!
             {% include 'AppBundle:Home:activateRegime.html.twig' with {'form': activateForm} only %}
         </div>
-
         <div class="col-md-7">
-            <div class="center-block">
-                {{ regime.difficulty | difficulty  }}
-            </div>
+            <div id="rateYo"></div>
         </div>
     </div>
-    <textarea readonly rows="6" class="form-control readonly"> {{ regime.description }} </textarea>
+    <div class="row">
+        <div class="col-md-12">
+            <p style="word-break: break-all"> {{ regime.description }} </p>
+        </div>
+    </div>
     <h2 class="description"> Programos tvarkaraštis</h2>
     <ul class="nav nav-pills radios">
         <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
@@ -31,17 +37,17 @@
     <div class="tab-content" id="form_schedule">
         <div id="day1" class="tab-pane fade in active">
             {% if regime.schedule[0] != null %}
-                <textarea rows="4" readonly="readonly" class="form-control"> {{ regime.schedule[0] }} </textarea>
+                <p style="word-break: break-all"> {{ regime.schedule[0] }} </p>
             {% else %}
-                <textarea rows="4" readonly="readonly" class="form-control"> Ši diena laisva </textarea>
+                <p> Ši diena laisva </p>
             {% endif %}
         </div>
         {% for i in 1..6 %}
             <div id="day{{ i+1 }}" class="tab-pane fade">
                 {% if regime.schedule[i] != null %}
-                    <textarea rows="4" readonly="readonly" class="form-control"> {{ regime.schedule[i] }} </textarea>
+                    <p style="word-break: break-all"> {{ regime.schedule[i] }} </p>
                 {% else %}
-                    <textarea rows="4" readonly="readonly" class="form-control"> Ši diena laisva </textarea>
+                    <p> Ši diena laisva </p>
                 {% endif %}
             </div>
         {% endfor %}
@@ -52,7 +58,6 @@
         Tavo ivertinimas: {{ regime.userRating(app.user.id) }}
         {% endif %}
         <br>
-        <p>Programos reitingas: {{ regime.rating }}</p>
         {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
         <div class="rating">
             {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
@@ -68,18 +73,19 @@
         {{ form_end(formRate) }}
         <br>
     {% endif %}
-
-    {% if regime.comments|length > 0 %}
-        <h2 class="description"> Komentarai <span class="badge alert-info">{{ regime.comments|length }}</span></h2>
-        {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
-    {% else %}
-        <h2 class="description"> Komentarų dar nėra </h2>
-    {% endif %}
-    <div class="fb-comments" data-href="http://127.0.0.1:8000/regimes/{{ regime.id }}" data-width="500" data-numposts="5"></div>
-    {% if app.user is not null %}
-    {{ form_start(form) }}
-    {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
-        {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
-    {{ form_end(form) }}
+    <div class="commentSection">
+        {% if regime.comments|length > 0 %}
+            <h2 class="description"> Komentarai <span class="badge alert-info">{{ regime.comments|length }}</span></h2>
+            {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
+        {% else %}
+            <h2 class="description"> Komentarų dar nėra </h2>
         {% endif %}
+        <div class="fb-comments" data-href="http://127.0.0.1:8000/regimes/{{ regime.id }}" data-width="100%" data-numposts="5"></div>
+        {% if app.user is not null %}
+        {{ form_start(form) }}
+        {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
+            {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
+        {{ form_end(form) }}
+            {% endif %}
+    </div>
 {% endblock %}

@@ -16,7 +16,7 @@
             {{ form_widget(form.title, {'attr':{'autocomplete':'off'}}) }}
         </div>
 
-        <h1> Programos sudėtingumas </h1>
+        <h1 class="description"> Programos sudėtingumas </h1>
         <div id="form_difficulty" class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary veryEasy"> {{ form_widget(form.difficulty.0) }} Labai lengva</label>
             <label class="btn btn-primary easy"> {{ form_widget(form.difficulty.1) }} Lengva </label>
@@ -25,12 +25,12 @@
             <label class="btn btn-primary veryHard"> {{ form_widget(form.difficulty.4) }} Labai sunki</label>
         </div>
         {{ form_widget(form.difficulty, {'attr':{'class':'btn-group' , 'data-toggle':'buttons'}}) }}
-        <h1> Programos aprašymas <span style="color:yellow" class="req">*</span> </h1>
+        <h1 class="description"> Programos aprašymas <span style="color:yellow" class="req">*</span> </h1>
         <div class="field-wrap">
             {{ form_widget(form.description, {'attr':{'autocomplete':'off', 'rows':6}}) }}
         </div>
 
-        <h1> Programos tvarkaraštis </h1>
+        <h1 class="description"> Programos tvarkaraštis </h1>
         <ul class="nav nav-pills radios">
             <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
             <li><a data-toggle="pill" href="#day2">Antr.</a></li>

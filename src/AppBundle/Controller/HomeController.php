@@ -272,6 +272,7 @@ class HomeController extends Controller
         {
             $whereState = "WHERE Regimes.difficulty= :diff";
         }
+
         if($sort=="rating")
         {
             $query = "SELECT Regimes.id,title, Regimes.rating,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 

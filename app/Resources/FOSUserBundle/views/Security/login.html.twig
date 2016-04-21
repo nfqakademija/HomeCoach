@@ -22,12 +22,10 @@
                 <label for="password">{{ 'security.login.password'|trans }}</label>
                 <input autocomplete="off" type="password" id="password" name="_password" required="required" />
             </div>
-
-            <div style="display:inline-block;" class="field-wrap">
-                <p style="color:white;" for="remember_me">{{ 'security.login.remember_me'|trans }}</p>
-                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+            <div class="remember">
+                <input class="checkbox" type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                <label style="color:white;" for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
             </div>
-
             <input class="button button-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
         </form>
     </div>

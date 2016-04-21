@@ -22,19 +22,19 @@ class DifficultyExtension extends \Twig_Extension
         switch($number)
         {
             case 1:
-                echo '<span class="veryEasyInfo">Labai lengva</span>';
+                echo '<figure class="circleVeryEasy"></figure>';
                 break;
             case 2:
-                echo '<span class="easyInfo"> Lengva </span>';
+                echo '<figure class="circleEasy"></figure>';
                 break;
             case 3:
-                echo '<span class="mediumInfo"> Vidutinė </span>';
+                echo '<figure class="circleMedium"></figure>';
                 break;
             case 4:
-                echo '<span class="hardInfo"> Sunki </span>';
+                echo '<figure class="circleHard"></figure>';
                 break;
             case 5:
-                echo '<span class="veryHardInfo"> Labai sunki </span>';
+                echo '<figure class="circleVeryHard"></figure>';
                 break;
         }
     }

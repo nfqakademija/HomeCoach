@@ -2,6 +2,7 @@
   "name": "nfqakademija",
   "description": "",
   "main": "index.js",
+  "directory": "HomeCoach",
   "authors": [
     "NFQ"
   ],
@@ -17,7 +18,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "bootstrap-sass": "~3.3.5",
-    "jquery": "~2.1.4"
+    "rateYo": "rateyo#^2.1.0"
   }
 }

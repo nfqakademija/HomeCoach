@@ -7,46 +7,30 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/headerStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/bodyStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/regimeInputFormStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('fonts/glyphicons-haflings-regular.ttf') }}">
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
         <link rel="stylesheet" href="{{ asset('css/regimeStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/regimeShowStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/regimeDetailsStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('bower_components/rateYo/min/jquery.rateyo.min.css') }}">
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
 {% block body %}
     <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/lt_LT/sdk.js#xfbml=1&version=v2.6&appId=1672063339704987";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
-
     <div class="container">
         {% block container %}
-        {% block header %}
-            {% include "::inc/header.html.twig" %}
-        {% endblock %}
         <div class="container-fluid text-center">
             <div class="row content">
-                {% block sideBarLeft %}
-                    {% include "::inc/left_column.html.twig" %}
-                {% endblock %}
-                <div class="col-sm-7 text-left">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-8 text-left form">
                     {% block content %}
                     {% endblock %}
                 </div>
+                <div class="col-md-2">
 
-                {% block sideBarRight %}
-                    {% include "::inc/right_column.html.twig" %}
-                {% endblock %}
-
+                </div>
                 {% endblock %}
             </div>
         </div>
@@ -55,12 +39,22 @@
         {% include "::inc/footer.html.twig" %}
     {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('assets/angular.min.js') }}"></script>
     <script src="{{ asset('assets/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/regimeModule.js') }}"></script>
+    <script src="{{ asset('bower_components/rateYo/min/jquery.rateyo.min.js') }}"></script>
     <script src="{{ asset('js/commentLengthControl.js') }}"></script>
     <script src="{{ asset('js/ratings.js') }}"></script>
+    <script src="{{ asset('js/facebookPlugin.js') }}"></script>
+    <script>
+        $(function () {
+            var rating = "{{ regime.rating }}";
+            $("#rateYo").rateYo({
+                rating: rating,
+                readOnly: true,
+                starWidth:"60px"
+            });
+        });
+    </script>
 {% endblock %}
 {% endblock %}
 </html>

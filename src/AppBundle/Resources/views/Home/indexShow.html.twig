@@ -24,10 +24,10 @@
     <div ng-app="regimeApp" ng-controller="regimesController">
 
         <div style="margin-top:45px;">
-            <input type="text" placeholder="Paieška" id="search">
+            <input type="text" placeholder="Paieška" id="search" ng-change="searchInput(param)" ng-model="param.searchKey">
 
-            <select id="selectBox" ng-model="diffucultySelected" ng-change="difficultyChange()">
-                <option value="all"> Visos </option>
+            <select id="selectBox"  ng-init="difficultySelected='all'" ng-model="diffucultySelected" ng-change="difficultyChange()">
+                <option ng-selected="true" value="all"> Visos </option>
                 <option value="5"> Labai sunki </option>
                 <option value="4"> Sunki </option>
                 <option value="3"> Vidutinė </option>

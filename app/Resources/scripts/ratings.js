@@ -15,3 +15,5 @@ $('#rating').submit(function(e) {
         window.location.reload();
     })
 });
+
+

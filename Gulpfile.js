@@ -5,13 +5,18 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
-var gulpif = require('gulp-if');
 
 var dir = {
     assets: './app/Resources/',
     dist: './web/',
-    node : './node_modules/'
+    node: './node_modules/'
 };
+
+gulp.task('sass', function () {
+    gulp.src(dir.assets + 'style/*.sass')
+        .pipe(sass())
+        .pipe(gulp.dest(dir.dist + 'css'));
+});
 
 gulp.task('styles', function() {
     gulp.src(dir.assets + 'style/*.css')
@@ -57,7 +62,7 @@ gulp.task('images', function()
         .pipe(gulp.dest(dir.dist + 'images'));
 });
 
-gulp.task('default', ['styles', 'scripts', 'assets','fonts','images']);
+gulp.task('default', ['sass', 'styles', 'scripts', 'assets','fonts','images']);
 
 
 

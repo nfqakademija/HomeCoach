@@ -32,8 +32,10 @@ regimeApp.filter('showDifficulty', function()
 regimeApp.controller('regimesController', function ($scope, $http) {
     var page=0;
     var dataLeft=true;
+    var searchKey="";
     var difficulty='all';
     var url = "/showRegimesPage/"+page +"/" + sortBy + "/" + difficulty;
+    $scope.difficultySelected="all";
     loadScope($scope,$http,url);
 
     $scope.loadMore = function()
@@ -46,7 +48,6 @@ regimeApp.controller('regimesController', function ($scope, $http) {
             document.getElementsByTagName("BODY")[0].className="lowOpacity";
             if(dataLeft) {
                 $http.get(url).success(function (data) {
-                    console.log(dataLeft);
                     var data = data;
                     if (data.length == 0) {
                         dataLeft = false;
@@ -85,8 +86,14 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         page=0;
         dataLeft=true;
         difficulty = document.getElementById('selectBox').value;
+        console.log(difficulty);
         var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
+    }
+
+    $scope.searchInput = function(param)
+    {
+        console.log(param.searchKey);
     }
 });
 
