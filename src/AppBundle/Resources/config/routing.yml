@@ -2,37 +2,37 @@ app.index:
     path:     /
     defaults: { _controller: AppBundle:Home:index }
 
-app.regimes:
-    path:     /regimes
-    defaults: { _controller: AppBundle:Home:browseRegimes}
+app.workouts:
+    path:     /workouts
+    defaults: { _controller: AppBundle:Home:browseWorkouts}
 
 app.users:
     path:     /users
     defaults: { _controller: AppBundle:Home:browseUsers}
 
-app.createRegime:
-    path:     /createRegime
-    defaults: { _controller: AppBundle:Home:createRegime}
+app.createWorkout:
+    path:     /createWorkout
+    defaults: { _controller: AppBundle:Home:createWorkout}
 
-app.showRegime:
-    path:     /regimes/{id}
-    defaults: { _controller: AppBundle:Home:showRegime}
+app.showWorkout:
+    path:     /workouts/{id}
+    defaults: { _controller: AppBundle:Home:showWorkout}
 
 app.taskSuccess:
     path:     /success
     defaults: { _controller: AppBundle:Home:taskSuccess}
 
-app.rateRegime:
+app.rateWorkout:
     path:     /rating/{id}
-    defaults: { _controller: AppBundle:Home:rateRegime}
+    defaults: { _controller: AppBundle:Home:rateWorkout}
 
-app.showRegimes:
-    path:     /showRegimes
-    defaults: { _controller: AppBundle:Home:showRegimes}
+app.showWorkouts:
+    path:     /showWorkouts
+    defaults: { _controller: AppBundle:Home:showWorkouts}
 
-app.showRegimePage:
-    path:     /showRegimesPage/{page}/{sort}/{difficulty}
-    defaults: { _controller: AppBundle:Home:showRegimesPage}
+app.showWorkoutPage:
+    path:     /showWorkoutsPage/{page}/{sort}/{difficulty}
+    defaults: { _controller: AppBundle:Home:showWorkoutsPage}
 
 app.showProfile:
     path:     /showProfile/{id}
@@ -42,8 +42,8 @@ app.showComments:
     path:     /showComments/{id}
     defaults: { _controller: AppBundle:Comment:showComments}
 
-app.activateRegime:
-    path:     /activateRegime/{id}
-    defaults: { _controller: AppBundle:Home:activateRegime}
+app.activateWorkout:
+    path:     /activateWorkout/{id}
+    defaults: { _controller: AppBundle:Home:activateWorkout}
 _user_bundle:
     resource: "@UserBundle/Resources/config/routing.yml"

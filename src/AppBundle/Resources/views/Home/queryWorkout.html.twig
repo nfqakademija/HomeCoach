@@ -2,18 +2,18 @@
 
 {% block content %}
         <div class="inline">
-            <h1 class="description">{{ regime.title }} </h1>
+            <h1 class="description">{{ workout.title }} </h1>
         </div>
         <div class="inline">
-            {{ regime.difficulty | difficulty }}
+            {{ workout.difficulty | difficulty }}
         </div>
     <br class="clearBoth" />
     <div class="row">
         <div class="col-md-5">
-            Sukurta: {{ regime.dataCreated.format('H:i:s Y-m-d') }}
+            Sukurta: {{ workout.dataCreated.format('H:i:s Y-m-d') }}
             <br><br>
-            Siuo metu programa aktyvave {{ regime.activations|length }} zmones!
-            {% include 'AppBundle:Home:activateRegime.html.twig' with {'form': activateForm} only %}
+            Siuo metu programa aktyvave {{ workout.activations|length }} zmones!
+            {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
         </div>
         <div class="col-md-7">
             <div id="rateYo"></div>
@@ -21,7 +21,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <p style="word-break: break-all"> {{ regime.description }} </p>
+            <p style="word-break: break-all"> {{ workout.description }} </p>
         </div>
     </div>
     <h2 class="description"> Programos tvarkaraštis</h2>
@@ -36,16 +36,16 @@
     </ul>
     <div class="tab-content" id="form_schedule">
         <div id="day1" class="tab-pane fade in active">
-            {% if regime.schedule[0] != null %}
-                <p style="word-break: break-all"> {{ regime.schedule[0] }} </p>
+            {% if workout.schedule[0] != null %}
+                <p style="word-break: break-all"> {{ workout.schedule[0] }} </p>
             {% else %}
                 <p> Ši diena laisva </p>
             {% endif %}
         </div>
         {% for i in 1..6 %}
             <div id="day{{ i+1 }}" class="tab-pane fade">
-                {% if regime.schedule[i] != null %}
-                    <p style="word-break: break-all"> {{ regime.schedule[i] }} </p>
+                {% if workout.schedule[i] != null %}
+                    <p style="word-break: break-all"> {{ workout.schedule[i] }} </p>
                 {% else %}
                     <p> Ši diena laisva </p>
                 {% endif %}
@@ -55,7 +55,7 @@
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
         {% if app.user is not null %}
-        Tavo ivertinimas: {{ regime.userRating(app.user.id) }}
+        Tavo ivertinimas: {{ workout.userRating(app.user.id) }}
         {% endif %}
         <br>
         {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
@@ -67,20 +67,20 @@
             {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
 
             {% for i in [4,3,2,1,0] %}
-                <label id="{{ i+1 }}" class="label_item {% if regime.userRating(app.user.id) > i %} coloredStar {% endif %}" for="form_rating_{{ i }}"> <span>&#9734</span> </label>
+                <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="form_rating_{{ i }}"> <span>&#9734</span> </label>
             {% endfor %}
         </div>
         {{ form_end(formRate) }}
         <br>
     {% endif %}
     <div class="commentSection">
-        {% if regime.comments|length > 0 %}
-            <h2 class="description"> Komentarai <span class="badge alert-info">{{ regime.comments|length }}</span></h2>
-            {% include "AppBundle:Home:showComment.html.twig" with {'comments': regime.comments} only %}
+        {% if workout.comments|length > 0 %}
+            <h2 class="description"> Komentarai <span class="badge alert-info">{{ workout.comments|length }}</span></h2>
+            {% include "AppBundle:Home:showComment.html.twig" with {'comments': workout.comments} only %}
         {% else %}
             <h2 class="description"> Komentarų dar nėra </h2>
         {% endif %}
-        <div class="fb-comments" data-href="http://127.0.0.1:8000/regimes/{{ regime.id }}" data-width="100%" data-numposts="5"></div>
+        <div class="fb-comments" data-href="http://127.0.0.1:8000/workouts/{{ workout.id }}" data-width="100%" data-numposts="5"></div>
         {% if app.user is not null %}
         {{ form_start(form) }}
         {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
