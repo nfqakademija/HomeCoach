@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Entity\Workout;
 use Doctrine\ORM\EntityManager;
 
 class Repo
@@ -21,11 +22,23 @@ class Repo
     {
         $this->entityManager = $entityManager;
     }
+    
+    public function getRepo($repository){
+        $repo = $this->entityManager
+            ->getRepository($repository);
+        return $repo;
+    }
+
+    public function getWorkout($id) {
+        $repo = $this->getRepo('AppBundle:Workout')
+            ->find($id);
+
+        return $repo;
+    }
+
     public function getHotWorkouts() {
-        $repository = $this->entityManager
-            ->getRepository('AppBundle:Workout');
-        
-        $workouts = $repository->findBy(array(), array('rating' => 'DESC'),5);
+        $repo = $this->getRepo('AppBundle:Workout');
+        $workouts = $repo->findBy(array(), array('rating' => 'DESC'),5);
         
         //TODO padaryti su JSONResponse
         $json = json_encode($workouts);
@@ -33,12 +46,7 @@ class Repo
         return $json;
     }
     
-    public function showWorkout($id) {
-
-        $repository = $this->entityManager
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
-
-        return $repository;
+    public function getWorkouts($page, $sort, $difficulty) {
+        //this has yet to be changed
     }
 }

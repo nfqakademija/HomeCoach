@@ -10,15 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Model\UserInterface;
 use AppBundle\Service\Repo;
+use AppBundle\Service\FormBuilder;
 
 class HomeController extends Controller
 {
@@ -49,7 +46,7 @@ class HomeController extends Controller
         $user = $this->getUser();
         if($user==null)
         {
-            return new Response("log in");
+            return new Response("log in"); //pakeisti i normalu puslapi
         }
         $workout = new Workout($user, new \DateTime());
         $workout->setDataUpdated($workout->getDataCreated());
@@ -99,9 +96,8 @@ class HomeController extends Controller
      */
     public function rateWorkoutAction($id, Request $request)
     {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
+        $repo = $this->get('app.repo');
+        $workout = $repo->getWorkout($id);
 
         if (!$workout){
             throw $this->createNotFoundException(
@@ -136,7 +132,7 @@ class HomeController extends Controller
     public function showWorkoutAction($id, Request $request)
     {
         $repo = $this->get('app.repo');
-        $workout = $repo->showWorkout($id);
+        $workout = $repo->getWorkout($id);
 
         if (!$workout){
             throw $this->createNotFoundException(
