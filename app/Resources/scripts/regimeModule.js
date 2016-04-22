@@ -1,4 +1,4 @@
-var regimeApp = angular.module('regimeApp', ['infinite-scroll']).config(function($interpolateProvider){
+var regimeApp = angular.module('regimeApp', ['infinite-scroll','angularMoment']).config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
 });
 

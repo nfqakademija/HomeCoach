@@ -15,6 +15,7 @@ var dir = {
 gulp.task('sass', function () {
     gulp.src(dir.assets + 'style/*.sass')
         .pipe(sass())
+        .pipe(uglifycss())
         .pipe(gulp.dest(dir.dist + 'css'));
 });
 
@@ -41,6 +42,12 @@ gulp.task('assets',function()
     gulp.src(dir.node + 'jquery/dist/jquery.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.node + 'ng-infinite-scroll/build/ng-infinite-scroll.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.node + 'angular-moment/node_modules/moment/min/moment.min.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.node + 'angular-moment/angular-moment.min.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.node + 'angular-moment/node_modules/moment/locale/lt.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
 });
 
