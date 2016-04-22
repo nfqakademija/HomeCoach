@@ -1,10 +1,10 @@
-var regimeApp = angular.module('regimeApp', ['infinite-scroll','angularMoment']).config(function($interpolateProvider){
+var workoutApp = angular.module('workoutApp', ['infinite-scroll','angularMoment']).config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
 });
 
 var sortBy='rating';
 
-regimeApp.filter('showDifficulty', function()
+workoutApp.filter('showDifficulty', function()
 {
     return function(input)
     {
@@ -29,12 +29,12 @@ regimeApp.filter('showDifficulty', function()
     };
 });
 
-regimeApp.controller('regimesController', function ($scope, $http) {
+workoutApp.controller('workoutsController', function ($scope, $http) {
     var page=0;
     var dataLeft=true;
     var searchKey="";
     var difficulty='all';
-    var url = "/showRegimesPage/"+page +"/" + sortBy + "/" + difficulty;
+    var url = "/showWorkoutsPage/"+page +"/" + sortBy + "/" + difficulty;
     $scope.difficultySelected="all";
     loadScope($scope,$http,url);
 
@@ -44,7 +44,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
         if(scrollTop!=0) {
             page++;
-            var url = "/showRegimesPage/" + page +"/" + sortBy + "/" + difficulty;
+            var url = "/showWorkoutsPage/" + page +"/" + sortBy + "/" + difficulty;
             document.getElementsByTagName("BODY")[0].className="lowOpacity";
             if(dataLeft) {
                 $http.get(url).success(function (data) {
@@ -53,7 +53,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
                         dataLeft = false;
                     }
                     for (var i = 0; i < data.length; i++) {
-                        $scope.regimes.push(data[i]);
+                        $scope.workouts.push(data[i]);
                     }
                 }).error(function () {
                     alert('Failed to get api');
@@ -68,7 +68,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         page=0;
         dataLeft=true;
         sortBy='rating';
-        var url = "/showRegimesPage/"+page + "/" +sortBy + "/" + difficulty;
+        var url = "/showWorkoutsPage/"+page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
     }
     
@@ -77,7 +77,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         page=0;
         dataLeft=true;
         sortBy='date';
-        var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
+        var url = "/showWorkoutsPage/" + page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
     }
 
@@ -87,7 +87,7 @@ regimeApp.controller('regimesController', function ($scope, $http) {
         dataLeft=true;
         difficulty = document.getElementById('selectBox').value;
         console.log(difficulty);
-        var url = "/showRegimesPage/" + page + "/" +sortBy + "/" + difficulty;
+        var url = "/showWorkoutsPage/" + page + "/" +sortBy + "/" + difficulty;
         loadScope($scope,$http,url);
     }
 
@@ -101,7 +101,7 @@ function loadScope(scope,http,url)
 {
     document.getElementsByTagName("BODY")[0].className="lowOpacity";
     http.get(url).success(function (data) {
-        scope.regimes = data;
+        scope.workouts = data;
     }).error(function () {
         alert('Failed to get api');
     });

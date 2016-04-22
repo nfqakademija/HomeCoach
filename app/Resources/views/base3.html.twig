@@ -8,9 +8,9 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
-        <link rel="stylesheet" href="{{ asset('css/regimeStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/workoutStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/regimeDetailsStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/workoutDetailsStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('bower_components/rateYo/min/jquery.rateyo.min.css') }}">
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
@@ -47,7 +47,7 @@
     <script src="{{ asset('js/facebookPlugin.js') }}"></script>
     <script>
         $(function () {
-            var rating = "{{ regime.rating }}";
+            var rating = "{{ workout.rating }}";
             $("#rateYo").rateYo({
                 rating: rating,
                 readOnly: true,

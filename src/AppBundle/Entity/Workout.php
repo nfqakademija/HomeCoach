@@ -14,9 +14,9 @@ use UserBundle\Entity\User;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="Regimes")
+ * @ORM\Table(name="Workouts")
  */
-class Regime
+class Workout
 {
     /**
      * @ORM\Column(type="integer")
@@ -61,7 +61,7 @@ class Regime
     protected $rating;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comments", mappedBy="regime")
+     * @ORM\OneToMany(targetEntity="Comments", mappedBy="workout")
      */
     protected $comments;
 
@@ -77,11 +77,11 @@ class Regime
 
     /**
      * @var array
-     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_regime")
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_workout")
      */
     protected $activations;
     /**
-     * Regime constructor.
+     * Workout constructor.
      * @param $creator
      * @param $data_created
      */
@@ -124,7 +124,7 @@ class Regime
      * @param User $user
      * @param integer $user_rating
      *
-     * @return Regime
+     * @return Workout
      */
     public function setUserRating($user, $user_rating)
     {
@@ -152,7 +152,7 @@ class Regime
     /**
      * Set schedule
      * @param array $schedule
-     * @return Regime
+     * @return Workout
      */
     public function setSchedule($schedule) {
         $this->schedule = $schedule;
@@ -178,7 +178,7 @@ class Regime
      *
      * @param string $title
      *
-     * @return Regime
+     * @return Workout
      */
     public function setTitle($title)
     {
@@ -202,7 +202,7 @@ class Regime
      *
      * @param string $description
      *
-     * @return Regime
+     * @return Workout
      */
     public function setDescription($description)
     {
@@ -235,7 +235,7 @@ class Regime
      *
      * @param integer $difficulty
      *
-     * @return Regime
+     * @return Workout
      */
     public function setDifficulty($difficulty)
     {
@@ -249,7 +249,7 @@ class Regime
      *
      * @param \DateTime $date
      *
-     * @return Regime
+     * @return Workout
      */
     public function setDataCreated ($date)
     {
@@ -272,7 +272,7 @@ class Regime
      *
      * @param \DateTime $date
      *
-     * @return Regime
+     * @return Workout
      */
     public function setDataUpdated ($date)
     {

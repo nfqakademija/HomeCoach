@@ -21,14 +21,14 @@ class Repo
     {
         $this->entityManager = $entityManager;
     }
-    public function getHotRegimes() {
+    public function getHotWorkouts() {
         $repository = $this->entityManager
-            ->getRepository('AppBundle:Regime');
+            ->getRepository('AppBundle:Workout');
         
-        $regimes = $repository->findBy(array(), array('rating' => 'DESC'),5);
+        $workouts = $repository->findBy(array(), array('rating' => 'DESC'),5);
         
         //TODO padaryti su JSONResponse
-        $json = json_encode($regimes);
+        $json = json_encode($workouts);
 
         return $json;
     }

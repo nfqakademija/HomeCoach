@@ -3,7 +3,7 @@
 
 namespace UserBundle\Entity;
 
-use AppBundle\Entity\Regime;
+use AppBundle\Entity\Workout;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,17 +36,17 @@ class User extends BaseUser
     protected $surname;
 
     /**
-     * @var Regime
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Regime")
+     * @var Workout
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Workout")
      */
-    protected $active_regime;
+    protected $active_workout;
 
     /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Regime")
-     * @ORM\JoinTable(name="users_regimes_history")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Workout")
+     * @ORM\JoinTable(name="users_workouts_history")
      */
-    protected $regime_history;
+    protected $workout_history;
     /**
      * Get ID
      *
@@ -125,38 +125,38 @@ class User extends BaseUser
     }
 
     /**
-     * @return Regime
+     * @return Workout
      */
-    public function getActiveRegime()
+    public function getActiveWorkout()
     {
-        return $this->active_regime;
+        return $this->active_workout;
     }
 
     /**
-     * @param Regime $active_regime
+     * @param Workout $active_workout
      */
-    public function setActiveRegime($active_regime)
+    public function setActiveWorkout($active_workout)
     {
-        if ($this->active_regime!=null) {
-            $this->regime_history[] = $this->active_regime;
+        if ($this->active_workout!=null) {
+            $this->workout_history[] = $this->active_workout;
         }
-        $this->active_regime = $active_regime;
+        $this->active_workout = $active_workout;
     }
 
     /**
      * @return array
      */
-    public function getRegimeHistory()
+    public function getWorkoutHistory()
     {
-        return $this->regime_history;
+        return $this->workout_history;
     }
 
     /**
-     * @param array $regime_history
+     * @param array $workout_history
      */
-    public function setRegimeHistory($regime_history)
+    public function setWorkoutHistory($workout_history)
     {
-        $this->regime_history = $regime_history;
+        $this->workout_history = $workout_history;
     }
 
 }

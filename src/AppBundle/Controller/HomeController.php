@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
-use AppBundle\Entity\Regime;
+use AppBundle\Entity\Workout;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,37 +24,37 @@ class HomeController extends Controller
 {
     /**
      * Home page index action. 
-     * Shows currently popular regimes
+     * Shows currently popular workouts
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
         $repo = $this->get('app.repo');
-        $regimes = $repo->getHotRegimes();
+        $workouts = $repo->getHotWorkouts();
 
         //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
-        return $this->render('@App/Home/indexShow.html.twig', array(
-            'regimes' => $regimes
+        return $this->render('@App/Home/index.html.twig', array(
+            'workouts' => $workouts
         ));
     }
 
     /**
-     * Create a new Regime
+     * Create a new Workout
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createRegimeAction(Request $request)
+    public function createWorkoutAction(Request $request)
     {
         $user = $this->getUser();
         if($user==null)
         {
             return new Response("log in");
         }
-        $regime = new Regime($user, new \DateTime());
-        $regime->setDataUpdated($regime->getDataCreated());
+        $workout = new Workout($user, new \DateTime());
+        $workout->setDataUpdated($workout->getDataCreated());
 
-        $form = $this->createFormBuilder($regime)
+        $form = $this->createFormBuilder($workout)
             ->add('title', TextType::class)
             ->add('difficulty', ChoiceType::class, array(
                 'choices' => array(
@@ -68,7 +68,7 @@ class HomeController extends Controller
             ->add('description', TextareaType::class)
             ->getForm();
             $schedule = array (null, null, null, null, null, null, null);
-            $regime->setSchedule($schedule);
+            $workout->setSchedule($schedule);
 
             $form->add('schedule', CollectionType::class, array(
                 'entry_type' => TextareaType::class,
@@ -81,31 +81,31 @@ class HomeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($regime);
+            $em->persist($workout);
             $em->flush();
 
             return $this->redirectToRoute('app.taskSuccess');
         }
 
-        return $this->render('@App/Home/createRegime.html.twig', array(
+        return $this->render('@App/Home/createWorkout.html.twig', array(
             'form' => $form->createView()
         ));
 
     }
 
     /**
-     * Rates regime.
+     * Rates workout.
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function rateRegimeAction($id, Request $request)
+    public function rateWorkoutAction($id, Request $request)
     {
-        $regime = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime')
+        $workout = $this->getDoctrine()
+            ->getRepository('AppBundle:Workout')
             ->find($id);
 
-        if (!$regime){
+        if (!$workout){
             throw $this->createNotFoundException(
-                'No regime found for id '.$id
+                'No workout found for id '.$id
             );
         }
         $data = [];
@@ -123,25 +123,25 @@ class HomeController extends Controller
         $form->handleRequest($request);
         $data = $form->getData();
         if (isset($data['rating'])) {
-            $regime->setUserRating($this->getUser(), $data['rating']);
+            $workout->setUserRating($this->getUser(), $data['rating']);
             $doc = $this->getDoctrine()->getManager();
-            $doc->persist($regime);
+            $doc->persist($workout);
             $doc->flush();
         }
-        return $this->render('@App/Home/rateRegime.html.twig', array(
-            'form' => $form->createView(), 'regime' => $regime
+        return $this->render('@App/Home/rateWorkout.html.twig', array(
+            'form' => $form->createView(), 'workout' => $workout
         ));
     }
 
-    public function showRegimeAction($id, Request $request)
+    public function showWorkoutAction($id, Request $request)
     {
-        $regime = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime')
+        $workout = $this->getDoctrine()
+            ->getRepository('AppBundle:Workout')
             ->find($id);
 
-        if (!$regime){
+        if (!$workout){
             throw $this->createNotFoundException(
-                'No regime found for id '.$id
+                'No workout found for id '.$id
             );
         }
         //Komentaru forma imest.
@@ -161,11 +161,11 @@ class HomeController extends Controller
 
             $parent = $this->get('request')->get('parent');
             if ($parent==null) {
-                $comment->setRegime($regime);
-                $comments = $regime->getComments();
+                $comment->setWorkout($workout);
+                $comments = $workout->getComments();
                 $comments[] = $comment;
-                $regime->setComments($comments);
-                $em->persist($regime);
+                $workout->setComments($comments);
+                $em->persist($workout);
             } else {
 
                 $parent_comm = $this->getDoctrine()
@@ -183,7 +183,7 @@ class HomeController extends Controller
 
         $activationForm = null;
         if ($this->getUser() != null) {
-            $activationForm = $this->activateRegime($regime->getId(), $request);
+            $activationForm = $this->activateWorkout($workout->getId(), $request);
         }
 
         $data = [];
@@ -201,14 +201,14 @@ class HomeController extends Controller
         $formRate->handleRequest($request);
         $data = $formRate->getData();
         if (isset($data['rating'])) {
-            $regime->setUserRating($this->getUser(), $data['rating']);
+            $workout->setUserRating($this->getUser(), $data['rating']);
             $doc = $this->getDoctrine()->getManager();
-            $doc->persist($regime);
+            $doc->persist($workout);
             $doc->flush();
         }
 
-        return $this->render('@App/Home/queryRegime.html.twig', array(
-           "regime" => $regime,
+        return $this->render('@App/Home/queryWorkout.html.twig', array(
+           "workout" => $workout,
             "form" => $form->createView(),
             "formRate" => $formRate->createView(),
             "activateForm" => $activationForm
@@ -216,53 +216,53 @@ class HomeController extends Controller
     }
 
     /**
-     * Displayed after successfully logging in, registering, creating or updating a regime
+     * Displayed after successfully logging in, registering, creating or updating a workout
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function taskSuccessAction()
     {
-        //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto regime'o puslapi
+        //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto workout'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
     }
 
     /**
-     * Used when searching for regimes
+     * Used when searching for workouts
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function browseRegimesAction() {
+    public function browseWorkoutsAction() {
         $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime');
+            ->getRepository('AppBundle:Workout');
 
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
-        $regimes = $repository->findAll();
-        $json = json_encode($regimes);
+        $workouts = $repository->findAll();
+        $json = json_encode($workouts);
 
-        return $this->render('@App/Home/browseRegimes.html.twig', array(
-            'regimes' => $json
+        return $this->render('@App/Home/browseWorkouts.html.twig', array(
+            'workouts' => $json
         ));
     }
 
     /**
-     * Responds with json of regimes
+     * Responds with json of workouts
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showRegimesAction() {
+    public function showWorkoutsAction() {
         $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime');
+            ->getRepository('AppBundle:Workout');
 
-        $regimes = $repository->findAll();
+        $workouts = $repository->findAll();
 
         $serializer = $this->get('jms_serializer');
 
-        $json = $serializer->toArray($regimes);
+        $json = $serializer->toArray($workouts);
 
         return new Response($serializer->serialize($json, 'json'));
     }
 
-    public function showRegimesPageAction($page, $sort, $difficulty) {
+    public function showWorkoutsPageAction($page, $sort, $difficulty) {
         $start = $page*4;
         if($difficulty == 'all')
         {
@@ -270,18 +270,18 @@ class HomeController extends Controller
         }
         else
         {
-            $whereState = "WHERE Regimes.difficulty= :diff";
+            $whereState = "WHERE Workouts.difficulty= :diff";
         }
 
         if($sort=="rating")
         {
-            $query = "SELECT Regimes.id,title, Regimes.rating,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
-            LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id " . $whereState . " ORDER BY Regimes.rating DESC LIMIT " . $start . ",4";
+            $query = "SELECT Workouts.id,title, Workouts.rating,description, data_created, Workouts.creator_id, Workouts.difficulty, username FROM Workouts 
+            LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id " . $whereState . " ORDER BY Workouts.rating DESC LIMIT " . $start . ",4";
         }
         else
         {
-            $query = "SELECT Regimes.id,title, Regimes.rating,description, data_created, Regimes.creator_id, Regimes.difficulty, username FROM Regimes 
-            LEFT JOIN fos_user ON fos_user.id=Regimes.creator_id " . $whereState . " ORDER BY Regimes.data_created DESC LIMIT " . $start . ",4";
+            $query = "SELECT Workouts.id,title, Workouts.rating,description, data_created, Workouts.creator_id, Workouts.difficulty, username FROM Workouts 
+            LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id " . $whereState . " ORDER BY Workouts.data_created DESC LIMIT " . $start . ",4";
         }
 
         $stmt = $this->getDoctrine()->getEntityManager()
@@ -291,11 +291,11 @@ class HomeController extends Controller
 
         $stmt->execute();
 
-        $regimes = $stmt->fetchAll();
+        $workouts = $stmt->fetchAll();
 
         $serializer = $this->get('jms_serializer');
 
-        $json = $serializer->toArray($regimes);
+        $json = $serializer->toArray($workouts);
 
         return new Response($serializer->serialize($json, 'json'));
     }
@@ -343,17 +343,17 @@ class HomeController extends Controller
         ));
     }
 
-    public function activateRegime($id, Request $request)
+    public function activateWorkout($id, Request $request)
     {
-        $regime = $this->getDoctrine()
-            ->getRepository('AppBundle:Regime')
+        $workout = $this->getDoctrine()
+            ->getRepository('AppBundle:Workout')
             ->find($id);
         $disabled = false;
         if ($request->getContent("Hidden")!=null) {
             $disabled=true;
         }
-        if ($this->getUser()->getActiveRegime()!=null)
-        if ($this->getUser()->getActiveRegime()->getId()==$id) {
+        if ($this->getUser()->getActiveWorkout()!=null)
+        if ($this->getUser()->getActiveWorkout()->getId()==$id) {
             $disabled=true;
 
         }
@@ -370,7 +370,7 @@ class HomeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             if ($user!=null) {
-                $user->setActiveRegime($regime);
+                $user->setActiveWorkout($workout);
                 $doc = $this->getDoctrine()->getManager();
                 $doc->persist($user);
                 $doc->flush();

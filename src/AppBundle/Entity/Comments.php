@@ -42,9 +42,9 @@ class Comments
     protected $sub_comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Regime")
+     * @ORM\ManyToOne(targetEntity="Workout")
      */
-    private $regime;
+    private $workout;
 
     /**
      * @ORM\Column(type="datetime")
@@ -148,19 +148,19 @@ class Comments
     }
 
     /**
-     * @return Regime
+     * @return Workout
      */
-    public function getRegime()
+    public function getWorkout()
     {
-        return $this->regime;
+        return $this->workout;
     }
 
     /**
-     * @param Regime $regime
+     * @param Workout $workout
      */
-    public function setRegime($regime)
+    public function setWorkout($workout)
     {
-        $this->regime = $regime;
+        $this->workout = $workout;
     }
 
     /**
