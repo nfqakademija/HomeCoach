@@ -135,9 +135,8 @@ class HomeController extends Controller
 
     public function showWorkoutAction($id, Request $request)
     {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
+        $repo = $this->get('app.repo');
+        $workout = $repo->showWorkout($id);
 
         if (!$workout){
             throw $this->createNotFoundException(
@@ -224,42 +223,6 @@ class HomeController extends Controller
     {
         //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto workout'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
-    }
-
-    /**
-     * Used when searching for workouts
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function browseWorkoutsAction() {
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout');
-
-        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
-        $workouts = $repository->findAll();
-        $json = json_encode($workouts);
-
-        return $this->render('@App/Home/browseWorkouts.html.twig', array(
-            'workouts' => $json
-        ));
-    }
-
-    /**
-     * Responds with json of workouts
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showWorkoutsAction() {
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout');
-
-        $workouts = $repository->findAll();
-
-        $serializer = $this->get('jms_serializer');
-
-        $json = $serializer->toArray($workouts);
-
-        return new Response($serializer->serialize($json, 'json'));
     }
 
     public function showWorkoutsPageAction($page, $sort, $difficulty) {
