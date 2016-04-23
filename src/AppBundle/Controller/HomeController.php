@@ -262,15 +262,23 @@ class HomeController extends Controller
         return new Response($serializer->serialize($json, 'json'));
     }
 
-    public function showWorkoutsPageAction($page, $sort, $difficulty) {
+    public function showWorkoutsPageAction($page, $sort, $difficulty, $search) {
         $start = $page*4;
-        if($difficulty == 'all')
+        if(($difficulty == 'all') && is_int($search))
         {
             $whereState = "";
         }
-        else
+        else if(($difficulty != 'all') && is_int($search))
         {
             $whereState = "WHERE Workouts.difficulty= :diff";
+        }
+        else if(($difficulty == 'all') && !is_int($search))
+        {
+            $whereState = "WHERE Workouts.title LIKE :search";
+        }
+        else
+        {
+            $whereState = "WHERE Workouts.difficulty= :diff AND Workouts.title LIKE :search";
         }
 
         if($sort=="rating")
@@ -287,7 +295,14 @@ class HomeController extends Controller
         $stmt = $this->getDoctrine()->getEntityManager()
             ->getConnection()
             ->prepare($query);
-        $stmt->bindValue('diff',$difficulty);
+        if($difficulty != 'all')
+        {
+            $stmt->bindValue('diff', $difficulty);
+        }
+        if(!is_int($search))
+        {
+            $stmt->bindValue('search', $search . "%");
+        }
 
         $stmt->execute();
 
