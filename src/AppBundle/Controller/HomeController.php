@@ -1,7 +1,5 @@
 <?php
-
 namespace AppBundle\Controller;
-
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
 use Doctrine\ORM\Query;
@@ -19,11 +17,10 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
 use AppBundle\Service\Repo;
-
 class HomeController extends Controller
 {
     /**
-     * Home page index action. 
+     * Home page index action.
      * Shows currently popular workouts
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -32,13 +29,11 @@ class HomeController extends Controller
     {
         $repo = $this->get('app.repo');
         $workouts = $repo->getHotWorkouts();
-
         //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
         return $this->render('@App/Home/index.html.twig', array(
             'workouts' => $workouts
         ));
     }
-
     /**
      * Create a new Workout
      *
@@ -53,7 +48,6 @@ class HomeController extends Controller
         }
         $workout = new Workout($user, new \DateTime());
         $workout->setDataUpdated($workout->getDataCreated());
-
         $form = $this->createFormBuilder($workout)
             ->add('title', TextType::class)
             ->add('difficulty', ChoiceType::class, array(
@@ -67,32 +61,24 @@ class HomeController extends Controller
             ))
             ->add('description', TextareaType::class)
             ->getForm();
-            $schedule = array (null, null, null, null, null, null, null);
-            $workout->setSchedule($schedule);
-
-            $form->add('schedule', CollectionType::class, array(
-                'entry_type' => TextareaType::class,
-                'required' => false
-            ));
-
+        $schedule = array (null, null, null, null, null, null, null);
+        $workout->setSchedule($schedule);
+        $form->add('schedule', CollectionType::class, array(
+            'entry_type' => TextareaType::class,
+            'required' => false
+        ));
         $form->add('save', SubmitType::class, array('label' => 'Pridėti programą'));
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($workout);
             $em->flush();
-
             return $this->redirectToRoute('app.taskSuccess');
         }
-
         return $this->render('@App/Home/createWorkout.html.twig', array(
             'form' => $form->createView()
         ));
-
     }
-
     /**
      * Rates workout.
      * @return \Symfony\Component\HttpFoundation\Response
@@ -102,7 +88,6 @@ class HomeController extends Controller
         $workout = $this->getDoctrine()
             ->getRepository('AppBundle:Workout')
             ->find($id);
-
         if (!$workout){
             throw $this->createNotFoundException(
                 'No workout found for id '.$id
@@ -119,7 +104,6 @@ class HomeController extends Controller
                     '5'   => '5',
                 ), 'expanded' => true))
             ->getForm();
-
         $form->handleRequest($request);
         $data = $form->getData();
         if (isset($data['rating'])) {
@@ -132,13 +116,10 @@ class HomeController extends Controller
             'form' => $form->createView(), 'workout' => $workout
         ));
     }
-
     public function showWorkoutAction($id, Request $request)
     {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
-
+        $repo = $this->get('app.repo');
+        $workout = $repo->showWorkout($id);
         if (!$workout){
             throw $this->createNotFoundException(
                 'No workout found for id '.$id
@@ -147,7 +128,6 @@ class HomeController extends Controller
         //Komentaru forma imest.
         $user = $this->getUser();
         $comment = new Comments($user, "");
-
         $form = $this->createFormBuilder($comment)
             ->add('comment', TextareaType::class)
             ->getForm();
@@ -158,7 +138,6 @@ class HomeController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $parent = $this->get('request')->get('parent');
             if ($parent==null) {
                 $comment->setWorkout($workout);
@@ -167,7 +146,6 @@ class HomeController extends Controller
                 $workout->setComments($comments);
                 $em->persist($workout);
             } else {
-
                 $parent_comm = $this->getDoctrine()
                     ->getRepository('AppBundle:Comments')
                     ->find($parent);
@@ -180,12 +158,10 @@ class HomeController extends Controller
             $em->persist($comment);
             $em->flush();
         }
-
         $activationForm = null;
         if ($this->getUser() != null) {
             $activationForm = $this->activateWorkout($workout->getId(), $request);
         }
-
         $data = [];
         $formRate = $this->createFormBuilder($data)
             ->add('rating', 'choice',
@@ -197,7 +173,6 @@ class HomeController extends Controller
                     '5'   => '5',
                 ), 'expanded' => true))
             ->getForm();
-
         $formRate->handleRequest($request);
         $data = $formRate->getData();
         if (isset($data['rating'])) {
@@ -206,15 +181,13 @@ class HomeController extends Controller
             $doc->persist($workout);
             $doc->flush();
         }
-
         return $this->render('@App/Home/queryWorkout.html.twig', array(
-           "workout" => $workout,
+            "workout" => $workout,
             "form" => $form->createView(),
             "formRate" => $formRate->createView(),
             "activateForm" => $activationForm
         ));
     }
-
     /**
      * Displayed after successfully logging in, registering, creating or updating a workout
      *
@@ -225,43 +198,6 @@ class HomeController extends Controller
         //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto workout'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
     }
-
-    /**
-     * Used when searching for workouts
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function browseWorkoutsAction() {
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout');
-
-        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
-        $workouts = $repository->findAll();
-        $json = json_encode($workouts);
-
-        return $this->render('@App/Home/browseWorkouts.html.twig', array(
-            'workouts' => $json
-        ));
-    }
-
-    /**
-     * Responds with json of workouts
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showWorkoutsAction() {
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout');
-
-        $workouts = $repository->findAll();
-
-        $serializer = $this->get('jms_serializer');
-
-        $json = $serializer->toArray($workouts);
-
-        return new Response($serializer->serialize($json, 'json'));
-    }
-
     public function showWorkoutsPageAction($page, $sort, $difficulty, $search) {
         $start = $page*4;
         if(($difficulty == 'all') && is_int($search))
@@ -314,7 +250,6 @@ class HomeController extends Controller
 
         return new Response($serializer->serialize($json, 'json'));
     }
-
     /**
      * Shows most popular coaches in right sidebar of all pages
      *
@@ -323,16 +258,13 @@ class HomeController extends Controller
     public function showCoachesAction() {
         $repository = $this->getDoctrine()
             ->getRepository('UserBundle:User');
-
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $coaches = $repository->findAll();
         $json = json_encode($coaches);
-
         return $this->render('base.html.twig', array(
             'coaches' => $json
         ));
     }
-
     /**
      * Used when searching for users
      *
@@ -341,23 +273,19 @@ class HomeController extends Controller
     public function browseUsersAction() {
         $repository = $this->getDoctrine()
             ->getRepository('UserBundle:User');
-
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $users = $repository->findAll();
         $json = json_encode($users);
-
         return $this->render('@App/Home/browseUsers.html.twig', array(
             'users' => $json
         ));
     }
-
     public function showProfileAction($id)
     {
         return $this->render('@App/Home/showUser.html.twig', array(
             'id' => $id
         ));
     }
-
     public function activateWorkout($id, Request $request)
     {
         $workout = $this->getDoctrine()
@@ -368,10 +296,9 @@ class HomeController extends Controller
             $disabled=true;
         }
         if ($this->getUser()->getActiveWorkout()!=null)
-        if ($this->getUser()->getActiveWorkout()->getId()==$id) {
-            $disabled=true;
-
-        }
+            if ($this->getUser()->getActiveWorkout()->getId()==$id) {
+                $disabled=true;
+            }
         $form = $this->createFormBuilder()
             ->add('Hidden', HiddenType::class, array(
                 'data' => '0'
@@ -380,7 +307,6 @@ class HomeController extends Controller
                 'disabled'=>$disabled
             ))
             ->getForm();
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();

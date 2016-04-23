@@ -2,10 +2,6 @@ app.index:
     path:     /
     defaults: { _controller: AppBundle:Home:index }
 
-app.workouts:
-    path:     /workouts
-    defaults: { _controller: AppBundle:Home:browseWorkouts}
-
 app.users:
     path:     /users
     defaults: { _controller: AppBundle:Home:browseUsers}

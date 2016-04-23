@@ -32,4 +32,13 @@ class Repo
 
         return $json;
     }
+    
+    public function showWorkout($id) {
+
+        $repository = $this->entityManager
+            ->getRepository('AppBundle:Workout')
+            ->find($id);
+
+        return $repository;
+    }
 }
