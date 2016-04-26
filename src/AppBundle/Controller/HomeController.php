@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
+use AppBundle\Form\WorkoutType;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Service\Repo;
-use AppBundle\Service\FormBuilder;
+use AppBundle\Form\PostType;
 
 class HomeController extends Controller
 {
@@ -50,19 +51,7 @@ class HomeController extends Controller
         }
         $workout = new Workout($user);
 
-        $form = $this->createFormBuilder($workout)
-            ->add('title', TextType::class)
-            ->add('difficulty', ChoiceType::class, array(
-                'choices' => array(
-                    1   => 'Labai lengva',
-                    2   => 'Lengva',
-                    3   => 'Vidutine',
-                    4   => 'Sunki',
-                    5   => 'Labai sunki'
-                ), 'expanded' => true,
-            ))
-            ->add('description', TextareaType::class)
-            ->getForm();
+        $form = $this->createForm(WorkoutType::class, $workout);
             $schedule = array (null, null, null, null, null, null, null);
             $workout->setSchedule($schedule);
 

@@ -8,9 +8,6 @@ services:
         class: AppBundle\Service\Repo
         arguments: [ @doctrine.orm.entity_manager ]
 
-    app.formBuilder:
-        class: AppBundle\Service\FormBuilder
-
     app.twig_extension:
         class: AppBundle\Twig\DifficultyExtension
         public: false
