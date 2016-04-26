@@ -4,19 +4,18 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
+use AppBundle\Form\CommentType;
+use AppBundle\Form\WorkoutRatingType;
 use AppBundle\Form\WorkoutType;
 use Doctrine\ORM\Query;
+use JMS\Serializer\Tests\Fixtures\Doctrine\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Service\Repo;
-use AppBundle\Form\PostType;
 
 class HomeController extends Controller
 {
@@ -69,44 +68,34 @@ class HomeController extends Controller
 
     }
 
-    /**
-     * Rates workout.
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function rateWorkoutAction($id, Request $request)
-    {
-        $repo = $this->get('app.repo');
-        $workout = $repo->getWorkout($id);
-
-        if (!$workout){
-            throw $this->createNotFoundException(
-                'No workout found for id '.$id
-            );
-        }
-        $data = [];
-        $form = $this->createFormBuilder($data)
-            ->add('rating', 'choice',
-                array('choices' => array(
-                    '1'   => '1',
-                    '2'   => '2',
-                    '3'   => '3',
-                    '4'   => '4',
-                    '5'   => '5',
-                ), 'expanded' => true))
-            ->getForm();
-
-        $form->handleRequest($request);
-        $data = $form->getData();
-        if (isset($data['rating'])) {
-            $workout->setUserRating($this->getUser(), $data['rating']);
-            $doc = $this->getDoctrine()->getManager();
-            $doc->persist($workout);
-            $doc->flush();
-        }
-        return $this->render('@App/Home/rateWorkout.html.twig', array(
-            'form' => $form->createView(), 'workout' => $workout
-        ));
-    }
+//    /**
+//     * Rates workout.
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     */
+//    public function rateWorkoutAction($id, Request $request)
+//    {
+//        $repo = $this->get('app.repo');
+//        $workout = $repo->getWorkout($id);
+//
+//        if (!$workout){
+//            throw $this->createNotFoundException(
+//                'No workout found for id '.$id
+//            );
+//        }
+//        $form = $this->createForm(WorkoutRatingType::class, $workout);
+//
+//        $form->handleRequest($request);
+//        $data = $form->getData();
+//        if (isset($data['rating'])) {
+//            $workout->setUserRating($this->getUser(), $data['rating']);
+//            $doc = $this->getDoctrine()->getManager();
+//            $doc->persist($workout);
+//            $doc->flush();
+//        }
+//        return $this->render('@App/Home/rateWorkout.html.twig', array(
+//            'form' => $form->createView(), 'workout' => $workout
+//        ));
+//    }
 
     public function showWorkoutAction($id, Request $request)
     {
@@ -122,13 +111,7 @@ class HomeController extends Controller
         $user = $this->getUser();
         $comment = new Comments($user, "");
 
-        $form = $this->createFormBuilder($comment)
-            ->add('comment', TextareaType::class)
-            ->getForm();
-        $form->add('parent', HiddenType::class, array (
-            'data' => null
-        ));
-        $form->add('save', SubmitType::class, array('label' => 'Komentuoti'));
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -160,17 +143,7 @@ class HomeController extends Controller
             $activationForm = $this->activateWorkout($workout->getId(), $request);
         }
 
-        $data = [];
-        $formRate = $this->createFormBuilder($data)
-            ->add('rating', 'choice',
-                array('choices' => array(
-                    '1'   => '1',
-                    '2'   => '2',
-                    '3'   => '3',
-                    '4'   => '4',
-                    '5'   => '5',
-                ), 'expanded' => true))
-            ->getForm();
+        $formRate = $this->createForm(WorkoutRatingType::class, $workout);
 
         $formRate->handleRequest($request);
         $data = $formRate->getData();
@@ -182,7 +155,7 @@ class HomeController extends Controller
         }
 
         return $this->render('@App/Home/queryWorkout.html.twig', array(
-           "workout" => $workout,
+            "workout" => $workout,
             "form" => $form->createView(),
             "formRate" => $formRate->createView(),
             "activateForm" => $activationForm
