@@ -90,6 +90,7 @@ class Workout
         $this->creator = $creator;
         $this->data_created = new \DateTime();
         $this->data_updated = $this->data_created;
+        $this->schedule = array (null, null, null, null, null, null, null);
     }
 
 

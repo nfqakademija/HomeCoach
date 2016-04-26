@@ -52,15 +52,6 @@ class HomeController extends Controller
         $workout = new Workout($user);
 
         $form = $this->createForm(WorkoutType::class, $workout);
-            $schedule = array (null, null, null, null, null, null, null);
-            $workout->setSchedule($schedule);
-
-            $form->add('schedule', CollectionType::class, array(
-                'entry_type' => TextareaType::class,
-                'required' => false
-            ));
-
-        $form->add('save', SubmitType::class, array('label' => 'Pridėti programą'));
 
         $form->handleRequest($request);
 

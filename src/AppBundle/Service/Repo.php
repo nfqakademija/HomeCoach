@@ -14,7 +14,18 @@ use Doctrine\ORM\EntityManager;
 
 class Repo
 {
+    /**
+     * @var EntityManager
+     */
     public $entityManager;
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
     /**
      * Repo constructor.
      */
@@ -22,7 +33,11 @@ class Repo
     {
         $this->entityManager = $entityManager;
     }
-    
+
+    /**
+     * @param $repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
     public function getRepo($repository){
         
         $repo = $this->entityManager
@@ -31,6 +46,10 @@ class Repo
         return $repo;
     }
 
+    /**
+     * @param $id
+     * @return null|object
+     */
     public function getWorkout($id) {
         
         $repo = $this->getRepo('AppBundle:Workout')
@@ -39,6 +58,9 @@ class Repo
         return $repo;
     }
 
+    /**
+     * @return array
+     */
     public function getHotWorkouts() {
         
         $repo = $this->getRepo('AppBundle:Workout');
@@ -46,7 +68,12 @@ class Repo
         
         return $workouts;
     }
-    
+
+    /**
+     * @param $page
+     * @param $sort
+     * @param $difficulty
+     */
     public function getWorkouts($page, $sort, $difficulty) {
         //this has yet to be changed
     }
