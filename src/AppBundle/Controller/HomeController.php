@@ -29,10 +29,10 @@ class HomeController extends Controller
     {
         $repo = $this->get('app.repo');
         $workouts = $repo->getHotWorkouts();
+        $json_workouts = json_encode($workouts);
 
-        //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
         return $this->render('@App/Home/index.html.twig', array(
-            'workouts' => $workouts
+            'workouts' => $json_workouts
         ));
     }
 
@@ -46,10 +46,9 @@ class HomeController extends Controller
         $user = $this->getUser();
         if($user==null)
         {
-            return new Response("log in"); //pakeisti i normalu puslapi
+            return new Response("log in"); //TODO pakeisti i normalu puslapi
         }
-        $workout = new Workout($user, new \DateTime());
-        $workout->setDataUpdated($workout->getDataCreated());
+        $workout = new Workout($user);
 
         $form = $this->createFormBuilder($workout)
             ->add('title', TextType::class)

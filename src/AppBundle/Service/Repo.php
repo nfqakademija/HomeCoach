@@ -24,12 +24,15 @@ class Repo
     }
     
     public function getRepo($repository){
+        
         $repo = $this->entityManager
             ->getRepository($repository);
+        
         return $repo;
     }
 
     public function getWorkout($id) {
+        
         $repo = $this->getRepo('AppBundle:Workout')
             ->find($id);
 
@@ -37,13 +40,11 @@ class Repo
     }
 
     public function getHotWorkouts() {
+        
         $repo = $this->getRepo('AppBundle:Workout');
         $workouts = $repo->findBy(array(), array('rating' => 'DESC'),5);
         
-        //TODO padaryti su JSONResponse
-        $json = json_encode($workouts);
-
-        return $json;
+        return $workouts;
     }
     
     public function getWorkouts($page, $sort, $difficulty) {
