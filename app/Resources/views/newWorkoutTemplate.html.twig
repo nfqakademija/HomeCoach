@@ -8,11 +8,40 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('css/registerStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/workoutInputFormStyle.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/navigation.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/workoutInputFormStyle.sass') }}"/>
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
 {% block body %}
+    <section class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand"> <span style="color:orange"> HOME </span> COACH </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right main-navigation">
+                    {% if app.user is not null %}
+                        <li><a href="{{ path('app.createWorkout') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
+                        <li><span class="loginInfo"> {{ 'layout.logged_in_as' | trans({'%username%': app.user.username}, 'FOSUserBundle') }} </span> </li>
+                        <li> <a href="{{ path('fos_user_security_logout') }}">
+                                <span class="glyphicon glyphicon-off"></span>
+                                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                            </a></li>
+                    {% else %}
+                        <li><a href="/login" class="smoothScroll">PRISIJUNGTI</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </div>
+    </section>
     <div class="container">
         {% block container %}
         <div class="container-fluid text-center">

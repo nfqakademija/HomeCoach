@@ -3,6 +3,10 @@ var workoutApp = angular.module('workoutApp', ['infinite-scroll','angularMoment'
 });
 
 var sortBy='rating';
+var page=0;
+var dataLeft=true;
+var searchKey="";
+var difficulty='all';
 
 workoutApp.filter('showDifficulty', function()
 {
@@ -30,10 +34,6 @@ workoutApp.filter('showDifficulty', function()
 });
 
 workoutApp.controller('workoutsController', function ($scope, $http) {
-    var page=0;
-    var dataLeft=true;
-    var searchKey="";
-    var difficulty='all';
     var url = getUrl(page,sortBy,difficulty,searchKey);
     $scope.difficultySelected="all";
     loadScope($scope,$http,url);
@@ -105,6 +105,7 @@ function loadScope(scope,http,url)
     document.getElementsByTagName("BODY")[0].className="lowOpacity";
     http.get(url).success(function (data) {
         scope.workouts = data;
+        scope.length = data.length;
     }).error(function () {
         alert('Failed to get api');
     });

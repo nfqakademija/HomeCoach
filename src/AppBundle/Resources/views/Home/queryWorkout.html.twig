@@ -12,7 +12,7 @@
         <div class="col-md-5">
             Sukurta: {{ workout.dataCreated.format('H:i:s Y-m-d') }}
             <br><br>
-            Siuo metu programa aktyvave {{ workout.activations|length }} zmones!
+            Pagal šia programą sportuojančių narių kiekis {{ workout.activations|length }} !
             {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
         </div>
         <div class="col-md-7">
@@ -73,19 +73,24 @@
         {{ form_end(formRate) }}
         <br>
     {% endif %}
-    <div class="commentSection">
-        {% if workout.comments|length > 0 %}
-            <h2 class="description"> Komentarai <span class="badge alert-info">{{ workout.comments|length }}</span></h2>
+    <div class="fb-like" data-href="http://127.0.0.1:8000/workouts/{{ workout.id }}" data-layout="standard" data-action="like" colorscheme="dark" data-show-faces="true" data-share="true"></div>
+    <h2 class="description"> Komentarai </h2>
+    <ul style="margin-bottom:10px;" class="nav nav-tabs">
+        <li><a data-toggle="tab" href="#menu1">Home Coach <span class="badge alert-info">{{ workout.comments|length }}</span> </a></li>
+        <li class="active"><a data-toggle="tab" href="#menu2">Facebook</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="menu1" class="tab-pane fade">
             {% include "AppBundle:Home:showComment.html.twig" with {'comments': workout.comments} only %}
-        {% else %}
-            <h2 class="description"> Komentarų dar nėra </h2>
-        {% endif %}
-        <div class="fb-comments" data-href="http://127.0.0.1:8000/workouts/{{ workout.id }}" data-width="100%" data-numposts="5"></div>
-        {% if app.user is not null %}
-        {{ form_start(form) }}
-        {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
-            {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
-        {{ form_end(form) }}
+            {% if app.user is not null %}
+                {{ form_start(form) }}
+                {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
+                {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
+                {{ form_end(form) }}
             {% endif %}
+        </div>
+        <div id="menu2" style="color:white" class="tab-pane fade in active">
+            <div class="fb-comments" data-href="http://homecoach.projektai.nfqakademija.lt/workouts/{{ workout.id }}" data-width="100%" data-numposts="5" colorscheme="dark"></div>
+        </div>
     </div>
 {% endblock %}

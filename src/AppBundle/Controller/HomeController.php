@@ -25,14 +25,16 @@ class HomeController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+
     public function indexAction()
     {
+        /*
         $repo = $this->get('app.repo');
         $workouts = $repo->getHotWorkouts();
         //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
-        return $this->render('@App/Home/index.html.twig', array(
-            'workouts' => $workouts
-        ));
+        */
+        return $this->render('@App/Home/index.html.twig'
+        );
     }
     /**
      * Create a new Workout
@@ -303,7 +305,7 @@ class HomeController extends Controller
             ->add('Hidden', HiddenType::class, array(
                 'data' => '0'
             ))
-            ->add('Activate', SubmitType::class, array (
+            ->add('Aktyvuoti', SubmitType::class, array (
                 'disabled'=>$disabled
             ))
             ->getForm();
