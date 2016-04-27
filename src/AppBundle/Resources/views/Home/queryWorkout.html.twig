@@ -67,7 +67,7 @@
             {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
 
             {% for i in [4,3,2,1,0] %}
-                <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="form_rating_{{ i }}"> <span>&#9734</span> </label>
+                <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="workout_rating_rating_{{ i }}"> <span>&#9734</span> </label>
             {% endfor %}
         </div>
         {{ form_end(formRate) }}
