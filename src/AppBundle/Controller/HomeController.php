@@ -147,8 +147,8 @@ class HomeController extends Controller
 
         $formRate->handleRequest($request);
         $data = $formRate->getData();
-        if (isset($data['rating'])) {
-            $workout->setUserRating($this->getUser(), $data['rating']);
+        if (isset($data->rating)) {
+            $workout->setUserRating($this->getUser(), $data->rating);
             $doc = $this->getDoctrine()->getManager();
             $doc->persist($workout);
             $doc->flush();
