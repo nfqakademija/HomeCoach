@@ -43,11 +43,11 @@ gulp.task('assets',function()
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.node + 'ng-infinite-scroll/build/ng-infinite-scroll.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
-    gulp.src(dir.node + 'angular-moment/node_modules/moment/min/moment.min.js')
+    gulp.src(dir.node + 'moment/min/moment.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.node + 'angular-moment/angular-moment.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
-    gulp.src(dir.node + 'angular-moment/node_modules/moment/locale/lt.js')
+    gulp.src(dir.node + 'moment/locale/lt.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
 });
 
