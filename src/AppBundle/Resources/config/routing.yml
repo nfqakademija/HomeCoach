@@ -22,10 +22,6 @@ app.rateWorkout:
     path:     /rating/{id}
     defaults: { _controller: AppBundle:Home:rateWorkout}
 
-app.showWorkouts:
-    path:     /showWorkouts
-    defaults: { _controller: AppBundle:Home:showWorkouts}
-
 app.showWorkoutPage:
     path:     /showWorkoutsPage/{page}/{sort}/{difficulty}/{search}
     defaults: { _controller: AppBundle:Home:showWorkoutsPage, search: 0}

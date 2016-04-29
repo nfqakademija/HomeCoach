@@ -1,22 +1,22 @@
 <?php
+
 namespace AppBundle\Controller;
+
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
+use AppBundle\Form\CommentType;
+use AppBundle\Form\WorkoutRatingType;
+use AppBundle\Form\WorkoutType;
 use Doctrine\ORM\Query;
+use JMS\Serializer\Tests\Fixtures\Doctrine\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Model\UserInterface;
 use AppBundle\Service\Repo;
+
 class HomeController extends Controller
 {
     /**
@@ -25,17 +25,17 @@ class HomeController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-
     public function indexAction()
     {
-        /*
         $repo = $this->get('app.repo');
         $workouts = $repo->getHotWorkouts();
-        //TODO kadangi vistiek darom su angularu, tai grazinti tiesiog response, o ne render()
-        */
-        return $this->render('@App/Home/index.html.twig'
-        );
+        $json_workouts = json_encode($workouts);
+
+        return $this->render('@App/Home/index.html.twig', array(
+            'workouts' => $json_workouts
+        ));
     }
+
     /**
      * Create a new Workout
      *
@@ -46,82 +46,62 @@ class HomeController extends Controller
         $user = $this->getUser();
         if($user==null)
         {
-            return new Response("log in");
+            return new Response("log in"); //TODO pakeisti i normalu puslapi
         }
-        $workout = new Workout($user, new \DateTime());
-        $workout->setDataUpdated($workout->getDataCreated());
-        $form = $this->createFormBuilder($workout)
-            ->add('title', TextType::class)
-            ->add('difficulty', ChoiceType::class, array(
-                'choices' => array(
-                    1   => 'Labai lengva',
-                    2   => 'Lengva',
-                    3   => 'Vidutine',
-                    4   => 'Sunki',
-                    5   => 'Labai sunki'
-                ), 'expanded' => true,
-            ))
-            ->add('description', TextareaType::class)
-            ->getForm();
-        $schedule = array (null, null, null, null, null, null, null);
-        $workout->setSchedule($schedule);
-        $form->add('schedule', CollectionType::class, array(
-            'entry_type' => TextareaType::class,
-            'required' => false
-        ));
-        $form->add('save', SubmitType::class, array('label' => 'Pridėti programą'));
+        $workout = new Workout($user);
+
+        $form = $this->createForm(WorkoutType::class, $workout);
+
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($workout);
             $em->flush();
+
             return $this->redirectToRoute('app.taskSuccess');
         }
+
         return $this->render('@App/Home/createWorkout.html.twig', array(
             'form' => $form->createView()
         ));
+
     }
-    /**
-     * Rates workout.
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function rateWorkoutAction($id, Request $request)
-    {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
-        if (!$workout){
-            throw $this->createNotFoundException(
-                'No workout found for id '.$id
-            );
-        }
-        $data = [];
-        $form = $this->createFormBuilder($data)
-            ->add('rating', 'choice',
-                array('choices' => array(
-                    '1'   => '1',
-                    '2'   => '2',
-                    '3'   => '3',
-                    '4'   => '4',
-                    '5'   => '5',
-                ), 'expanded' => true))
-            ->getForm();
-        $form->handleRequest($request);
-        $data = $form->getData();
-        if (isset($data['rating'])) {
-            $workout->setUserRating($this->getUser(), $data['rating']);
-            $doc = $this->getDoctrine()->getManager();
-            $doc->persist($workout);
-            $doc->flush();
-        }
-        return $this->render('@App/Home/rateWorkout.html.twig', array(
-            'form' => $form->createView(), 'workout' => $workout
-        ));
-    }
+
+//    /**
+//     * Rates workout.
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     */
+//    public function rateWorkoutAction($id, Request $request)
+//    {
+//        $repo = $this->get('app.repo');
+//        $workout = $repo->getWorkout($id);
+//
+//        if (!$workout){
+//            throw $this->createNotFoundException(
+//                'No workout found for id '.$id
+//            );
+//        }
+//        $form = $this->createForm(WorkoutRatingType::class, $workout);
+//
+//        $form->handleRequest($request);
+//        $data = $form->getData();
+//        if (isset($data['rating'])) {
+//            $workout->setUserRating($this->getUser(), $data['rating']);
+//            $doc = $this->getDoctrine()->getManager();
+//            $doc->persist($workout);
+//            $doc->flush();
+//        }
+//        return $this->render('@App/Home/rateWorkout.html.twig', array(
+//            'form' => $form->createView(), 'workout' => $workout
+//        ));
+//    }
+
     public function showWorkoutAction($id, Request $request)
     {
         $repo = $this->get('app.repo');
-        $workout = $repo->showWorkout($id);
+        $workout = $repo->getWorkout($id);
+
         if (!$workout){
             throw $this->createNotFoundException(
                 'No workout found for id '.$id
@@ -130,16 +110,12 @@ class HomeController extends Controller
         //Komentaru forma imest.
         $user = $this->getUser();
         $comment = new Comments($user, "");
-        $form = $this->createFormBuilder($comment)
-            ->add('comment', TextareaType::class)
-            ->getForm();
-        $form->add('parent', HiddenType::class, array (
-            'data' => null
-        ));
-        $form->add('save', SubmitType::class, array('label' => 'Komentuoti'));
+
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $parent = $this->get('request')->get('parent');
             if ($parent==null) {
                 $comment->setWorkout($workout);
@@ -148,6 +124,7 @@ class HomeController extends Controller
                 $workout->setComments($comments);
                 $em->persist($workout);
             } else {
+
                 $parent_comm = $this->getDoctrine()
                     ->getRepository('AppBundle:Comments')
                     ->find($parent);
@@ -160,29 +137,23 @@ class HomeController extends Controller
             $em->persist($comment);
             $em->flush();
         }
+
         $activationForm = null;
         if ($this->getUser() != null) {
             $activationForm = $this->activateWorkout($workout->getId(), $request);
         }
-        $data = [];
-        $formRate = $this->createFormBuilder($data)
-            ->add('rating', 'choice',
-                array('choices' => array(
-                    '1'   => '1',
-                    '2'   => '2',
-                    '3'   => '3',
-                    '4'   => '4',
-                    '5'   => '5',
-                ), 'expanded' => true))
-            ->getForm();
+
+        $formRate = $this->createForm(WorkoutRatingType::class, $workout);
+
         $formRate->handleRequest($request);
         $data = $formRate->getData();
-        if (isset($data['rating'])) {
-            $workout->setUserRating($this->getUser(), $data['rating']);
+        if (isset($data->rating)) {
+            $workout->setUserRating($this->getUser(), $data->rating);
             $doc = $this->getDoctrine()->getManager();
             $doc->persist($workout);
             $doc->flush();
         }
+
         return $this->render('@App/Home/queryWorkout.html.twig', array(
             "workout" => $workout,
             "form" => $form->createView(),
@@ -190,6 +161,7 @@ class HomeController extends Controller
             "activateForm" => $activationForm
         ));
     }
+
     /**
      * Displayed after successfully logging in, registering, creating or updating a workout
      *
@@ -200,23 +172,16 @@ class HomeController extends Controller
         //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto workout'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
     }
-    public function showWorkoutsPageAction($page, $sort, $difficulty, $search) {
+
+    public function showWorkoutsPageAction($page, $sort, $difficulty) {
         $start = $page*4;
-        if(($difficulty == 'all') && is_int($search))
+        if($difficulty == 'all')
         {
             $whereState = "";
         }
-        else if(($difficulty != 'all') && is_int($search))
-        {
-            $whereState = "WHERE Workouts.difficulty= :diff";
-        }
-        else if(($difficulty == 'all') && !is_int($search))
-        {
-            $whereState = "WHERE Workouts.title LIKE :search";
-        }
         else
         {
-            $whereState = "WHERE Workouts.difficulty= :diff AND Workouts.title LIKE :search";
+            $whereState = "WHERE Workouts.difficulty= :diff";
         }
 
         if($sort=="rating")
@@ -233,14 +198,7 @@ class HomeController extends Controller
         $stmt = $this->getDoctrine()->getEntityManager()
             ->getConnection()
             ->prepare($query);
-        if($difficulty != 'all')
-        {
-            $stmt->bindValue('diff', $difficulty);
-        }
-        if(!is_int($search))
-        {
-            $stmt->bindValue('search', $search . "%");
-        }
+        $stmt->bindValue('diff',$difficulty);
 
         $stmt->execute();
 
@@ -252,6 +210,7 @@ class HomeController extends Controller
 
         return new Response($serializer->serialize($json, 'json'));
     }
+
     /**
      * Shows most popular coaches in right sidebar of all pages
      *
@@ -260,13 +219,16 @@ class HomeController extends Controller
     public function showCoachesAction() {
         $repository = $this->getDoctrine()
             ->getRepository('UserBundle:User');
+
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $coaches = $repository->findAll();
         $json = json_encode($coaches);
+
         return $this->render('base.html.twig', array(
             'coaches' => $json
         ));
     }
+
     /**
      * Used when searching for users
      *
@@ -275,19 +237,23 @@ class HomeController extends Controller
     public function browseUsersAction() {
         $repository = $this->getDoctrine()
             ->getRepository('UserBundle:User');
+
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $users = $repository->findAll();
         $json = json_encode($users);
+
         return $this->render('@App/Home/browseUsers.html.twig', array(
             'users' => $json
         ));
     }
+
     public function showProfileAction($id)
     {
         return $this->render('@App/Home/showUser.html.twig', array(
             'id' => $id
         ));
     }
+
     public function activateWorkout($id, Request $request)
     {
         $workout = $this->getDoctrine()
@@ -300,15 +266,17 @@ class HomeController extends Controller
         if ($this->getUser()->getActiveWorkout()!=null)
             if ($this->getUser()->getActiveWorkout()->getId()==$id) {
                 $disabled=true;
+
             }
         $form = $this->createFormBuilder()
             ->add('Hidden', HiddenType::class, array(
                 'data' => '0'
             ))
-            ->add('Aktyvuoti', SubmitType::class, array (
+            ->add('Activate', SubmitType::class, array (
                 'disabled'=>$disabled
             ))
             ->getForm();
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
