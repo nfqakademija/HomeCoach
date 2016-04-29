@@ -1,49 +1,41 @@
 {% extends 'base3.html.twig' %}
 
 {% block content %}
-        <div class="inline">
-            <h1 class="description">{{ workout.title }} </h1>
-        </div>
-        <div class="inline">
-            {{ workout.difficulty | difficulty }}
-        </div>
-    <br class="clearBoth" />
     <div class="row">
-        <div class="col-md-5">
-            Sukurta: {{ workout.dataCreated.format('H:i:s Y-m-d') }}
-            <br><br>
-            Pagal šia programą sportuojančių narių kiekis {{ workout.activations|length }} !
-            {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
+        <div class="col-md-4">
+            <h1 class="info"> Sudėtingumas </h1>
+            <h1 class="info"> Reitingas </h1>
+            <h1 class="info"> Tavo įvertinimas </h1>
         </div>
-        <div class="col-md-7">
-            <div id="rateYo"></div>
+        <div class="col-md-5">
+            <div id="difficulty"></div>
+            <div style="margin-top:15px;" id="rating"></div>
+            <div style="margin-top:15px;" id="userRating"></div>
+        </div>
+        <div class="col-md-3">
+            <h1 class="info"> Pasirinko </h1>
+           <h1 class="number"> {{ workout.activations|length }} </h1>
         </div>
     </div>
+            <h1 class="description">{{ workout.title }} </h1>
     <div class="row">
         <div class="col-md-12">
             <p style="word-break: break-all"> {{ workout.description }} </p>
+            {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
         </div>
     </div>
     <h2 class="description"> Programos tvarkaraštis</h2>
     <ul class="nav nav-pills radios">
-        <li class="active"><a data-toggle="pill" href="#day1">Pirm.</a></li>
-        <li><a data-toggle="pill" href="#day2">Antr.</a></li>
-        <li><a data-toggle="pill" href="#day3">Treč.</a></li>
-        <li><a data-toggle="pill" href="#day4">Ketv.</a></li>
-        <li><a data-toggle="pill" href="#day5">Penkt.</a></li>
-        <li><a data-toggle="pill" href="#day6">Šešt.</a></li>
-        <li><a data-toggle="pill" href="#day7">Sekm.</a></li>
+        {% set days = ["Pirm.", "Antr.", "Treč.", "Ketv.", "Penkt.", "Šešt.", "Sekm."] %}
+        {% set activeSet=false %}
+        {% set first=null %}
+        {% for i in 0..6 %}
+            <li {% if activeSet==false and workout.schedule[i] != null %} class="active" {% set activeSet=true %} {% set first=i %}{% endif %}><a {% if workout.schedule[i] == null %} class="disabled" {% endif %}data-toggle="pill" href="#day{{ i+1 }}">{{ days[i] }}</a></li>
+        {% endfor %}
     </ul>
     <div class="tab-content" id="form_schedule">
-        <div id="day1" class="tab-pane fade in active">
-            {% if workout.schedule[0] != null %}
-                <p style="word-break: break-all"> {{ workout.schedule[0] }} </p>
-            {% else %}
-                <p> Ši diena laisva </p>
-            {% endif %}
-        </div>
-        {% for i in 1..6 %}
-            <div id="day{{ i+1 }}" class="tab-pane fade">
+        {% for i in 0..6 %}
+            <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
                 {% if workout.schedule[i] != null %}
                     <p style="word-break: break-all"> {{ workout.schedule[i] }} </p>
                 {% else %}

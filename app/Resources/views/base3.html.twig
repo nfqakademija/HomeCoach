@@ -8,6 +8,7 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/JerseyM54.ttf') }}">
         <link rel="stylesheet" href="{{ asset('css/workoutStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
@@ -77,10 +78,32 @@
     <script>
         $(function () {
             var rating = "{{ workout.rating }}";
-            $("#rateYo").rateYo({
+            if(rating=="")
+            {
+                rating=0;
+            }
+            $("#rating").rateYo({
                 rating: rating,
                 readOnly: true,
+                starWidth: "60px"
+            });
+
+            var difficulty = "{{ workout.difficulty }}";
+            $("#difficulty").rateYo({
+                rating: difficulty,
+                readOnly: true,
                 starWidth:"60px"
+            });
+
+            var userRated = "{{ workout.userRating(app.user.id) }}";
+            if(userRated=="")
+            {
+                userRated=0;
+            }
+            $("#userRating").rateYo({
+                rating: userRated,
+                fullStar: true,
+                starWidth: "60px"
             });
         });
     </script>
