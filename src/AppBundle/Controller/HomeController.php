@@ -17,6 +17,8 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
 use AppBundle\Service\Repo;
+use UserBundle\Entity\WorkoutHistory;
+
 class HomeController extends Controller
 {
     /**
@@ -313,8 +315,11 @@ class HomeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             if ($user!=null) {
+                $history = new WorkoutHistory($user, $workout);
                 $user->setActiveWorkout($workout);
+                $user->addWorkoutHistory($history);
                 $doc = $this->getDoctrine()->getManager();
+                $doc->persist($history);
                 $doc->persist($user);
                 $doc->flush();
             }
