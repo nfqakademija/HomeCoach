@@ -69,7 +69,20 @@ class HomeController extends Controller
         $workout->setSchedule($schedule);
         $form->add('schedule', CollectionType::class, array(
             'entry_type' => TextareaType::class,
-            'required' => false
+            'required' => false,
+        ));
+        $form->add('type', ChoiceType::class, array(
+            'choices' => Workout::$types,
+            'expanded' => true,
+            'multiple' => true
+        ))->add('equipment', ChoiceType::class, array(
+            'choices' => Workout::$equipments,
+            'expanded' => true,
+            'multiple' => true
+        ))->add('muscle_group', ChoiceType::class, array(
+            'choices' => Workout::$muscles,
+            'expanded' => true,
+            'multiple' => true
         ));
         $form->add('save', SubmitType::class, array('label' => 'Pridėti programą'));
         $form->handleRequest($request);

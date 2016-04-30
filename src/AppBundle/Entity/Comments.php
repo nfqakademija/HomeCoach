@@ -194,5 +194,4 @@ class Comments
     {
         $this->data_updated = $data_updated;
     }
-
 }

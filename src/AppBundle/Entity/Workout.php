@@ -18,6 +18,10 @@ use UserBundle\Entity\User;
  */
 class Workout
 {
+    public static $types = ["Jega", "Istverme", "Vikrumas"];
+    public static $equipments = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"];
+    public static $muscles = ["Bicepsas", "Tricepsas", "Peciai"];
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -80,6 +84,24 @@ class Workout
      * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_workout")
      */
     protected $activations;
+
+    /**
+     * @var array(int)
+     * @ORM\Column(type="array")
+     */
+    protected $type;
+
+    /**
+     * @var array(int)
+     * @ORM\Column(type="array")
+     */
+    protected $equipment;
+
+    /**
+     * @var array(int)
+     * @ORM\Column(type="array")
+     */
+    protected $muscle_group;
     /**
      * Workout constructor.
      * @param $creator
@@ -144,7 +166,8 @@ class Workout
      * Get schedule
      * @return array
      */
-    public function getSchedule() {
+    public function getSchedule()
+    {
         return $this->schedule;
     }
 
@@ -154,7 +177,8 @@ class Workout
      * @param array $schedule
      * @return Workout
      */
-    public function setSchedule($schedule) {
+    public function setSchedule($schedule)
+    {
         $this->schedule = $schedule;
         return $this;
     }
@@ -169,8 +193,9 @@ class Workout
      */
     public function getUserRating($user_id)
     {
-        if (!isset($this->user_ratings[$user_id]))
+        if (!isset($this->user_ratings[$user_id])) {
             return 0;
+        }
         return $this->user_ratings[$user_id];
     }
     /**
@@ -251,7 +276,7 @@ class Workout
      *
      * @return Workout
      */
-    public function setDataCreated ($date)
+    public function setDataCreated($date)
     {
         $this->data_created = $date;
         return $this;
@@ -262,7 +287,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataCreated ()
+    public function getDataCreated()
     {
         return $this->data_created;
     }
@@ -274,7 +299,7 @@ class Workout
      *
      * @return Workout
      */
-    public function setDataUpdated ($date)
+    public function setDataUpdated($date)
     {
         $this->data_updated = $date;
         return $this;
@@ -285,7 +310,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataUpdated ()
+    public function getDataUpdated()
     {
         return $this->data_updated;
     }
@@ -336,4 +361,51 @@ class Workout
         $this->activations = $activations;
     }
 
+    /**
+     * @return array
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param array $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEquipment()
+    {
+        return $this->equipment;
+    }
+
+    /**
+     * @param array $equipment
+     */
+    public function setEquipment($equipment)
+    {
+        $this->equipment = $equipment;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMuscleGroup()
+    {
+        return $this->muscle_group;
+    }
+
+    /**
+     * @param array $muscle_group
+     */
+    public function setMuscleGroup($muscle_group)
+    {
+        $this->muscle_group = $muscle_group;
+    }
 }
