@@ -408,4 +408,40 @@ class Workout
     {
         $this->muscle_group = $muscle_group;
     }
+
+    /**
+     * @return array
+     */
+    public function getTypeStrings()
+    {
+        $types = [];
+        foreach ($this->type as $i) {
+            $types[] = self::$types[$i];
+        }
+        return $types;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEquipmentStrings()
+    {
+        $equipment = [];
+        foreach ($this->equipment as $i) {
+            $equipment[] = self::$equipments[$i];
+        }
+        return $equipment;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMuscleGroupStrings()
+    {
+        $muscles = [];
+        foreach ($this->muscle_group as $i) {
+            $muscles[] = self::$muscles[$i];
+        }
+        return $muscles;
+    }
 }
