@@ -55,9 +55,7 @@ workoutApp.controller('workoutsController', function ($scope, $http) {
                     for (var i = 0; i < data.length; i++) {
                         $scope.workouts.push(data[i]);
                     }
-                }).error(function () {
-                    alert('Failed to get api');
-                });
+                })
             }
             document.getElementsByTagName("BODY")[0].className="";
         }
@@ -106,8 +104,6 @@ function loadScope(scope,http,url)
     http.get(url).success(function (data) {
         scope.workouts = data;
         scope.length = data.length;
-    }).error(function () {
-        alert('Failed to get api');
     });
     document.getElementsByTagName("BODY")[0].className="";
 }

@@ -1,16 +1,16 @@
 {% extends 'base3.html.twig' %}
-
+{% block title %}
+    {{ workout.title }}
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-4">
             <h1 class="info"> Sudėtingumas </h1>
             <h1 class="info"> Reitingas </h1>
-            <h1 class="info"> Tavo įvertinimas </h1>
         </div>
         <div class="col-md-5">
             <div id="difficulty"></div>
             <div style="margin-top:15px;" id="rating"></div>
-            <div style="margin-top:15px;" id="userRating"></div>
         </div>
         <div class="col-md-3">
             <h1 class="info"> Pasirinko </h1>
@@ -24,26 +24,31 @@
             {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
         </div>
     </div>
-    <h2 class="description"> Programos tvarkaraštis</h2>
-    <ul class="nav nav-pills radios">
-        {% set days = ["Pirm.", "Antr.", "Treč.", "Ketv.", "Penkt.", "Šešt.", "Sekm."] %}
-        {% set activeSet=false %}
-        {% set first=null %}
-        {% for i in 0..6 %}
-            <li {% if activeSet==false and workout.schedule[i] != null %} class="active" {% set activeSet=true %} {% set first=i %}{% endif %}><a {% if workout.schedule[i] == null %} class="disabled" {% endif %}data-toggle="pill" href="#day{{ i+1 }}">{{ days[i] }}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="tab-content" id="form_schedule">
-        {% for i in 0..6 %}
-            <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
-                {% if workout.schedule[i] != null %}
+    {% set showSchedule=false %}
+    {% set regimeNull=0 %}
+    {% for i in 0..6 %}
+        {% if workout.schedule[i]!=null %}
+            {% set showSchedule=true %}
+        {% endif %}
+    {% endfor %}
+    {% if showSchedule %}
+        <h2 class="description"> Programos tvarkaraštis</h2>
+        <ul class="nav nav-pills radios">
+            {% set days = ["Pirm.", "Antr.", "Treč.", "Ketv.", "Penkt.", "Šešt.", "Sekm."] %}
+            {% set activeSet=false %}
+            {% set first=null %}
+            {% for i in 0..6 %}
+                <li {% if activeSet==false and workout.schedule[i] != null %} class="active" {% set activeSet=true %} {% set first=i %}{% endif %}><a {% if workout.schedule[i] == null %} class="disabled" {% endif %}data-toggle="pill" href="#day{{ i+1 }}">{{ days[i] }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content" id="form_schedule">
+            {% for i in 0..6 %}
+                <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
                     <p style="word-break: break-all"> {{ workout.schedule[i] }} </p>
-                {% else %}
-                    <p> Ši diena laisva </p>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
         {% if app.user is not null %}
@@ -65,7 +70,7 @@
         {{ form_end(formRate) }}
         <br>
     {% endif %}
-    <div class="fb-like" data-href="http://127.0.0.1:8000/workouts/{{ workout.id }}" data-layout="standard" data-action="like" colorscheme="dark" data-show-faces="true" data-share="true"></div>
+    <div class="fb-like" data-href="http://homecoach.projektai.nfqakademija.lt/workouts/{{ workout.id }}" data-layout="standard" data-action="like" colorscheme="dark" data-show-faces="true" data-share="true"></div>
     <h2 class="description"> Komentarai </h2>
     <ul style="margin-bottom:10px;" class="nav nav-tabs">
         <li><a data-toggle="tab" href="#menu1">Home Coach <span class="badge alert-info">{{ workout.comments|length }}</span> </a></li>

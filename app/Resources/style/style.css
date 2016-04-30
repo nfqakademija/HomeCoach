@@ -489,3 +489,27 @@ select
     font-size:25px;
     font-family:Oswald;
 }
+
+.disabled
+{
+    pointer-events: none;
+    color: green;
+}
+
+.radios
+{
+    width: 100%;
+}
+
+.radios li
+{
+    width: 14%;
+}
+
+.radios li a
+{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    font-family:Oswald;
+}
