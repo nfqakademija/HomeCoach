@@ -222,8 +222,10 @@ class HomeController extends Controller
             $page = 0;
         }
         $sort = $request->query->get("sort");
-        if ($sort==null) {
+        if ($sort==null || $sort=="rating") {
             $sort = "rating";
+        } else {
+            $sort = "data_created";
         }
         $difficulty = $request->query->get("difficulty");
         $search = $request->query->get("search");
@@ -244,7 +246,7 @@ class HomeController extends Controller
         }
         if ($type!=null) {
             foreach ($type as $i) {
-                $whereState = $whereState . "IN(:type" . $i . ", Workouts.type) AND ";
+                $whereState = $whereState . "FIND_IN_SET(:type" . $i . ", Workouts.type) AND ";
             }
         }
         if ($equipment!=null) {
@@ -254,7 +256,7 @@ class HomeController extends Controller
         }
         if ($muscle!=null) {
             foreach ($muscle as $i) {
-                $whereState = $whereState . "IN(:muscle" . $i . ", Workouts.muscle_group) AND ";
+                $whereState = $whereState . "FIND_IN_SET(:muscle" . $i . ", Workouts.muscle_group) AND ";
             }
         }
 
