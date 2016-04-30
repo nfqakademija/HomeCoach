@@ -27,8 +27,8 @@ app.showWorkouts:
     defaults: { _controller: AppBundle:Home:showWorkouts}
 
 app.showWorkoutPage:
-    path:     /showWorkoutsPage/{page}/{sort}/{difficulty}/{search}
-    defaults: { _controller: AppBundle:Home:showWorkoutsPage, search: 0}
+    path:     /showWorkoutsPage
+    defaults: { _controller: AppBundle:Home:showWorkoutsPage}
 
 app.showProfile:
     path:     /showProfile/{id}
@@ -38,8 +38,5 @@ app.showComments:
     path:     /showComments/{id}
     defaults: { _controller: AppBundle:Comment:showComments}
 
-app.activateWorkout:
-    path:     /activateWorkout/{id}
-    defaults: { _controller: AppBundle:Home:activateWorkout}
 _user_bundle:
     resource: "@UserBundle/Resources/config/routing.yml"

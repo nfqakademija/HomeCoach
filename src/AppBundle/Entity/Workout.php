@@ -18,9 +18,9 @@ use UserBundle\Entity\User;
  */
 class Workout
 {
-    public static $types = ["Jega", "Istverme", "Vikrumas"];
-    public static $equipments = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"];
-    public static $muscles = ["Bicepsas", "Tricepsas", "Peciai"];
+    const TYPES = ["Jega", "Istverme", "Vikrumas"];
+    const EQUIPMENTS = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"];
+    const MUSCLES = ["Bicepsas", "Tricepsas", "Peciai"];
 
     /**
      * @ORM\Column(type="integer")
@@ -87,19 +87,19 @@ class Workout
 
     /**
      * @var array(int)
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $type;
 
     /**
      * @var array(int)
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $equipment;
 
     /**
      * @var array(int)
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $muscle_group;
     /**
@@ -415,8 +415,10 @@ class Workout
     public function getTypeStrings()
     {
         $types = [];
-        foreach ($this->type as $i) {
-            $types[] = self::$types[$i];
+        if ($this->type[0]!="") {
+            foreach ($this->type as $i) {
+                $types[] = self::TYPES[$i];
+            }
         }
         return $types;
     }
@@ -427,8 +429,10 @@ class Workout
     public function getEquipmentStrings()
     {
         $equipment = [];
-        foreach ($this->equipment as $i) {
-            $equipment[] = self::$equipments[$i];
+        if ($this->equipment[0]!="") {
+            foreach ($this->equipment as $i) {
+                $equipment[] = self::EQUIPMENTS[$i];
+            }
         }
         return $equipment;
     }
@@ -439,8 +443,10 @@ class Workout
     public function getMuscleGroupStrings()
     {
         $muscles = [];
-        foreach ($this->muscle_group as $i) {
-            $muscles[] = self::$muscles[$i];
+        if ($this->muscle_group[0]!="") {
+            foreach ($this->muscle_group as $i) {
+                $muscles[] = self::MUSCLES[$i];
+            }
         }
         return $muscles;
     }
