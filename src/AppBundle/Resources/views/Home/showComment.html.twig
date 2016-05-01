@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-11">
                 <a class="commentAuthor" href="{{ path('app.showProfile',{'id':comment.user.id}) }}"> {{ comment.user.username }} </a>
-                <p class="comment more">{{ comment.comment }}</p>
+                <p class="comment more">{{ comment.comment|nl2br }}</p>
             </div>
             {% if comment.subComments is not null %}
                 <ul>

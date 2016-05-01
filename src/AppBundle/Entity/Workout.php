@@ -5,13 +5,10 @@
  * Date: 3/7/2016
  * Time: 3:48 PM
  */
-
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\User;
-
 /**
  * @ORM\Entity()
  * @ORM\Table(name="Workouts")
@@ -21,14 +18,12 @@ class Workout
     const TYPES = ["Jėga", "Ištvermė", "Vikrumas", "Svorio metimas", "Svorio priaugimas"];
     const EQUIPMENTS = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"]; // TODO: Surasyt iranga.
     const MUSCLES = ["Nugara", "Pečiai", "Krūtinė", "Bicepsas", "Tricepsas", "Dilbis", "Pilvo presas", "Kojos"];
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
@@ -37,66 +32,54 @@ class Workout
      * @ORM\Column(type="string", length=100)
      */
     protected $title;
-
     /**
      * @ORM\Column(type="integer")
      */
     protected $difficulty;
-
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(min=150, minMessage="Turi būti mažiausiai 150 simboliai")
      */
     protected $description;
-
     /**
      * @ORM\Column(type="array", nullable=TRUE)
      */
     protected $schedule;
-
     /**
      * @ORM\Column(type="array", nullable=TRUE)
      */
     protected $user_ratings;
-
     /**
      * @ORM\Column(type="float", nullable=TRUE)
      */
     protected $rating;
-
     /**
      * @ORM\OneToMany(targetEntity="Comments", mappedBy="workout")
      */
     protected $comments;
-
     /**
      * @ORM\Column(type="datetime")
      */
     protected $data_created;
-
     /**
      * @ORM\Column(type="datetime")
      */
     protected $data_updated;
-
     /**
      * @var array
      * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_workout")
      */
     protected $activations;
-
     /**
      * @var array(int)
      * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $type;
-
     /**
      * @var array(int)
      * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $equipment;
-
     /**
      * @var array(int)
      * @ORM\Column(type="simple_array", nullable=true)
@@ -112,8 +95,6 @@ class Workout
         $this->creator = $creator;
         $this->data_created = $data_created;
     }
-
-
     /**
      * Get id
      *
@@ -132,7 +113,6 @@ class Workout
     {
         return $this->rating;
     }
-
     /**
      * @return User
      */
@@ -152,16 +132,13 @@ class Workout
     {
         $user_id = $user->getId();
         $this->user_ratings[$user_id] = $user_rating;
-
         $sum=0;
         foreach ($this->user_ratings as $i) {
             $sum+=$i;
         }
         $this->rating=round($sum/count($this->user_ratings), 2);
-
         return $this;
     }
-
     /**
      * Get schedule
      * @return array
@@ -170,8 +147,6 @@ class Workout
     {
         return $this->schedule;
     }
-
-
     /**
      * Set schedule
      * @param array $schedule
@@ -182,8 +157,6 @@ class Workout
         $this->schedule = $schedule;
         return $this;
     }
-
-
     /**
      * Get rating
      *
@@ -208,10 +181,8 @@ class Workout
     public function setTitle($title)
     {
         $this->title = $title;
-
         return $this;
     }
-
     /**
      * Get title
      *
@@ -221,7 +192,6 @@ class Workout
     {
         return $this->title;
     }
-
     /**
      * Set describtion
      *
@@ -232,10 +202,8 @@ class Workout
     public function setDescription($description)
     {
         $this->description = $description;
-
         return $this;
     }
-
     /**
      * Get describtion
      *
@@ -254,7 +222,6 @@ class Workout
     {
         return $this->difficulty;
     }
-
     /**
      * Set difficulty
      *
@@ -265,10 +232,8 @@ class Workout
     public function setDifficulty($difficulty)
     {
         $this->difficulty = $difficulty;
-
         return $this;
     }
-
     /**
      * Set DataCreated
      *
@@ -291,7 +256,6 @@ class Workout
     {
         return $this->data_created;
     }
-
     /**
      * Set DataUpdated
      *
@@ -314,7 +278,6 @@ class Workout
     {
         return $this->data_updated;
     }
-
     /**
      * @return array
      */
@@ -329,7 +292,6 @@ class Workout
     {
         return $this->comments;
     }
-
     /**
      * @param array $comments
      */
@@ -344,7 +306,6 @@ class Workout
     {
         $this->comments[] = $comments;
     }
-
     /**
      * @return array
      */
@@ -352,7 +313,6 @@ class Workout
     {
         return $this->activations;
     }
-
     /**
      * @param array $activations
      */
@@ -360,7 +320,6 @@ class Workout
     {
         $this->activations = $activations;
     }
-
     /**
      * @return array
      */
@@ -368,7 +327,6 @@ class Workout
     {
         return $this->type;
     }
-
     /**
      * @param array $type
      */
@@ -376,7 +334,6 @@ class Workout
     {
         $this->type = $type;
     }
-
     /**
      * @return array
      */
@@ -384,7 +341,6 @@ class Workout
     {
         return $this->equipment;
     }
-
     /**
      * @param array $equipment
      */
@@ -392,7 +348,6 @@ class Workout
     {
         $this->equipment = $equipment;
     }
-
     /**
      * @return array
      */
@@ -400,7 +355,6 @@ class Workout
     {
         return $this->muscle_group;
     }
-
     /**
      * @param array $muscle_group
      */
@@ -408,42 +362,39 @@ class Workout
     {
         $this->muscle_group = $muscle_group;
     }
-
     /**
      * @return array
      */
     public function getTypeStrings()
     {
         $types = [];
-        if ($this->type[0]!="") {
+        if ($this->type!=null) {
             foreach ($this->type as $i) {
                 $types[] = self::TYPES[$i];
             }
         }
         return $types;
     }
-
     /**
      * @return array
      */
     public function getEquipmentStrings()
     {
         $equipment = [];
-        if ($this->equipment[0]!="") {
+        if ($this->equipment!=null) {
             foreach ($this->equipment as $i) {
                 $equipment[] = self::EQUIPMENTS[$i];
             }
         }
         return $equipment;
     }
-
     /**
      * @return array
      */
     public function getMuscleGroupStrings()
     {
         $muscles = [];
-        if ($this->muscle_group[0]!="") {
+        if ($this->muscle_group!=null) {
             foreach ($this->muscle_group as $i) {
                 $muscles[] = self::MUSCLES[$i];
             }

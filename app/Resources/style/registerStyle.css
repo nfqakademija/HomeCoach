@@ -197,3 +197,15 @@ textarea {
 {
     margin-bottom:40px;
 }
+
+input[type="checkbox"]
+{
+    width: 16px;
+    margin-right:5px;
+}
+
+.labelForCheckbox
+{
+    width: 100%;
+    margin:10px 0px 10px 0px;
+}

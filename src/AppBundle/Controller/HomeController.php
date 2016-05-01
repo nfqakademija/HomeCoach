@@ -337,8 +337,9 @@ class HomeController extends Controller
     }
     public function showProfileAction($id)
     {
+        $user = $this->getDoctrine()->getRepository("UserBundle:User")->find($id);
         return $this->render('@App/Home/showUser.html.twig', array(
-            'id' => $id
+            'user'=>$user
         ));
     }
     public function activateWorkout($id, Request $request)
@@ -347,32 +348,36 @@ class HomeController extends Controller
             ->getRepository('AppBundle:Workout')
             ->find($id);
         $disabled = false;
-        if ($request->getContent("Hidden")!=null) {
+        $buttonName = "Aktyvuoti";
+        if ($request->request->has("activateForm")) {
             $disabled=true;
         }
         if ($this->getUser()->getActiveWorkout()!=null)
             if ($this->getUser()->getActiveWorkout()->getId()==$id) {
                 $disabled=true;
             }
-        $form = $this->createFormBuilder()
-            ->add('Hidden', HiddenType::class, array(
-                'data' => '0'
-            ))
-            ->add('Aktyvuoti', SubmitType::class, array (
-                'disabled'=>$disabled
+        if ($disabled) {
+            $buttonName = "Programa aktyvuota!";
+        }
+        $form = $this->get('form.factory')->createNamedBuilder("activateForm")
+            ->add("Aktyvuoti", SubmitType::class, array (
+                'disabled'=>$disabled,
+                'label'=>$buttonName
             ))
             ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if ($user!=null) {
-                $history = new WorkoutHistory($user, $workout);
-                $user->setActiveWorkout($workout);
-                $user->addWorkoutHistory($history);
-                $doc = $this->getDoctrine()->getManager();
-                $doc->persist($history);
-                $doc->persist($user);
-                $doc->flush();
+        if ($request->request->has("activateForm")) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user = $this->getUser();
+                if ($user != null) {
+                    $history = new WorkoutHistory($user, $workout);
+                    $user->setActiveWorkout($workout);
+                    $user->addWorkoutHistory($history);
+                    $doc = $this->getDoctrine()->getManager();
+                    $doc->persist($history);
+                    $doc->persist($user);
+                    $doc->flush();
+                }
             }
         }
         return $form->createView();

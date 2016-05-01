@@ -8,24 +8,26 @@
 
 namespace AppBundle\Service;
 
-
 use Doctrine\ORM\EntityManager;
 
 class Repo
 {
     public $entityManager;
+
     /**
      * Repo constructor.
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
-    public function getHotWorkouts() {
+    public function getHotWorkouts()
+    {
         $repository = $this->entityManager
             ->getRepository('AppBundle:Workout');
         
-        $workouts = $repository->findBy(array(), array('rating' => 'DESC'),5);
+        $workouts = $repository->findBy(array(), array('rating' => 'DESC'), 5);
         
         //TODO padaryti su JSONResponse
         $json = json_encode($workouts);
@@ -33,7 +35,8 @@ class Repo
         return $json;
     }
     
-    public function showWorkout($id) {
+    public function showWorkout($id)
+    {
 
         $repository = $this->entityManager
             ->getRepository('AppBundle:Workout')
