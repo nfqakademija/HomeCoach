@@ -85,10 +85,12 @@ class Workout
      * @param $creator
      * @param $data_created
      */
-    public function __construct($creator, $data_created)
+    public function __construct($creator)
     {
         $this->creator = $creator;
-        $this->data_created = $data_created;
+        $this->data_created = new \DateTime();
+        $this->data_updated = $this->data_created;
+        $this->schedule = array (null, null, null, null, null, null, null);
     }
 
 

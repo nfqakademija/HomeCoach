@@ -36,9 +36,9 @@ class WorkoutRatingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Workout'
         ));
     }
+
 
     /**
      * @param FormBuilderInterface $builder
@@ -46,10 +46,11 @@ class WorkoutRatingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('rating', 
-                'choice',
-                array('choices' => $this->RATING_CHOICES, 'expanded' => true))
+        $builder->add(
+            'rating',
+            'choice',
+            array('choices' => $this->RATING_CHOICES, 'expanded' => true)
+        )
             ->getForm();
     }
 }

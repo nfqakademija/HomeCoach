@@ -8,7 +8,6 @@
 
 namespace AppBundle\Service;
 
-
 use AppBundle\Entity\Workout;
 use Doctrine\ORM\EntityManager;
 
@@ -26,8 +25,10 @@ class Repo
     {
         return $this->entityManager;
     }
+    
     /**
      * Repo constructor.
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -38,7 +39,8 @@ class Repo
      * @param $repository
      * @return \Doctrine\ORM\EntityRepository
      */
-    public function getRepo($repository){
+    public function getRepo($repository)
+    {
         
         $repo = $this->entityManager
             ->getRepository($repository);
@@ -48,9 +50,10 @@ class Repo
 
     /**
      * @param $id
-     * @return null|object
+     * @return null|Workout
      */
-    public function getWorkout($id) {
+    public function getWorkout($id)
+    {
         
         $repo = $this->getRepo('AppBundle:Workout')
             ->find($id);
@@ -61,20 +64,27 @@ class Repo
     /**
      * @return array
      */
-    public function getHotWorkouts() {
+    public function getHotWorkouts()
+    {
         
         $repo = $this->getRepo('AppBundle:Workout');
-        $workouts = $repo->findBy(array(), array('rating' => 'DESC'),5);
+        $workouts = $repo->findBy(array(), array('rating' => 'DESC'), 5);
         
         return $workouts;
     }
+
 
     /**
      * @param $page
      * @param $sort
      * @param $difficulty
+     * @param $search
+     * @param $type
+     * @param $equipment
+     * @param $muscle
      */
-    public function getWorkouts($page, $sort, $difficulty) {
+    public function getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle)
+    {
         //this has yet to be changed
     }
 }
