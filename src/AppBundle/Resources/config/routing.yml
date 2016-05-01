@@ -23,8 +23,8 @@ app.rateWorkout:
     defaults: { _controller: AppBundle:Home:rateWorkout}
 
 app.showWorkoutPage:
-    path:     /showWorkoutsPage/{page}/{sort}/{difficulty}
-    defaults: { _controller: AppBundle:Home:showWorkoutsPage}
+    path:     /showWorkoutsPage/{page}/{sort}/{difficulty}/{search}
+    defaults: { _controller: AppBundle:Home:showWorkoutsPage, search: 0}
 
 app.showProfile:
     path:     /showProfile/{id}

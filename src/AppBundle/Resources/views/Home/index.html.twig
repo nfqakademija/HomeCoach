@@ -1,11 +1,11 @@
 {% extends "::base2.html.twig" %}
-
+{% block title %}
+    Home Coach
+{% endblock %}
 {% block content %}
-
     <section id="home" class="parallax-section">
         <div class="container">
             <div class="row">
-
                 <div class="col-md-12 col-sm-12">
                     <h1 class="home wow fadeInDown"> HOME <span class="homeSpan">COACH</span></h1>
                     {% if app.user is not null %}
@@ -14,12 +14,40 @@
                         <a href="/login" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.4s">PRISIJUNGTI</a>
                     {% endif %}
                     <a href="#mainSection" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">RODYTI PROGRAMAS</a>
+                    {% if app.user and app.user.activeworkout is not null %}
+                        <a href="#activeWorkout" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.7s"> JŪSŲ AKTYVI PROGRAMA </a>
+                    {% endif %}
                 </div>
-
             </div>
         </div>
     </section>
-
+    {% if app.user and app.user.activeworkout is not null %}
+        <div class="row" id="activeWorkout">
+            <div class="box col-md-4">
+                <h2 style="font-family: Oswald"><a href="workouts/{{ app.user.activeworkout.id }}"> {{ app.user.activeworkout.title }}</a> </h2>
+                <p> Autorius: <a href="showProfile/{{ app.user.activeworkout.creator.id }}"> {{ app.user.activeworkout.creator.username }}</a></p>
+                <p class="description">{{ app.user.activeworkout.description[:150] }}</p>
+                <a href="workouts/{{ app.user.activeworkout.id }}" class="button">Daugiau</a>
+            </div>
+            <div class="col-md-8">
+                <ul class="nav nav-pills radios">
+                    {% set days = ["Pirm.", "Antr.", "Treč.", "Ketv.", "Penkt.", "Šešt.", "Sekm."] %}
+                    {% set activeSet=false %}
+                    {% set first=null %}
+                    {% for i in 0..6 %}
+                        <li {% if activeSet==false and app.user.activeworkout.schedule[i] != null %} class="active" {% set activeSet=true %} {% set first=i %}{% endif %}><a {% if app.user.activeworkout.schedule[i] == null %} class="disabled" {% endif %}data-toggle="pill" href="#day{{ i+1 }}">{{ days[i] }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content" id="form_schedule">
+                    {% for i in 0..6 %}
+                        <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
+                            <p style="word-break: break-all; color:white;"> {{ app.user.activeworkout.schedule[i] }} </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="container" id="mainSection">
         <div ng-app="workoutApp" ng-controller="workoutsController">
 
@@ -52,34 +80,8 @@
                     </section>
                 </div>
             </div>
+            <p style="margin:200px; text-align: center;" ng-if="workouts.length==0">Neradome nei vienos programos</p>
         </div>
     </div>
-    <section class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
-        <div class="container">
-
-            <div class="navbar-header">
-                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon icon-bar"></span>
-                    <span class="icon icon-bar"></span>
-                    <span class="icon icon-bar"></span>
-                </button>
-                <a href="" class="navbar-brand"> <span style="color:orange"> HOME </span> COACH </a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right main-navigation">
-                    {% if app.user is not null %}
-                        <li><a href="{{ path('app.createWorkout') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
-                        <li><span class="loginInfo"> {{ 'layout.logged_in_as' | trans({'%username%': app.user.username}, 'FOSUserBundle') }} </span> </li>
-                        <li> <a href="{{ path('fos_user_security_logout') }}">
-                                <span class="glyphicon glyphicon-off"></span>
-                                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                            </a></li>
-                    {% else %}
-                        <li><a href="/login" class="smoothScroll">PRISIJUNGTI</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-
-        </div>
-    </section>
+    {% include "::inc/header.html.twig" %}
 {% endblock %}

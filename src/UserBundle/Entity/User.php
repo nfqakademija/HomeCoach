@@ -37,16 +37,21 @@ class User extends BaseUser
 
     /**
      * @var Workout
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Workout")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Workout", inversedBy="activations")
      */
     protected $active_workout;
 
     /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Workout")
-     * @ORM\JoinTable(name="users_workouts_history")
+     * @ORM\OneToMany(targetEntity="WorkoutHistory", mappedBy="user")
      */
     protected $workout_history;
+
+    /**
+     * @var array
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Workout", mappedBy="creator")
+     */
+    protected $created_workouts;
     /**
      * Get ID
      *
@@ -137,9 +142,6 @@ class User extends BaseUser
      */
     public function setActiveWorkout($active_workout)
     {
-        if ($this->active_workout!=null) {
-            $this->workout_history[] = $this->active_workout;
-        }
         $this->active_workout = $active_workout;
     }
 
@@ -159,4 +161,28 @@ class User extends BaseUser
         $this->workout_history = $workout_history;
     }
 
+    /**
+     * Adds one history entity
+     * @param WorkoutHistory $history
+     */
+    public function addWorkoutHistory($history)
+    {
+        $this->workout_history[] = $history;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCreatedWorkouts()
+    {
+        return $this->created_workouts;
+    }
+
+    /**
+     * @param array $created_workouts
+     */
+    public function setCreatedWorkouts($created_workouts)
+    {
+        $this->created_workouts = $created_workouts;
+    }
 }

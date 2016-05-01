@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Service\Repo;
+use UserBundle\Entity\WorkoutHistory;
 
 class HomeController extends Controller
 {
@@ -172,8 +173,7 @@ class HomeController extends Controller
         //padaryti kad po keliu sekundziu redirectintu i ka tik sukurto workout'o puslapi
         return $this->render('@App/Home/taskSuccess.html.twig', array());
     }
-
-    public function showWorkoutsPageAction($page, $sort, $difficulty) {
+    public function showWorkoutsPageAction($page, $sort, $difficulty, $search) {
         $start = $page*4;
         if($difficulty == 'all')
         {
@@ -249,8 +249,9 @@ class HomeController extends Controller
 
     public function showProfileAction($id)
     {
+        $user = $this->getDoctrine()->getRepository("UserBundle:User")->find($id);
         return $this->render('@App/Home/showUser.html.twig', array(
-            'id' => $id
+            'user'=>$user
         ));
     }
 
@@ -260,31 +261,36 @@ class HomeController extends Controller
             ->getRepository('AppBundle:Workout')
             ->find($id);
         $disabled = false;
-        if ($request->getContent("Hidden")!=null) {
+        $buttonName = "Aktyvuoti";
+        if ($request->request->has("activateForm")) {
             $disabled=true;
         }
         if ($this->getUser()->getActiveWorkout()!=null)
-        if ($this->getUser()->getActiveWorkout()->getId()==$id) {
-            $disabled=true;
-
+            if ($this->getUser()->getActiveWorkout()->getId()==$id) {
+                $disabled=true;
+            }
+        if ($disabled) {
+            $buttonName = "Programa aktyvuota!";
         }
-        $form = $this->createFormBuilder()
-            ->add('Hidden', HiddenType::class, array(
-                'data' => '0'
-            ))
-            ->add('Activate', SubmitType::class, array (
-                'disabled'=>$disabled
+        $form = $this->get('form.factory')->createNamedBuilder("activateForm")
+            ->add("Aktyvuoti", SubmitType::class, array (
+                'disabled'=>$disabled,
+                'label'=>$buttonName
             ))
             ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if ($user!=null) {
-                $user->setActiveWorkout($workout);
-                $doc = $this->getDoctrine()->getManager();
-                $doc->persist($user);
-                $doc->flush();
+        if ($request->request->has("activateForm")) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user = $this->getUser();
+                if ($user != null) {
+                    $history = new WorkoutHistory($user, $workout);
+                    $user->setActiveWorkout($workout);
+                    $user->addWorkoutHistory($history);
+                    $doc = $this->getDoctrine()->getManager();
+                    $doc->persist($history);
+                    $doc->persist($user);
+                    $doc->flush();
+                }
             }
         }
         return $form->createView();

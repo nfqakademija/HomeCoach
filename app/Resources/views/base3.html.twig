@@ -7,28 +7,31 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('assets/jquery.rateyo.min.css') }}">
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/JerseyM54.ttf') }}">
         <link rel="stylesheet" href="{{ asset('css/workoutStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         <link rel="stylesheet" href="{{ asset('css/workoutDetailsStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('bower_components/rateYo/min/jquery.rateyo.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/navigation.css') }}"/>
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
 {% block body %}
-    <div id="fb-root"></div>
+    {% include "::inc/header.html.twig" %}
     <div class="container">
         {% block container %}
         <div class="container-fluid text-center">
             <div class="row content">
-                <div class="col-md-2">
+                <div class="col-md-1">
 
                 </div>
-                <div class="col-md-8 text-left form">
+                <div class="col-md-10 text-left form">
                     {% block content %}
                     {% endblock %}
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
 
                 </div>
                 {% endblock %}
@@ -41,15 +44,26 @@
 {% block javascripts %}
     <script src="{{ asset('assets/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('bower_components/rateYo/min/jquery.rateyo.min.js') }}"></script>
+    <script src="{{ asset('assets/jquery.rateyo.min.js') }}"></script>
     <script src="{{ asset('js/commentLengthControl.js') }}"></script>
     <script src="{{ asset('js/ratings.js') }}"></script>
     <script src="{{ asset('js/facebookPlugin.js') }}"></script>
     <script>
         $(function () {
             var rating = "{{ workout.rating }}";
-            $("#rateYo").rateYo({
+            if(rating=="")
+            {
+                rating=0;
+            }
+            $("#rating").rateYo({
                 rating: rating,
+                readOnly: true,
+                starWidth: "60px"
+            });
+
+            var difficulty = "{{ workout.difficulty }}";
+            $("#difficulty").rateYo({
+                rating: difficulty,
                 readOnly: true,
                 starWidth:"60px"
             });
