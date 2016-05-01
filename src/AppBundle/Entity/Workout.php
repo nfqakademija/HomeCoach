@@ -144,7 +144,8 @@ class Workout
      * Get schedule
      * @return array
      */
-    public function getSchedule() {
+    public function getSchedule()
+    {
         return $this->schedule;
     }
 
@@ -154,7 +155,8 @@ class Workout
      * @param array $schedule
      * @return Workout
      */
-    public function setSchedule($schedule) {
+    public function setSchedule($schedule)
+    {
         $this->schedule = $schedule;
         return $this;
     }
@@ -169,8 +171,9 @@ class Workout
      */
     public function getUserRating($user_id)
     {
-        if (!isset($this->user_ratings[$user_id]))
+        if (!isset($this->user_ratings[$user_id])) {
             return 0;
+        }
         return $this->user_ratings[$user_id];
     }
     /**
@@ -251,7 +254,7 @@ class Workout
      *
      * @return Workout
      */
-    public function setDataCreated ($date)
+    public function setDataCreated($date)
     {
         $this->data_created = $date;
         return $this;
@@ -262,7 +265,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataCreated ()
+    public function getDataCreated()
     {
         return $this->data_created;
     }
@@ -274,7 +277,7 @@ class Workout
      *
      * @return Workout
      */
-    public function setDataUpdated ($date)
+    public function setDataUpdated($date)
     {
         $this->data_updated = $date;
         return $this;
@@ -285,7 +288,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataUpdated ()
+    public function getDataUpdated()
     {
         return $this->data_updated;
     }
@@ -335,5 +338,4 @@ class Workout
     {
         $this->activations = $activations;
     }
-
 }

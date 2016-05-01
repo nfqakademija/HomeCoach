@@ -42,7 +42,6 @@ class WorkoutHistory
      * WorkoutHistory constructor.
      * @param $user
      * @param Workout $workout
-     * @param $date
      */
     public function __construct($user, Workout $workout)
     {
@@ -109,7 +108,4 @@ class WorkoutHistory
     {
         $this->date = $date;
     }
-
-
 }
-
