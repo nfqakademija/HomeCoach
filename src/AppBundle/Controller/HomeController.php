@@ -286,8 +286,9 @@ class HomeController extends Controller
     }
     public function showProfileAction($id)
     {
+        $user = $this->getDoctrine()->getRepository("UserBundle:User")->find($id);
         return $this->render('@App/Home/showUser.html.twig', array(
-            'id' => $id
+            'user'=>$user
         ));
     }
     public function activateWorkout($id, Request $request)

@@ -1,5 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-Rodomas profilis su id {{ id }}
+<h3>Vartotojo duomenys:<br> </h3>
+    <h4>
+        Vartotojas: {{ user.username }} <br>
+        Vardas: {{ user.name }} <br>
+        Pavardė: {{ user.surname }} <br>
+        El. paštas: {{ user.email }} <br>
+        {% if user.createdWorkouts is not null %}
+            Sukurtos programos:<br>
+            {% for workout in user.createdWorkouts %}
+                <a href="../workouts/{{ workout.id }}">{{ workout.title }} ({{ workout.activations|length }} Naudotojų)</a><br>
+            {% endfor %}
+        {% endif %}
+        <br>
+        {% if app.user is not null %}
+            {% if app.user.id == user.id %}
+                {% if user.activeWorkout is not null %}
+                    Aktyvuota programa: <a href="../workouts/{{ user.activeWorkout.id }}">{{ user.activeWorkout.title }}</a><br>
+                    <br>
+                {% endif %}
+                {% if user.workoutHistory|length != 0 %}
+                    Treniruočių programų istorija:<br>
+                    {% for history in user.workoutHistory %}
+                        {{ history.date|date('Y-m-d') }} <a href="../workouts/{{ history.Workout.id }}">{{ history.Workout.title }}</a><br>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </h4>
+
+
 {% endblock %}
