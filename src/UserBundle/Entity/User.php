@@ -48,6 +48,11 @@ class User extends BaseUser
     protected $workout_history;
 
     /**
+     * @var array
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Workout", mappedBy="creator")
+     */
+    protected $created_workouts;
+    /**
      * Get ID
      *
      * @return integer
@@ -163,5 +168,21 @@ class User extends BaseUser
     public function addWorkoutHistory($history)
     {
         $this->workout_history[] = $history;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCreatedWorkouts()
+    {
+        return $this->created_workouts;
+    }
+
+    /**
+     * @param array $created_workouts
+     */
+    public function setCreatedWorkouts($created_workouts)
+    {
+        $this->created_workouts = $created_workouts;
     }
 }
