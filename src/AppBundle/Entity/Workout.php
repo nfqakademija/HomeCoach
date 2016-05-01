@@ -29,7 +29,7 @@ class Workout
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="created_workouts")
      */
     protected $creator;
     /**
