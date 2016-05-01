@@ -37,7 +37,7 @@ class User extends BaseUser
 
     /**
      * @var Workout
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Workout")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Workout", inversedBy="activations")
      */
     protected $active_workout;
 
@@ -160,7 +160,8 @@ class User extends BaseUser
      * Adds one history entity
      * @param WorkoutHistory $history
      */
-    public function addWorkoutHistory($history) {
+    public function addWorkoutHistory($history)
+    {
         $this->workout_history[] = $history;
     }
 }

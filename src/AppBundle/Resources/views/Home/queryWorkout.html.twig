@@ -20,7 +20,7 @@
             <h1 class="description">{{ workout.title }} </h1>
     <div class="row">
         <div class="col-md-12">
-            <p style="word-break: break-all"> {{ workout.description }} </p>
+            <p style="word-break: break-all"> {{ workout.description|nl2br }} </p>
             {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
         </div>
     </div>
@@ -44,7 +44,7 @@
         <div class="tab-content" id="form_schedule">
             {% for i in 0..6 %}
                 <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
-                    <p style="word-break: break-all"> {{ workout.schedule[i] }} </p>
+                    <p style="word-break: break-all"> {{ workout.schedule[i]|nl2br }} </p>
                 </div>
             {% endfor %}
         </div>
