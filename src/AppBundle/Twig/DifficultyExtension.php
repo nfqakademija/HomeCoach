@@ -19,8 +19,7 @@ class DifficultyExtension extends \Twig_Extension
 
     public function difficultyFilter($number)
     {
-        switch($number)
-        {
+        switch ($number) {
             case 1:
                 echo '<figure class="circleVeryEasy"></figure>';
                 break;
