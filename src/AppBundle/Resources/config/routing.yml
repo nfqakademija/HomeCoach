@@ -4,27 +4,15 @@ app.index:
 
 app.users:
     path:     /users
-    defaults: { _controller: AppBundle:Home:browseUsers}
+    defaults: { _controller: AppBundle:User:browseUsers}
 
 app.createWorkout:
     path:     /createWorkout
-    defaults: { _controller: AppBundle:Home:createWorkout}
+    defaults: { _controller: AppBundle:Workout:createWorkout}
 
 app.showWorkout:
     path:     /workouts/{id}
-    defaults: { _controller: AppBundle:Home:showWorkout}
-
-app.taskSuccess:
-    path:     /success
-    defaults: { _controller: AppBundle:Home:taskSuccess}
-
-app.rateWorkout:
-    path:     /rating/{id}
-    defaults: { _controller: AppBundle:Home:rateWorkout}
-
-app.showWorkouts:
-    path:     /showWorkouts
-    defaults: { _controller: AppBundle:Home:showWorkouts}
+    defaults: { _controller: AppBundle:Workout:showWorkout}
 
 app.showWorkoutPage:
     path:     /showWorkoutsPage
@@ -32,7 +20,7 @@ app.showWorkoutPage:
 
 app.showProfile:
     path:     /showProfile/{id}
-    defaults: { _controller: AppBundle:Home:showProfile}
+    defaults: { _controller: AppBundle:User:showProfile}
 
 app.showComments:
     path:     /showComments/{id}

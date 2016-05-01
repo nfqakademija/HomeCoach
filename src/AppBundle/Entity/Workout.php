@@ -5,10 +5,13 @@
  * Date: 3/7/2016
  * Time: 3:48 PM
  */
+
 namespace AppBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\User;
+
 /**
  * @ORM\Entity()
  * @ORM\Table(name="Workouts")
@@ -24,6 +27,7 @@ class Workout
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
@@ -32,39 +36,48 @@ class Workout
      * @ORM\Column(type="string", length=100)
      */
     protected $title;
+
     /**
      * @ORM\Column(type="integer")
      */
     protected $difficulty;
+
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(min=150, minMessage="Turi būti mažiausiai 150 simboliai")
      */
     protected $description;
+
     /**
      * @ORM\Column(type="array", nullable=TRUE)
      */
     protected $schedule;
+
     /**
      * @ORM\Column(type="array", nullable=TRUE)
      */
     protected $user_ratings;
+
     /**
      * @ORM\Column(type="float", nullable=TRUE)
      */
     protected $rating;
+
     /**
      * @ORM\OneToMany(targetEntity="Comments", mappedBy="workout")
      */
     protected $comments;
+
     /**
      * @ORM\Column(type="datetime")
      */
     protected $data_created;
+
     /**
      * @ORM\Column(type="datetime")
      */
     protected $data_updated;
+
     /**
      * @var array
      * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="active_workout")
@@ -88,13 +101,16 @@ class Workout
     /**
      * Workout constructor.
      * @param $creator
-     * @param $data_created
      */
-    public function __construct($creator, $data_created)
+    public function __construct($creator)
     {
         $this->creator = $creator;
-        $this->data_created = $data_created;
+        $this->data_created = new \DateTime();
+        $this->data_updated = $this->data_created;
+        $this->schedule = array (null, null, null, null, null, null, null);
     }
+
+
     /**
      * Get id
      *
@@ -113,6 +129,7 @@ class Workout
     {
         return $this->rating;
     }
+
     /**
      * @return User
      */
@@ -132,13 +149,16 @@ class Workout
     {
         $user_id = $user->getId();
         $this->user_ratings[$user_id] = $user_rating;
+
         $sum=0;
         foreach ($this->user_ratings as $i) {
             $sum+=$i;
         }
         $this->rating=round($sum/count($this->user_ratings), 2);
+
         return $this;
     }
+
     /**
      * Get schedule
      * @return array
@@ -147,6 +167,8 @@ class Workout
     {
         return $this->schedule;
     }
+
+
     /**
      * Set schedule
      * @param array $schedule
@@ -157,6 +179,8 @@ class Workout
         $this->schedule = $schedule;
         return $this;
     }
+
+
     /**
      * Get rating
      *
@@ -181,8 +205,10 @@ class Workout
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
+
     /**
      * Get title
      *
@@ -192,6 +218,7 @@ class Workout
     {
         return $this->title;
     }
+
     /**
      * Set describtion
      *
@@ -202,8 +229,10 @@ class Workout
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
+
     /**
      * Get describtion
      *
@@ -222,6 +251,7 @@ class Workout
     {
         return $this->difficulty;
     }
+
     /**
      * Set difficulty
      *
@@ -232,20 +262,10 @@ class Workout
     public function setDifficulty($difficulty)
     {
         $this->difficulty = $difficulty;
+
         return $this;
     }
-    /**
-     * Set DataCreated
-     *
-     * @param \DateTime $date
-     *
-     * @return Workout
-     */
-    public function setDataCreated($date)
-    {
-        $this->data_created = $date;
-        return $this;
-    }
+
     /**
      * Get DataCreated
      *
@@ -256,6 +276,7 @@ class Workout
     {
         return $this->data_created;
     }
+
     /**
      * Set DataUpdated
      *
@@ -278,6 +299,7 @@ class Workout
     {
         return $this->data_updated;
     }
+
     /**
      * @return array
      */
@@ -292,6 +314,7 @@ class Workout
     {
         return $this->comments;
     }
+
     /**
      * @param array $comments
      */
@@ -306,6 +329,7 @@ class Workout
     {
         $this->comments[] = $comments;
     }
+
     /**
      * @return array
      */
@@ -313,6 +337,7 @@ class Workout
     {
         return $this->activations;
     }
+
     /**
      * @param array $activations
      */
