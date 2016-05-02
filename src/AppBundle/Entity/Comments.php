@@ -42,7 +42,7 @@ class Comments
     protected $sub_comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Workout")
+     * @ORM\ManyToOne(targetEntity="Workout", inversedBy="comments")
      */
     private $workout;
 
@@ -194,5 +194,4 @@ class Comments
     {
         $this->data_updated = $data_updated;
     }
-
 }

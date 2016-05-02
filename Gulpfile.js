@@ -9,7 +9,8 @@ var uglifycss = require('gulp-uglifycss');
 var dir = {
     assets: './app/Resources/',
     dist: './web/',
-    node: './node_modules/'
+    node: './node_modules/',
+    bower: './bower_components/'
 };
 
 gulp.task('sass', function () {
@@ -35,7 +36,7 @@ gulp.task('assets',function()
 {
     gulp.src(dir.node + 'angular/angular.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
-    gulp.src(dir.node +'bootstrap/dist/css/bootstrap.min.css')
+    gulp.src(dir.node + 'bootstrap/dist/css/bootstrap.min.css')
         .pipe(gulp.dest(dir.dist +'assets'));
     gulp.src(dir.node + 'bootstrap/dist/js/bootstrap.min.js')
         .pipe(gulp.dest(dir.dist +'assets'));
@@ -48,6 +49,10 @@ gulp.task('assets',function()
     gulp.src(dir.node + 'angular-moment/angular-moment.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.node + 'moment/locale/lt.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.bower + 'rateYo/min/jquery.rateyo.min.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.bower + 'rateYo/min/jquery.rateyo.min.css')
         .pipe(gulp.dest(dir.dist + 'assets'));
 });
 

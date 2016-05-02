@@ -74,13 +74,13 @@ figure
   background: rgba(19, 35, 47, 0.9)
   padding: 40px
   margin: 40px auto
+  font-size: 18px
   border-radius: 4px
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3)
 
 body
   background: #c1bdba
   color: white
-  font-size: 18px
 
 button
   border: 0
@@ -109,5 +109,39 @@ div.inline
 
 .clearBoth
   clear: both
+
+#form_comment::-moz-placeholder
+  color: black
+  font-family: Oswald
+  font-weight: 700
+  font-size: 23px
+
+#form_comment:focus::-webkit-input-placeholder
+  color: transparent
+#form_comment:focus:-moz-placeholder
+  color: transparent  /* FF 4-18 */
+#form_comment:focus::-moz-placeholder
+  color: transparent /* FF 19+ */
+#form_comment:focus:-ms-input-placeholder
+  color: transparent  /* IE 10+ */
+
+.info
+  font-family: Oswald
+  font-size: 30px
+  text-align: center
+  color: white
+  margin: 0px
+
+.number
+  text-align: center
+  font-family: Jersey
+  font-size: 100px
+
+.disabled
+  pointer-events: none
+  color: green
+
+
+
 
 

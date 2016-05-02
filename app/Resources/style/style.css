@@ -5,7 +5,7 @@
 }
 
 body {
-		background: #ffffff;
+    background: rgba(19, 35, 47, 0.9);
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     position: relative;
@@ -487,5 +487,29 @@ select
     outline: 0;
     background: rgb(245, 202, 35);
     font-size:25px;
+    font-family:Oswald;
+}
+
+.disabled
+{
+    pointer-events: none;
+    color: green;
+}
+
+.radios
+{
+    width: 100%;
+}
+
+.radios li
+{
+    width: 14%;
+}
+
+.radios li a
+{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
     font-family:Oswald;
 }

@@ -28,7 +28,7 @@ class WorkoutType extends AbstractType
      * An array to choose workout's difficulty from
      * @var array
      */
-    private $DIFFICULTY_CHOICES = array(
+    const DIFFICULTY_CHOICES = array(
                     1   => 'Labai lengva',
                     2   => 'Lengva',
                     3   => 'Vidutine',
@@ -54,7 +54,7 @@ class WorkoutType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('difficulty', ChoiceType::class, array(
-                'choices' => $this->DIFFICULTY_CHOICES, 'expanded' => true,
+                'choices' => self::DIFFICULTY_CHOICES, 'expanded' => true,
             ))
             ->add('description', TextareaType::class)
             ->add('schedule', CollectionType::class, array(
