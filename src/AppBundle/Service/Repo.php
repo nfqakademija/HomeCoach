@@ -74,44 +74,61 @@ class Repo
     }
 
 
-    /**
-     * @param $page
-     * @param $sort
-     * @param $difficulty
-     * @param $search
-     * @param $type
-     * @param $equipment
-     * @param $muscle
-     * @return mixed
-     */
-    public function getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle)
+    public function getWorkouts(SearchOptions $options)
+    {
+        $query = $this->createQuery($options);
+        $stmt = $this->entityManager
+            ->getConnection()
+            ->prepare($query);
+        if ($options->getDifficulty()!=null) {
+            $stmt->bindValue('diff', $options->getDifficulty());
+        }
+        if ($options->getSearch()!=null) {
+            $stmt->bindValue('search', "%" . $options->getSearch() . "%");
+        }
+        if ($options->getType()!=null) {
+            foreach ($options->getType() as $i) {
+                $stmt->bindValue('type' . $i, $i);
+            }
+        }
+        if ($options->getEquipment()!=null) {
+            foreach ($options->getEquipment() as $i) {
+                $stmt->bindValue('equipment' . $i, $i);
+            }
+        }
+        if ($options->getMuscle()!=null) {
+            foreach ($options->getMuscle() as $i) {
+                $stmt->bindValue('muscle_group' . $i, $i);
+            }
+        }
+
+        $stmt->execute();
+
+        $workouts = $stmt->fetchAll();
+        return $workouts;
+    }
+
+    private function createQuery(SearchOptions $options)
     {
         $whereState="WHERE ";
-        $sortState="Workouts." . $sort;
-        $start = $page*4;
+        $sortState="Workouts." . $options->getSort();
+        $start = $options->getPage()*4;
 
-        if ($difficulty!=null) {
+        if ($options->getDifficulty()!=null) {
             $whereState = $whereState . "Workouts.difficulty = :diff AND ";
         }
-        if ($search!=null) {
+        if ($options->getSearch()!=null) {
             $whereState = $whereState . "Workouts.title LIKE :search AND ";
         }
-        if ($type!=null) {
-            foreach ($type as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:type" . $i . ", Workouts.type) AND ";
-            }
+        if ($options->getType()!=null) {
+            $whereState = $whereState . $this->searchTags($options->getType(), "type");
         }
-        if ($equipment!=null) {
-            foreach ($equipment as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:equipment" . $i . ", Workouts.equipment) AND ";
-            }
+        if ($options->getEquipment()!=null) {
+            $whereState = $whereState . $this->searchTags($options->getEquipment(), "equipment");
         }
-        if ($muscle!=null) {
-            foreach ($muscle as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:muscle" . $i . ", Workouts.muscle_group) AND ";
-            }
+        if ($options->getMuscle()!=null) {
+            $whereState = $whereState . $this->searchTags($options->getMuscle(), "muscle_group");
         }
-
         if ($whereState=="WHERE ") {
             $whereState="";
         } else {
@@ -122,35 +139,14 @@ class Repo
             "Workouts.creator_id, Workouts.difficulty, username FROM Workouts " .
             "LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id " . $whereState .
             " ORDER BY " . $sortState . " DESC LIMIT " . $start . ",4";
-
-        $stmt = $this->entityManager
-            ->getConnection()
-            ->prepare($query);
-        if ($difficulty != null) {
-            $stmt->bindValue('diff', $difficulty);
+        return $query;
+    }
+    private function searchTags($tags, $tag_group)
+    {
+        $whereState = "";
+        foreach ($tags as $i) {
+            $whereState = $whereState . "FIND_IN_SET(:" . $tag_group . $i . ", Workouts." . $tag_group . ") AND ";
         }
-        if ($search!=null) {
-            $stmt->bindValue('search', "%" . $search . "%");
-        }
-        if ($type!=null) {
-            foreach ($type as $i) {
-                $stmt->bindValue('type' . $i, $i);
-            }
-        }
-        if ($equipment!=null) {
-            foreach ($equipment as $i) {
-                $stmt->bindValue('equipment' . $i, $i);
-            }
-        }
-        if ($muscle!=null) {
-            foreach ($muscle as $i) {
-                $stmt->bindValue('muscle' . $i, $i);
-            }
-        }
-
-        $stmt->execute();
-
-        $workouts = $stmt->fetchAll();
-        return $workouts;
+        return $whereState;
     }
 }

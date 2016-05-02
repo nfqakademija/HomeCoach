@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\SearchOptions;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,9 @@ class HomeController extends Controller
         $muscle = $request->query->get("muscle");
 
         $this->get("app.repo")->entityManager = $this->getDoctrine()->getEntityManager();
-        $workouts = $this->get("app.repo")->getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
+        $workouts = $this->get("app.repo")->getWorkouts(
+            new SearchOptions($page, $sort, $difficulty, $search, $type, $equipment, $muscle)
+        );
         $serializer = $this->get('jms_serializer');
         $json = $serializer->serialize($workouts, "json");
 
