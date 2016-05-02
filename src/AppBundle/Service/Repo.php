@@ -10,6 +10,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Workout;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Repo
 {
@@ -151,6 +153,29 @@ class Repo
         $stmt->execute();
 
         $workouts = $stmt->fetchAll();
+        return $workouts;
+    }
+
+    public function getWorkoutsPage(Request $request)
+    {
+        $page = $request->query->get("page");
+        if ($page==null) {
+            $page = 0;
+        }
+        $sort = $request->query->get("sort");
+        if ($sort==null || $sort=="rating") {
+            $sort = "rating";
+        } else {
+            $sort = "data_created";
+        }
+        $difficulty = $request->query->get("difficulty");
+        $search = $request->query->get("search");
+        $type = $request->query->get("type");
+        $equipment = $request->query->get("equipment");
+        $muscle = $request->query->get("muscle");
+
+        $workouts = $this->getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
+
         return $workouts;
     }
 }
