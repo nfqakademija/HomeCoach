@@ -52,7 +52,7 @@
         <div ng-app="workoutApp" ng-controller="workoutsController">
 
             <div style="margin-top:45px;">
-                <input type="text" placeholder="Paieška" id="search" ng-change="searchInput(param)" ng-model="param.searchKey">
+                <input type="text" placeholder="Paieška pagal pavadinimą" id="search" ng-change="searchInput(param)" ng-model="param.searchKey">
 
                 <select id="selectBox"  ng-init="difficultySelected='all'" ng-model="diffucultySelected" ng-change="difficultyChange()">
                     <option ng-selected="true" value="all"> Visos </option>
@@ -62,9 +62,36 @@
                     <option value="2"> Lengva </option>
                     <option value="1"> Labai lengva </option>
                 </select>
-
-                <input type="button" id="dateButton" value="Pagal data" ng-click="sortByDate()">  </input>
-                <input type="button" id="ratingButton" value="Pagal reitinga" ng-click="sortByRatings()">  </input>
+                <span style="color:white;"> Rikiuoti pagal </span>
+                <input type="button" id="dateButton" value="Datą" ng-click="sortByDate()">  </input>
+                <input type="button" id="ratingButton" value="Reitingą" ng-click="sortByRatings()">  </input>
+            </div>
+            <br/>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="button-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Įranga <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="equipment in equipmentChoices"><a href="#" class="small" data-value="{[{ equipment.index }]}" tabIndex="-1"><input type="checkbox" value="00"/>&nbsp;{[{ equipment.title }]}</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Tipas <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="type in typeChoices"><a href="#" class="small" data-value="{[{ type.index }]}" tabIndex="-1"><input type="checkbox" value="00"/>&nbsp; {[{ type.title }]}</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Raumenys <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="muscle in muscleChoices"><a href="#" class="small" data-value="{[{ muscle.index }]}" tabIndex="-1"><input type="checkbox"/>&nbsp;{[{ muscle.title }]}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div infinite-scroll='loadMore()' infinite-scroll-distance='1'>
                 <div class="row no-collapse-1 noOverflow">
@@ -80,7 +107,21 @@
                     </section>
                 </div>
             </div>
-            <p style="margin:200px; text-align: center;" ng-if="workouts.length==0">Neradome nei vienos programos</p>
+            <div ng-if="workouts.length==0" ng-init="loadBest()">
+                <p class="workoutsNotFound">Pagal paiešką neradome nei vienos programos pateikiame geriausiai įvertintas</p>
+                <div class="row no-collapse-1 noOverflow">
+                    <section class="col-md-4" ng-repeat="workout in bestWorkouts">
+                        <div class="box">
+                            <h3><span ng-if="workout.rating" class="infoStar">{[{ workout.rating }]} &starf;</span></h3>
+                            <h2 style="font-family: Oswald"><a href="workouts/{[{ workout.id }]}"> {[{ workout.title }]}</a> </h2>
+                            <p> Autorius: <a href="showProfile/{[{ workout.creator_id }]}"> {[{ workout.username }]}</a></p>
+                            <p> Sukurta <span am-time-ago="workout.data_created"></span></p>
+                            <p class="description">{[{ workout.description | limitTo:100 }]}</p>
+                            <a href="workouts/{[{ workout.id }]}" class="button">Daugiau</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     </div>
     {% include "::inc/header.html.twig" %}

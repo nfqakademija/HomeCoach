@@ -8,6 +8,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Workout;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -61,8 +62,20 @@ class WorkoutType extends AbstractType
                 'entry_type' => TextareaType::class,
                 'required' => false
             ))
+            ->add('type', ChoiceType::class, array(
+                'choices' => Workout::TYPES,
+                'expanded' => true,
+                'multiple' => true
+            ))->add('equipment', ChoiceType::class, array(
+                'choices' => Workout::EQUIPMENTS,
+                'expanded' => true,
+                'multiple' => true
+            ))->add('muscle_group', ChoiceType::class, array(
+                'choices' => Workout::MUSCLES,
+                'expanded' => true,
+                'multiple' => true
+            ))
             ->add('save', SubmitType::class, array('label' => 'Pridėti programą'))
             ->getForm();
     }
-
 }

@@ -15,8 +15,8 @@ app.showWorkout:
     defaults: { _controller: AppBundle:Workout:showWorkout}
 
 app.showWorkoutPage:
-    path:     /showWorkoutsPage/{page}/{sort}/{difficulty}/{search}
-    defaults: { _controller: AppBundle:Home:showWorkoutsPage, search: 0}
+    path:     /showWorkoutsPage
+    defaults: { _controller: AppBundle:Home:showWorkoutsPage}
 
 app.showProfile:
     path:     /showProfile/{id}

@@ -106,3 +106,31 @@
 	font-size:200%;
 	color:orange;
 }
+
+input[type=text] {
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 3px solid rgb(245, 202, 35);
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	outline: none;
+    background-image: url('../images/searchicon.png');
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
+    padding-left: 40px;
+}
+
+input[type=text]:focus {
+	border: 3px solid rgb(255, 239, 34);
+}
+
+.workoutsNotFound
+{
+    margin:40px 20px 40px 20px;
+    text-align: center;
+    color:white;
+    font-family: Oswald;
+    font-weight: 700;
+    font-size:20px;
+}

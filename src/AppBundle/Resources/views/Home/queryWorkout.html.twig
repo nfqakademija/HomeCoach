@@ -3,7 +3,7 @@
     {{ workout.title }}
 {% endblock %}
 {% block content %}
-    <div class="row">
+    <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-4">
             <h1 class="info"> Sudėtingumas </h1>
             <h1 class="info"> Reitingas </h1>
@@ -49,6 +49,24 @@
             {% endfor %}
         </div>
     {% endif %}
+    Tipas:
+    <div id="tagai">
+        {% for type in workout.typeStrings %}
+            {{ type }} <br>
+        {% endfor %}
+    </div>
+    Iranga:
+    <div id="tagai">
+        {% for equipment in workout.equipmentStrings %}
+            {{ equipment }} <br>
+        {% endfor %}
+    </div>
+    Raumenu grupes:
+    <div id="tagai">
+        {% for muscles in workout.muscleGroupStrings %}
+            {{ muscles }} <br>
+        {% endfor %}
+    </div>
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
         {% if app.user is not null %}

@@ -18,6 +18,9 @@ use UserBundle\Entity\User;
  */
 class Workout
 {
+    const TYPES = ["Jėga", "Ištvermė", "Vikrumas", "Svorio metimas", "Svorio priaugimas"];
+    const EQUIPMENTS = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"]; // TODO: Surasyt iranga.
+    const MUSCLES = ["Nugara", "Pečiai", "Krūtinė", "Bicepsas", "Tricepsas", "Dilbis", "Pilvo presas", "Kojos"];
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -26,7 +29,7 @@ class Workout
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="created_workouts")
      */
     protected $creator;
     /**
@@ -81,9 +84,23 @@ class Workout
      */
     protected $activations;
     /**
+     * @var array(int)
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    protected $type;
+    /**
+     * @var array(int)
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    protected $equipment;
+    /**
+     * @var array(int)
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    protected $muscle_group;
+    /**
      * Workout constructor.
      * @param $creator
-     * @param $data_created
      */
     public function __construct($creator)
     {
@@ -146,7 +163,8 @@ class Workout
      * Get schedule
      * @return array
      */
-    public function getSchedule() {
+    public function getSchedule()
+    {
         return $this->schedule;
     }
 
@@ -156,7 +174,8 @@ class Workout
      * @param array $schedule
      * @return Workout
      */
-    public function setSchedule($schedule) {
+    public function setSchedule($schedule)
+    {
         $this->schedule = $schedule;
         return $this;
     }
@@ -171,8 +190,9 @@ class Workout
      */
     public function getUserRating($user_id)
     {
-        if (!isset($this->user_ratings[$user_id]))
+        if (!isset($this->user_ratings[$user_id])) {
             return 0;
+        }
         return $this->user_ratings[$user_id];
     }
     /**
@@ -252,7 +272,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataCreated ()
+    public function getDataCreated()
     {
         return $this->data_created;
     }
@@ -264,7 +284,7 @@ class Workout
      *
      * @return Workout
      */
-    public function setDataUpdated ($date)
+    public function setDataUpdated($date)
     {
         $this->data_updated = $date;
         return $this;
@@ -275,7 +295,7 @@ class Workout
      *
      * @return \DateTime
      */
-    public function getDataUpdated ()
+    public function getDataUpdated()
     {
         return $this->data_updated;
     }
@@ -325,5 +345,85 @@ class Workout
     {
         $this->activations = $activations;
     }
-
+    /**
+     * @return array
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * @param array $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+    /**
+     * @return array
+     */
+    public function getEquipment()
+    {
+        return $this->equipment;
+    }
+    /**
+     * @param array $equipment
+     */
+    public function setEquipment($equipment)
+    {
+        $this->equipment = $equipment;
+    }
+    /**
+     * @return array
+     */
+    public function getMuscleGroup()
+    {
+        return $this->muscle_group;
+    }
+    /**
+     * @param array $muscle_group
+     */
+    public function setMuscleGroup($muscle_group)
+    {
+        $this->muscle_group = $muscle_group;
+    }
+    /**
+     * @return array
+     */
+    public function getTypeStrings()
+    {
+        $types = [];
+        if ($this->type!=null) {
+            foreach ($this->type as $i) {
+                $types[] = self::TYPES[$i];
+            }
+        }
+        return $types;
+    }
+    /**
+     * @return array
+     */
+    public function getEquipmentStrings()
+    {
+        $equipment = [];
+        if ($this->equipment!=null) {
+            foreach ($this->equipment as $i) {
+                $equipment[] = self::EQUIPMENTS[$i];
+            }
+        }
+        return $equipment;
+    }
+    /**
+     * @return array
+     */
+    public function getMuscleGroupStrings()
+    {
+        $muscles = [];
+        if ($this->muscle_group!=null) {
+            foreach ($this->muscle_group as $i) {
+                $muscles[] = self::MUSCLES[$i];
+            }
+        }
+        return $muscles;
+    }
 }
