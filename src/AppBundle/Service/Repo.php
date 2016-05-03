@@ -11,6 +11,11 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Workout;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Class Repo
+ * @package AppBundle\Service
+ * Workout repository.
+ */
 class Repo
 {
     /**
@@ -19,6 +24,7 @@ class Repo
     public $entityManager;
 
     /**
+     * Gets Entity Manager.
      * @return EntityManager
      */
     public function getEntityManager()
@@ -36,19 +42,18 @@ class Repo
     }
 
     /**
+     * Gets Doctrine repository.
      * @param string $repository
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepo($repository)
     {
-        
-        $repo = $this->entityManager
+        return $this->entityManager
             ->getRepository($repository);
-        
-        return $repo;
     }
 
     /**
+     * Gets workout by id
      * @param $id
      * @return null|Workout
      */
@@ -62,24 +67,23 @@ class Repo
     }
 
     /**
+     * @param SearchOptions $options
      * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function getHotWorkouts()
-    {
-        
-        $repo = $this->getRepo('AppBundle:Workout');
-        $workouts = $repo->findBy(array(), array('rating' => 'DESC'), 5);
-        
-        return $workouts;
-    }
-
-
     public function getWorkouts(SearchOptions $options)
     {
+        /**
+         * Sukuria SQL query.
+         */
         $query = $this->createQuery($options);
         $stmt = $this->entityManager
             ->getConnection()
             ->prepare($query);
+
+        /**
+         * Subindina reiksmes is searchOptions objekto, kad neveiktu injection'ai.
+         */
         if ($options->getDifficulty() != null) {
             $stmt->bindValue('diff', $options->getDifficulty());
         }
@@ -101,35 +105,55 @@ class Repo
                 $stmt->bindValue('muscle_group'.$i, $i);
             }
         }
-
         $stmt->execute();
-
+        /**
+         * Grazina gautus duomenis.
+         */
         $workouts = $stmt->fetchAll();
         return $workouts;
     }
 
+    /**
+     * Grazina SQL query rasti workouts pagal SearchOptions.
+     * @param SearchOptions $options
+     * @return string
+     */
     private function createQuery(SearchOptions $options)
     {
         $whereState = "WHERE ";
         $sortState = "Workouts.".$options->getSort();
+        /**
+         * Each page has 4 workouts.
+         */
         $start = $options->getPage()*4;
 
+        /**
+         * I whereState sudeda where gabalus pagal search options.
+         */
         $whereState = $whereState.$options->queryDifficulty();
         $whereState = $whereState.$options->querySearch();
         $whereState = $whereState.$options->queryType();
         $whereState = $whereState.$options->queryEquipment();
         $whereState = $whereState.$options->queryMuscle();
 
+
+        //Jei where state lieka tuscia, tai ji pasalina, kitu atveju panaikina paskutini "AND ".
         if ($whereState == "WHERE ") {
             $whereState = "";
         } else {
             $whereState = substr($whereState, 0, -5);
         }
 
-        $query = "SELECT Workouts.id,title, Workouts.rating,description, data_created, ".
+        /**
+         * Pagrindinis query, i kuri sumeta WHERE ir ORDER BY states.
+         */
+        $query = "SELECT Workouts.id, title, Workouts.rating, description, data_created, ".
             "Workouts.creator_id, Workouts.difficulty, username FROM Workouts ".
             "LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id ".$whereState.
             " ORDER BY ".$sortState." DESC LIMIT ".$start.",4";
+        /**
+         * SQL query takes Workouts and Creators information.
+         */
         return $query;
     }
 }
