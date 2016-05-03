@@ -50,6 +50,8 @@ gulp.task('assets',function()
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.node + 'moment/locale/lt.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
+    gulp.src(dir.node + 'chart.js/dist/Chart.min.js')
+        .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.bower + 'rateYo/min/jquery.rateyo.min.js')
         .pipe(gulp.dest(dir.dist + 'assets'));
     gulp.src(dir.bower + 'rateYo/min/jquery.rateyo.min.css')

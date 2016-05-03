@@ -30,5 +30,10 @@
         {% endif %}
     </h4>
 
+    {% block graph %}
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script src="{{ asset('assets/Chart.min.js') }}"></script>
+        <script src="{{ asset('js/weightGraph.js') }}"></script>
+    {% endblock %}
 
 {% endblock %}

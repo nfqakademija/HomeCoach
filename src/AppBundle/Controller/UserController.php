@@ -20,11 +20,11 @@ class UserController extends Controller
      */
     public function showCoachesAction()
     {
-        $repository = $this->getDoctrine()
-            ->getRepository('UserBundle:User');
+        $repo = $this->get('app.repo')
+            ->getRepo('UserBundle:User');
 
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
-        $coaches = $repository->findAll();
+        $coaches = $repo->findAll();
         $json = json_encode($coaches);
 
         return $this->render('base.html.twig', array(
@@ -39,11 +39,11 @@ class UserController extends Controller
      */
     public function browseUsersAction()
     {
-        $repository = $this->getDoctrine()
-            ->getRepository('UserBundle:User');
+        $repo = $this->get('app.repo')
+            ->getRepo('UserBundle:User');
 
         //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
-        $users = $repository->findAll();
+        $users = $repo->findAll();
         $json = json_encode($users);
 
         return $this->render('@App/Home/browseUsers.html.twig', array(
@@ -57,7 +57,9 @@ class UserController extends Controller
      */
     public function showProfileAction($id)
     {
-        $user = $this->getDoctrine()->getRepository("UserBundle:User")->find($id);
+        $repo = $this->get('app.repo')
+            ->getRepo('UserBundle:User');
+        $user = $repo->find($id);
         return $this->render('@App/Home/showUser.html.twig', array(
             'user'=>$user
         ));
