@@ -49,24 +49,21 @@
             {% endfor %}
         </div>
     {% endif %}
-    Tipas:
-    <div id="tagai">
+    <ul class="tags">
         {% for type in workout.typeStrings %}
-            {{ type }} <br>
+            <li><span class='tag'>{{ type }}</span></li>
         {% endfor %}
-    </div>
-    Iranga:
-    <div id="tagai">
+    </ul>
+    <ul class="tags">
         {% for equipment in workout.equipmentStrings %}
-            {{ equipment }} <br>
+            <li><span class='tag'>{{ equipment }}</span></li>
         {% endfor %}
-    </div>
-    Raumenu grupes:
-    <div id="tagai">
+    </ul>
+    <ul class="tags">
         {% for muscles in workout.muscleGroupStrings %}
-            {{ muscles }} <br>
+            <li><span class='tag'>{{ muscles }}</span></li>
         {% endfor %}
-    </div>
+    </ul>
     {% if app.user is not null %}
         <h2 class="description"> Įvertinkite programą </h2>
         {% if app.user is not null %}

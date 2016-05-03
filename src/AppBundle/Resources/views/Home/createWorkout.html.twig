@@ -79,34 +79,47 @@
                 </div>
             </div>
         </div>
-        <div style="color:white" class="row">
-            <div class="col-md-4">
-                <h2> Tipas </h2>
-                <label class="labelForCheckbox" for="form_type_0">{{ form_widget(form.type.0, {'attr':{'class':'checkbox'}}) }} Jega </label>
-                <label class="labelForCheckbox" for="form_type_1">{{ form_widget(form.type.1, {'attr':{'class':'checkbox'}}) }} Ištvermė </label>
-                <label class="labelForCheckbox" for="form_type_2">{{ form_widget(form.type.2, {'attr':{'class':'checkbox'}}) }} Vikrumas </label>
-                <label class="labelForCheckbox" for="form_type_3">{{ form_widget(form.type.3, {'attr':{'class':'checkbox'}}) }} Svorio metimas </label>
-                <label class="labelForCheckbox" for="form_type_4">{{ form_widget(form.type.4, {'attr':{'class':'checkbox'}}) }} Svorio priauginimas </label>
-            </div>
-            <div class="col-md-4">
-                <h2> Įranga </h2>
-                <label class="labelForCheckbox" for="form_equipment_0">{{ form_widget(form.equipment.0, {'attr':{'class':'checkbox'}}) }} Kamuolys </label>
-                <label class="labelForCheckbox" for="form_equipment_1">{{ form_widget(form.equipment.1, {'attr':{'class':'checkbox'}}) }} Dviratis </label>
-                <label class="labelForCheckbox" for="form_equipment_2">{{ form_widget(form.equipment.2, {'attr':{'class':'checkbox'}}) }} Vienaratis </label>
-                <label class="labelForCheckbox" for="form_equipment_3">{{ form_widget(form.equipment.3, {'attr':{'class':'checkbox'}}) }} Vienaragis </label>
-            </div>
-            <div class="col-md-4">
-                <h2> Raumenys </h2>
-                <label class="labelForCheckbox" for="form_muscle_group_0">{{ form_widget(form.muscle_group.0, {'attr':{'class':'checkbox'}}) }} Nugara </label>
-                <label class="labelForCheckbox" for="form_muscle_group_1">{{ form_widget(form.muscle_group.1, {'attr':{'class':'checkbox'}}) }} Pečiai </label>
-                <label class="labelForCheckbox" for="form_muscle_group_2">{{ form_widget(form.muscle_group.2, {'attr':{'class':'checkbox'}}) }} Krūtinė </label>
-                <label class="labelForCheckbox" for="form_muscle_group_3">{{ form_widget(form.muscle_group.3, {'attr':{'class':'checkbox'}}) }} Bicepsas </label>
-                <label class="labelForCheckbox" for="form_muscle_group_4">{{ form_widget(form.muscle_group.4, {'attr':{'class':'checkbox'}}) }} Tricepsas </label>
-                <label class="labelForCheckbox" for="form_muscle_group_5">{{ form_widget(form.muscle_group.5, {'attr':{'class':'checkbox'}}) }} Dilbis </label>
-                <label class="labelForCheckbox" for="form_muscle_group_6">{{ form_widget(form.muscle_group.6, {'attr':{'class':'checkbox'}}) }} Pilvo presas </label>
-                <label class="labelForCheckbox" for="form_muscle_group_7">{{ form_widget(form.muscle_group.7, {'attr':{'class':'checkbox'}}) }} Kojos </label>
+        <div style="color:white; margin-bottom: 40px;" class="row">
+            <div class="col-lg-12">
+                <div class="button-group">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Tipas <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="small" data-value="Jega" tabIndex="-1">{{ form_widget(form.type.0, {'attr':{'class':'checkbox'}}) }}&nbsp; Jega</a></li>
+                            <li><a href="#" class="small" data-value="Ištvermė" tabIndex="-1">{{ form_widget(form.type.1, {'attr':{'class':'checkbox'}}) }}&nbsp; Ištvermė </a></li>
+                            <li><a href="#" class="small" data-value="Vikrumas" tabIndex="-1">{{ form_widget(form.type.2, {'attr':{'class':'checkbox'}}) }}&nbsp; Vikrumas </a></li>
+                            <li><a href="#" class="small" data-value="Svorio metimas" tabIndex="-1">{{ form_widget(form.type.3, {'attr':{'class':'checkbox'}}) }}&nbsp; Svorio metimas </a></li>
+                            <li><a href="#" class="small" data-value="Svorio priauginimas" tabIndex="-1">{{ form_widget(form.type.4, {'attr':{'class':'checkbox'}}) }}&nbsp; Svorio priauginimas </a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Įranga <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="small" data-value="Kamuolys" tabIndex="-1">{{ form_widget(form.equipment.0, {'attr':{'class':'checkbox'}}) }}&nbsp; Kamuolys</a></li>
+                            <li><a href="#" class="small" data-value="Dviratis" tabIndex="-1">{{ form_widget(form.equipment.1, {'attr':{'class':'checkbox'}}) }}&nbsp; Dviratis </a></li>
+                            <li><a href="#" class="small" data-value="Vienaratis" tabIndex="-1">{{ form_widget(form.equipment.2, {'attr':{'class':'checkbox'}}) }}&nbsp; Vienaratis </a></li>
+                            <li><a href="#" class="small" data-value="Vienaragis" tabIndex="-1">{{ form_widget(form.equipment.3, {'attr':{'class':'checkbox'}}) }}&nbsp; Vienaragis </a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Raumenys <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="small" data-value="Nugara" tabIndex="-1">{{ form_widget(form.muscle_group.0, {'attr':{'class':'checkbox'}}) }}&nbsp; Nugara</a></li>
+                            <li><a href="#" class="small" data-value="Pečiai" tabIndex="-1">{{ form_widget(form.muscle_group.1, {'attr':{'class':'checkbox'}}) }}&nbsp; Pečiai </a></li>
+                            <li><a href="#" class="small" data-value="Krūtinė" tabIndex="-1">{{ form_widget(form.muscle_group.2, {'attr':{'class':'checkbox'}}) }}&nbsp; Krūtinė </a></li>
+                            <li><a href="#" class="small" data-value="Bicepsas" tabIndex="-1">{{ form_widget(form.muscle_group.3, {'attr':{'class':'checkbox'}}) }}&nbsp; Bicepsas </a></li>
+                            <li><a href="#" class="small" data-value="Tricepsas" tabIndex="-1">{{ form_widget(form.muscle_group.4, {'attr':{'class':'checkbox'}}) }}&nbsp; Tricepsas</a></li>
+                            <li><a href="#" class="small" data-value="Dilbis" tabIndex="-1">{{ form_widget(form.muscle_group.5, {'attr':{'class':'checkbox'}}) }}&nbsp; Dilbis </a></li>
+                            <li><a href="#" class="small" data-value="Pilvo presas" tabIndex="-1">{{ form_widget(form.muscle_group.6, {'attr':{'class':'checkbox'}}) }}&nbsp; Pilvo presas </a></li>
+                            <li><a href="#" class="small" data-value="Kojos" tabIndex="-1">{{ form_widget(form.muscle_group.7, {'attr':{'class':'checkbox'}}) }}&nbsp; Kojos </a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+        <ul class="tags">
+
+        </ul>
         {{ form_widget(form.type) }}
         {{ form_widget(form.save, {'attr':{'class':'button button-block'}}) }}
         {{ form_end(form) }}
