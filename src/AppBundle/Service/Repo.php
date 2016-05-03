@@ -114,21 +114,12 @@ class Repo
         $sortState="Workouts." . $options->getSort();
         $start = $options->getPage()*4;
 
-        if ($options->getDifficulty()!=null) {
-            $whereState = $whereState . "Workouts.difficulty = :diff AND ";
-        }
-        if ($options->getSearch()!=null) {
-            $whereState = $whereState . "Workouts.title LIKE :search AND ";
-        }
-        if ($options->getType()!=null) {
-            $whereState = $whereState . $this->searchTags($options->getType(), "type");
-        }
-        if ($options->getEquipment()!=null) {
-            $whereState = $whereState . $this->searchTags($options->getEquipment(), "equipment");
-        }
-        if ($options->getMuscle()!=null) {
-            $whereState = $whereState . $this->searchTags($options->getMuscle(), "muscle_group");
-        }
+        $whereState = $whereState.$options->queryDifficulty();
+        $whereState = $whereState.$options->querySearch();
+        $whereState = $whereState.$options->queryType();
+        $whereState = $whereState.$options->queryEquipment();
+        $whereState = $whereState.$options->queryMuscle();
+        
         if ($whereState=="WHERE ") {
             $whereState="";
         } else {
@@ -140,13 +131,5 @@ class Repo
             "LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id " . $whereState .
             " ORDER BY " . $sortState . " DESC LIMIT " . $start . ",4";
         return $query;
-    }
-    private function searchTags($tags, $tag_group)
-    {
-        $whereState = "";
-        foreach ($tags as $i) {
-            $whereState = $whereState . "FIND_IN_SET(:" . $tag_group . $i . ", Workouts." . $tag_group . ") AND ";
-        }
-        return $whereState;
     }
 }

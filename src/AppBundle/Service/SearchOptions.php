@@ -115,4 +115,67 @@ class SearchOptions
     {
         return $this->muscle;
     }
+    /**
+     * @return string
+     */
+    public function queryDifficulty()
+    {
+        if ($this->difficulty!=null) {
+            return "Workouts.difficulty = :diff AND ";
+        }
+        return "";
+    }
+    /**
+     * @return string
+     */
+    public function querySearch()
+    {
+        if ($this->search!=null) {
+            return "Workouts.title LIKE :search AND ";
+        }
+        return "";
+    }
+    /**
+     * @return string
+     */
+    public function queryType()
+    {
+        if ($this->type!=null) {
+            return $this->searchTags($this->type, "type");
+        }
+        return "";
+    }
+    /**
+     * @return string
+     */
+    public function queryEquipment()
+    {
+        if ($this->equipment!=null) {
+            return $this->searchTags($this->equipment, "equipment");
+        }
+        return "";
+    }
+    /**
+     * @return string
+     */
+    public function queryMuscle()
+    {
+        if ($this->muscle!=null) {
+            return $this->searchTags($this->muscle, "muscle_group");
+        }
+        return "";
+    }
+    /**
+     * @param $tags
+     * @param $tag_group
+     * @return string
+     */
+    private function searchTags($tags, $tag_group)
+    {
+        $whereState = "";
+        foreach ($tags as $i) {
+            $whereState = $whereState . "FIND_IN_SET(:" . $tag_group . $i . ", Workouts." . $tag_group . ") AND ";
+        }
+        return $whereState;
+    }
 }
