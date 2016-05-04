@@ -5,10 +5,12 @@ $(function () {
     //this will be used for looping through json fields
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-            dates.push(obj[key]);
+            dates.push(key);
+            weightValues.push(obj[key]);
         }
     }
     console.log("dates = " + dates);
+    console.log("weightValues = " + weightValues);
     // Split timestamp and data into separate arrays
 
     var barChartData = {

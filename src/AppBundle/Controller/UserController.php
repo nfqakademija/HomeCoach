@@ -61,7 +61,12 @@ class UserController extends Controller
             ->getRepo('UserBundle:User');
         $user = $repo->find($id);
         $workout_history = $user->getWorkoutHistory();
-        $data = json_encode(array('lala'=>2, 'baba'=>1));
+        $arr = [];
+        foreach ($workout_history as $work_hist) {
+            //TODO padaryti kad pries supushinant i arrayju suparstintu Date objekta i stringa
+            $arr[$work_hist->getId()] = $work_hist->getWorkout()->getTitle(); //getId pakeisti i getDate (kol kas tik testavimui, nes getDate grazina Date objekta)
+        }
+        $data = json_encode($arr);
         return $this->render('@App/Home/showUser.html.twig', array(
             'user'=>$user,
             'data'=>$data
