@@ -58,16 +58,17 @@ class WorkoutController extends Controller
 
         if (!$workout) {
             throw $this->createNotFoundException(
+                //TODO redirect to a proper page with a template
                 'No workout found for id '.$id
             );
         }
-        //Komentaru forma imest.
+
         $user = $this->getUser();
         $comment = new Comments($user, "");
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $repo->getEntityManager();
 
             $parent = $this->get('request')->get('parent');
             if ($parent==null) {
@@ -77,8 +78,7 @@ class WorkoutController extends Controller
                 $workout->setComments($comments);
                 $em->persist($workout);
             } else {
-                $parent_comm = $this->getDoctrine()
-                    ->getRepository('AppBundle:Comments')
+                $parent_comm = $repo->getRepo('AppBundle:Comments')
                     ->find($parent);
                 $comment->setParent($parent_comm);
                 $comments = $parent_comm->getSubComments();
@@ -101,7 +101,7 @@ class WorkoutController extends Controller
         if (isset($data)) {
             if ($data!=0) {
                 $workout->setUserRating($this->getUser(), $data);
-                $doc = $this->getDoctrine()->getManager();
+                $doc = $repo->getEntityManager();
                 $doc->persist($workout);
                 $doc->flush();
             }
@@ -123,8 +123,8 @@ class WorkoutController extends Controller
      */
     public function activateWorkout($id, Request $request)
     {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
+        $repo = $this->get('app.repo');
+        $workout = $repo->getRepo('AppBundle:Workout')
             ->find($id);
         $disabled = false;
         if ($request->request->has("activateForm")) {
@@ -145,10 +145,10 @@ class WorkoutController extends Controller
                     $history = new WorkoutHistory($user, $workout);
                     $user->setActiveWorkout($workout);
                     $user->addWorkoutHistory($history);
-                    $doc = $this->getDoctrine()->getManager();
-                    $doc->persist($history);
-                    $doc->persist($user);
-                    $doc->flush();
+                    $em = $repo->getEntityManager();
+                    $em->persist($history);
+                    $em->persist($user);
+                    $em->flush();
                 }
             }
         }
