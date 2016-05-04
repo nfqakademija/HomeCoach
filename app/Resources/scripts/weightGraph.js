@@ -1,18 +1,19 @@
 $(function () {
-    console.log(data);
-    //this will be used for looping through json fields
-    // for (var key in p) {
-    //     if (p.hasOwnProperty(key)) {
-    //         alert(key + " -> " + p[key]);
-    //     }
-    // }
-    // Split timestamp and data into separate arrays
+    var obj = JSON.parse(data);
     var dates = [];
     var weightValues = [];
+    //this will be used for looping through json fields
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            dates.push(obj[key]);
+        }
+    }
+    console.log("dates = " + dates);
+    // Split timestamp and data into separate arrays
 
     var barChartData = {
         //TODO pakeisti i datas kada buvo padaryti svorio irasai 
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: dates,
         //TODO kiekvienam svorio irasui sukurti atskira dataseto irasa ir kiekvienam priskirti workouta (pagal tai ir uzvadinti "label". skirtingiems labeliams uzdeti skirtingas spalvas
         datasets: [{
             label: 'Vandamo rytmetinis',
