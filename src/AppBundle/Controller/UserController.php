@@ -60,8 +60,11 @@ class UserController extends Controller
         $repo = $this->get('app.repo')
             ->getRepo('UserBundle:User');
         $user = $repo->find($id);
+        $workout_history = $user->getWorkoutHistory();
+        $data = json_encode(array('lala'=>2, 'baba'=>1));
         return $this->render('@App/Home/showUser.html.twig', array(
-            'user'=>$user
+            'user'=>$user,
+            'data'=>$data
         ));
     }
 }

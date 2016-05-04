@@ -32,8 +32,14 @@
 
     {% block graph %}
         <canvas id="myChart" width="400" height="400"></canvas>
+    {% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
         <script src="{{ asset('assets/Chart.min.js') }}"></script>
         <script src="{{ asset('js/weightGraph.js') }}"></script>
+        <script>
+            var data = {{ data|json_encode|raw }};
+        </script>
     {% endblock %}
 
 {% endblock %}
