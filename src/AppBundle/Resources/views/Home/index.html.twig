@@ -41,7 +41,7 @@
                 <div class="tab-content" id="form_schedule">
                     {% for i in 0..6 %}
                         <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
-                            <p style="word-break: break-all; color:white;"> {{ app.user.activeworkout.schedule[i] }} </p>
+                            <p style="color:white;"> {{ app.user.activeworkout.schedule[i] }} </p>
                         </div>
                     {% endfor %}
                 </div>

@@ -7,10 +7,28 @@
         <div class="col-md-4">
             <h1 class="info"> Sudėtingumas </h1>
             <h1 class="info"> Reitingas </h1>
+            {% if workout.userRating(app.user.id) !=0 %}
+                <h1 class="info"> Tavo ivertinimas </h1>
+            {% endif %}
         </div>
         <div class="col-md-5">
             <div id="difficulty"></div>
             <div style="margin-top:15px;" id="rating"></div>
+            {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
+            {% if workout.userRating(app.user.id) != 0 %}
+            <div class="rating">
+                {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
+                {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}
+                {{ form_widget(formRate.rating.2, {'attr':{'class':'radio_item'}}) }}
+                {{ form_widget(formRate.rating.1, {'attr':{'class':'radio_item'}}) }}
+                {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
+
+                {% for i in [4,3,2,1,0] %}
+                    <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="workout_rating_rating_{{ i }}"> <span>&#9734</span> </label>
+                {% endfor %}
+            </div>
+            {{ form_end(formRate) }}
+            {% endif %}
         </div>
         <div class="col-md-3">
             <h1 class="info"> Pasirinko </h1>
@@ -20,8 +38,21 @@
             <h1 class="description">{{ workout.title }} </h1>
     <div class="row">
         <div class="col-md-12">
-            <p style="word-break: break-all"> {{ workout.description|nl2br }} </p>
+            <p> {{ workout.description|nl2br }} </p>
             {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
+        </div>
+        <div class="col-md-12" style="margin:10px 0px 10px 0px">
+            <ul class="tags">
+                {% for type in workout.typeStrings %}
+                    <li><span class='tag'>{{ type }}</span></li>
+                {% endfor %}
+                {% for equipment in workout.equipmentStrings %}
+                    <li><span class='tag'>{{ equipment }}</span></li>
+                {% endfor %}
+                {% for muscles in workout.muscleGroupStrings %}
+                    <li><span class='tag'>{{ muscles }}</span></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     {% set showSchedule=false %}
@@ -44,31 +75,14 @@
         <div class="tab-content" id="form_schedule">
             {% for i in 0..6 %}
                 <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
-                    <p style="word-break: break-all"> {{ workout.schedule[i]|nl2br }} </p>
+                    <p> {{ workout.schedule[i]|nl2br }} </p>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
-    <ul class="tags">
-        {% for type in workout.typeStrings %}
-            <li><span class='tag'>{{ type }}</span></li>
-        {% endfor %}
-    </ul>
-    <ul class="tags">
-        {% for equipment in workout.equipmentStrings %}
-            <li><span class='tag'>{{ equipment }}</span></li>
-        {% endfor %}
-    </ul>
-    <ul class="tags">
-        {% for muscles in workout.muscleGroupStrings %}
-            <li><span class='tag'>{{ muscles }}</span></li>
-        {% endfor %}
-    </ul>
-    {% if app.user is not null %}
+    {% if app.user is not null and workout.userRating(app.user.id)==0 %}
         <h2 class="description"> Įvertinkite programą </h2>
-        {% if app.user is not null %}
         Tavo ivertinimas: {{ workout.userRating(app.user.id) }}
-        {% endif %}
         <br>
         {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
         <div class="rating">
@@ -96,9 +110,11 @@
             {% include "AppBundle:Home:showComment.html.twig" with {'comments': workout.comments} only %}
             {% if app.user is not null %}
                 {{ form_start(form) }}
-                {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą'}}) }}
+                {{ form_widget(form.comment, {'attr':{'class':'form-control', 'rows':4, 'placeholder':'Parašykite savo komentarą', 'value':''}}) }}
                 {{ form_widget(form.save, {'attr':{'class':'submitConfirmed'}}) }}
                 {{ form_end(form) }}
+            {% else %}
+                Norint rašyti komentarus reikia <a href="/login"> Prisijungti! </a>
             {% endif %}
         </div>
         <div id="menu2" style="color:white" class="tab-pane fade in active">

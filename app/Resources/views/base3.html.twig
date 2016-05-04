@@ -50,6 +50,9 @@
     <script src="{{ asset('js/ratings.js') }}"></script>
     <script src="{{ asset('js/facebookPlugin.js') }}"></script>
     <script>
+        initAjaxForm();
+    </script>
+    <script>
         $(function () {
             var rating = "{{ workout.rating }}";
             if(rating=="")
