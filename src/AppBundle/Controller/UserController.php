@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\WeightType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Serializer;
 
 class UserController extends Controller
 {
@@ -84,12 +85,14 @@ class UserController extends Controller
 
             };
             $workout_history = $user->getWorkoutHistory();
-            $arr = [];
+            $workouts_arr = [];
             foreach ($workout_history as $work_hist) {
-                //TODO padaryti kad pries supushinant i arrayju suparstintu Date objekta i stringa
-                $arr[$work_hist->getId()] = $work_hist->getWorkout()->getTitle(); //getId pakeisti i getDate (kol kas tik testavimui, nes getDate grazina Date objekta)
+                $workouts_arr[$work_hist->getWorkout()->getDataCreated()->format('Ymd')] = $work_hist->getWorkout()->getTitle(); 
             }
-            $data = json_encode($arr);
+        
+            $weights_arr = $user->getWeight();    
+        
+            $data = json_encode($workouts_arr);
             return $this->render('@App/Home/showUser.html.twig', array(
                 'user' => $user,
                 'data' => $data,

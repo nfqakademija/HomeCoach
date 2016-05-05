@@ -81,7 +81,7 @@ class User extends BaseUser
      */
     public function addWeight($date, $weight)
     {
-        $this->weight[] = array($date=>$weight);
+        $this->weight[$date] = $weight;
     }
     
     /**

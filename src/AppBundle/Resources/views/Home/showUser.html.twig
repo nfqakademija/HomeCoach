@@ -30,21 +30,23 @@
         {% endif %}
     </h4>
 
-    {{ form_start(weightForm) }}
-        {{ form_errors(weightForm) }}
-        {{ form_row(weightForm.weight) }}
-    {{ form_end(weightForm) }}
+    {% if weightForm is defined %}
+        {{ form_start(weightForm) }}
+            {{ form_errors(weightForm) }}
+            {{ form_row(weightForm.weight) }}
+        {{ form_end(weightForm) }}
 
-    {% block graph %}
-        <canvas id="myChart" width="400" height="400"></canvas>
-    {% endblock %}
-    {% block javascripts %}
-        {{ parent() }}
-        <script src="{{ asset('assets/Chart.min.js') }}"></script>
-        <script src="{{ asset('js/weightGraph.js') }}"></script>
-        <script>
-            var data = {{ data|json_encode|raw }};
-        </script>
-    {% endblock %}
+        {% block graph %}
+            <canvas id="myChart" width="400" height="400"></canvas>
+        {% endblock %}
+        {% block javascripts %}
+            {{ parent() }}
+            <script src="{{ asset('assets/Chart.min.js') }}"></script>
+            <script src="{{ asset('js/weightGraph.js') }}"></script>
+            <script>
+                var data = {{ data|json_encode|raw }};
+            </script>
+        {% endblock %}
+    {% endif %}
 
 {% endblock %}

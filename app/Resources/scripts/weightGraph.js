@@ -1,5 +1,6 @@
 $(function () {
     var obj = JSON.parse(data);
+    console.dir(obj);
     var dates = [];
     var weightValues = [];
     //this will be used for looping through json fields
@@ -11,7 +12,6 @@ $(function () {
     }
     console.log("dates = " + dates);
     console.log("weightValues = " + weightValues);
-    // Split timestamp and data into separate arrays
 
     var barChartData = {
         //TODO pakeisti i datas kada buvo padaryti svorio irasai 
