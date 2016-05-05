@@ -73,7 +73,7 @@ class UserController extends Controller
 
             if (isset($weight)) {
                 if ($weight != 0) {
-                    $user->addWeight(date('Ymd'), $weight);
+                    $user->addWeight(date('Ymdis'), $weight);  // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
                     $em = $repo->getEntityManager();
                     $em->persist($user);
                     $em->flush();
@@ -87,12 +87,12 @@ class UserController extends Controller
             $workout_history = $user->getWorkoutHistory();
             $workouts_arr = [];
             foreach ($workout_history as $work_hist) {
-                $workouts_arr[$work_hist->getWorkout()->getDataCreated()->format('Ymd')] = $work_hist->getWorkout()->getTitle(); 
+                $workouts_arr[$work_hist->getDate()->format('Ymdis')] = $work_hist->getWorkout()->getTitle(); // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
             }
         
             $weights_arr = $user->getWeight();    
         
-            $data = json_encode($workouts_arr);
+            $data = json_encode($weights_arr);
             return $this->render('@App/Home/showUser.html.twig', array(
                 'user' => $user,
                 'data' => $data,
