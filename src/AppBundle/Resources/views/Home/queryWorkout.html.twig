@@ -1,4 +1,4 @@
-{% extends 'base3.html.twig' %}
+{% extends 'workoutTemplate.html.twig' %}
 {% block title %}
     {{ workout.title }}
 {% endblock %}
@@ -7,7 +7,7 @@
         <div class="col-md-4">
             <h1 class="info"> Sudėtingumas </h1>
             <h1 class="info"> Reitingas </h1>
-            {% if workout.userRating(app.user.id) !=0 %}
+            {% if app.user is not null and workout.userRating(app.user.id) !=0  %}
                 <h1 class="info"> Tavo ivertinimas </h1>
             {% endif %}
         </div>
@@ -15,27 +15,27 @@
             <div id="difficulty"></div>
             <div style="margin-top:15px;" id="rating"></div>
             {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
-            {% if workout.userRating(app.user.id) != 0 %}
-            <div class="rating">
-                {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
-                {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}
-                {{ form_widget(formRate.rating.2, {'attr':{'class':'radio_item'}}) }}
-                {{ form_widget(formRate.rating.1, {'attr':{'class':'radio_item'}}) }}
-                {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
+            {% if app.user is not null and workout.userRating(app.user.id) != 0 %}
+                <div class="rating">
+                    {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
+                    {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}
+                    {{ form_widget(formRate.rating.2, {'attr':{'class':'radio_item'}}) }}
+                    {{ form_widget(formRate.rating.1, {'attr':{'class':'radio_item'}}) }}
+                    {{ form_widget(formRate.rating.0, {'attr':{'class':'radio_item'}}) }}
 
-                {% for i in [4,3,2,1,0] %}
-                    <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="workout_rating_rating_{{ i }}"> <span>&#9734</span> </label>
-                {% endfor %}
-            </div>
-            {{ form_end(formRate) }}
+                    {% for i in [4,3,2,1,0] %}
+                        <label id="{{ i+1 }}" class="label_item {% if workout.userRating(app.user.id) > i %} coloredStar {% endif %}" for="workout_rating_rating_{{ i }}"> <span>&#9734</span> </label>
+                    {% endfor %}
+                </div>
+                {{ form_end(formRate) }}
             {% endif %}
         </div>
         <div class="col-md-3">
             <h1 class="info"> Pasirinko </h1>
-           <h1 class="number"> {{ workout.activations|length }} </h1>
+            <h1 class="number"> {{ workout.activations|length }} </h1>
         </div>
     </div>
-            <h1 class="description">{{ workout.title }} </h1>
+    <h1 class="description">{{ workout.title }} </h1>
     <div class="row">
         <div class="col-md-12">
             <p> {{ workout.description|nl2br }} </p>

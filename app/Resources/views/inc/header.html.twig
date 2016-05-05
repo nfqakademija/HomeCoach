@@ -13,6 +13,7 @@
             <ul class="nav navbar-nav navbar-right main-navigation">
                 {% if app.user is not null %}
                     <li><a href="{{ path('app.createWorkout') }}" class="smoothScroll">SUKURTI PROGRAMĄ</a></li>
+                    <li><a href="/showProfile/{{ app.user.id }}" class="smoothScroll">PROFILIS</a></li>
                     <li style="color: black;"><span class="loginInfo"> {{ 'layout.logged_in_as' | trans({'%username%': app.user.username}, 'FOSUserBundle') }} </span> </li>
                     <li> <a href="{{ path('fos_user_security_logout') }}">
                             <span class="glyphicon glyphicon-off"></span>

@@ -1,34 +1,67 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<h3>Vartotojo duomenys:<br> </h3>
-    <h4>
-        Vartotojas: {{ user.username }} <br>
-        Vardas: {{ user.name }} <br>
-        Pavardė: {{ user.surname }} <br>
-        El. paštas: {{ user.email }} <br>
-        {% if user.createdWorkouts is not null %}
-            Sukurtos programos:<br>
-            {% for workout in user.createdWorkouts %}
-                <a href="../workouts/{{ workout.id }}">{{ workout.title }} ({{ workout.activations|length }} Naudotojų)</a><br>
-            {% endfor %}
-        {% endif %}
+    <div class="row">
+        <div class="col-md-4">
+          <h1> {{ user.username }} </h1>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-6">
+            <h2 style="color: white; margin:0px;"> <span class="glyphicon glyphicon-user"></span> {{ user.name }} {{ user.surname }} </h2> <br>
+            <h2 style="color: white; margin:0px;"> <span class="glyphicon glyphicon-envelope"></span> {{ user.email }} </h2>
+        </div>
+    </div>
+    <ul style="margin-bottom:10px;" class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#createdWorkouts"> Sukurtos programos </a></li>
+        <li><a data-toggle="tab" href="#history"> Istorija </a></li>
+        <li><a data-toggle="tab" href="#active">Aktyvi programa </a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="createdWorkouts" class="tab-pane fade in active">
+            {% if user.createdWorkouts is not null %}
+                {% for workout in user.createdWorkouts %}
+                    <section class="col-md-4>">
+                        <div class="box">
+                            <h3><span class="infoStar">{{ workout.rating }} &starf;</span></h3>
+                            <h2 style="font-family: Oswald"><a href="../workouts/{{ workout.id }}"> {{ workout.title }}</a> </h2>
+                            <p> Pasirinko <span class="badge alert-info">{{ workout.activations|length }}</span> </p>
+                            <p>{{ workout.description[:300] }}</p>
+                            <a href="../workouts/{{ workout.id }}" class="button">Daugiau</a>
+                        </div>
+                    </section>
+                    {% endfor %}
+            {% endif %}
+        </div>
         <br>
         {% if app.user is not null %}
             {% if app.user.id == user.id %}
                 {% if user.activeWorkout is not null %}
-                    Aktyvuota programa: <a href="../workouts/{{ user.activeWorkout.id }}">{{ user.activeWorkout.title }}</a><br>
-                    <br>
+                    <div id="active" class="tab-pane fade">
+                        <div class="box">
+                            <h3><span class="infoStar">{{ user.activeWorkout.rating }} &starf;</span></h3>
+                            <h2 style="font-family: Oswald"><a href="workouts/{{ user.activeWorkout.id }}"> {{ user.activeWorkout.title }}</a> </h2>
+                            <p>{{ user.activeWorkout.description[:300] }}</p>
+                            <a href="../workouts/{{ user.activeWorkout.id }}" class="button">Daugiau</a>
+                        </div>
+                    </div>
                 {% endif %}
                 {% if user.workoutHistory|length != 0 %}
-                    Treniruočių programų istorija:<br>
-                    {% for history in user.workoutHistory %}
-                        {{ history.date|date('Y-m-d') }} <a href="../workouts/{{ history.Workout.id }}">{{ history.Workout.title }}</a><br>
-                    {% endfor %}
+                    <div id="history" class="tab-pane fade">
+                        {% for history in user.workoutHistory %}
+                                <div class="box">
+                                    <h3><span class="infoStar">{{ history.Workout.rating }} &starf;</span></h3>
+                                    <h2 style="font-family: Oswald"><a href="workouts/{{ history.Workout.id }}"> {{ history.Workout.title }} </a> </h2>
+                                    <p> Pasirinkta: {{ history.date|date('Y-m-d') }} </p>
+                                    <p>{{ history.Workout.description[:300] }}</p>
+                                    <a href="../workouts/{{ history.Workout.id }}" class="button">Daugiau</a>
+                                </div>
+                                <br>
+                        {% endfor %}
+                    </div>
                 {% endif %}
             {% endif %}
         {% endif %}
-    </h4>
-
-
+    </div>
 {% endblock %}
