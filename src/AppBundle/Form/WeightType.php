@@ -28,7 +28,7 @@ class WeightType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('weight', IntegerType::class)
+            ->add('weight', IntegerType::class, array('data' => 0))
             ->add('save', SubmitType::class, array('label' => 'Issaugoti'))
             ->getForm();
     }

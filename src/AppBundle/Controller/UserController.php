@@ -65,6 +65,7 @@ class UserController extends Controller
             ->getRepo('UserBundle:User')
             ->find($id);
         
+        //sutvarkyti kad rodytu tik tavo svori, o kitu ne
 //        if ($id === $this->getUser()->getId()) {
 
             $weightForm = $this->createForm(WeightType::class);
@@ -80,10 +81,6 @@ class UserController extends Controller
                 }
             };
 
-            if ($weightForm->isSubmitted() && $weightForm->isValid()) {
-                $em = $repo->getEntityManager();
-
-            };
             $workout_history = $user->getWorkoutHistory();
             $workouts_arr = [];
             foreach ($workout_history as $work_hist) {
@@ -91,8 +88,12 @@ class UserController extends Controller
             }
         
             $weights_arr = $user->getWeight();    
+
+            $merged_array = $workouts_arr + $weights_arr;
+            ksort($merged_array);
         
-            $data = json_encode($weights_arr);
+            $data = json_encode($merged_array);
+        
             return $this->render('@App/Home/showUser.html.twig', array(
                 'user' => $user,
                 'data' => $data,
