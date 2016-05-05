@@ -8,7 +8,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\WeightType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
@@ -55,21 +57,49 @@ class UserController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showProfileAction($id)
+    public function showProfileAction($id, Request $request)
     {
-        $repo = $this->get('app.repo')
-            ->getRepo('UserBundle:User');
-        $user = $repo->find($id);
-        $workout_history = $user->getWorkoutHistory();
-        $arr = [];
-        foreach ($workout_history as $work_hist) {
-            //TODO padaryti kad pries supushinant i arrayju suparstintu Date objekta i stringa
-            $arr[$work_hist->getId()] = $work_hist->getWorkout()->getTitle(); //getId pakeisti i getDate (kol kas tik testavimui, nes getDate grazina Date objekta)
-        }
-        $data = json_encode($arr);
+        $repo = $this->get('app.repo');
+        $user = $repo
+            ->getRepo('UserBundle:User')
+            ->find($id);
+        
+//        if ($id === $this->getUser()->getId()) {
+
+            $weightForm = $this->createForm(WeightType::class);
+            $weightForm->handleRequest($request);
+            $weight = $weightForm->get('weight')->getData();
+
+            if (isset($weight)) {
+                if ($weight != 0) {
+                    $user->addWeight(date('Ymd'), $weight);
+                    $em = $repo->getEntityManager();
+                    $em->persist($user);
+                    $em->flush();
+                }
+            };
+
+            if ($weightForm->isSubmitted() && $weightForm->isValid()) {
+                $em = $repo->getEntityManager();
+
+            };
+            $workout_history = $user->getWorkoutHistory();
+            $arr = [];
+            foreach ($workout_history as $work_hist) {
+                //TODO padaryti kad pries supushinant i arrayju suparstintu Date objekta i stringa
+                $arr[$work_hist->getId()] = $work_hist->getWorkout()->getTitle(); //getId pakeisti i getDate (kol kas tik testavimui, nes getDate grazina Date objekta)
+            }
+            $data = json_encode($arr);
+            return $this->render('@App/Home/showUser.html.twig', array(
+                'user' => $user,
+                'data' => $data,
+                'weightForm' => $weightForm->createView()
+            ));
+//        };
+
         return $this->render('@App/Home/showUser.html.twig', array(
-            'user'=>$user,
-            'data'=>$data
+            'user' => $user,
         ));
+        
     }
 }

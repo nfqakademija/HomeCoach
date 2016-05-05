@@ -52,6 +52,38 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Workout", mappedBy="creator")
      */
     protected $created_workouts;
+
+    /**
+     * @var array
+     * @ORM\Column(type="array")
+     */
+    protected $weight = [];
+
+    /**
+     * @return array
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param array $weight
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+    }
+
+    /**
+     * @param integer $weight
+     * @param string $date
+     */
+    public function addWeight($date, $weight)
+    {
+        $this->weight[] = array($date=>$weight);
+    }
+    
     /**
      * Get ID
      *
