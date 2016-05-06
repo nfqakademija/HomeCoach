@@ -90,22 +90,28 @@ class Repo
         $sortState="Workouts." . $sort;
         $start = $page*4;
 
-        if ($difficulty!=null) {
-            $whereState = $whereState . "Workouts.difficulty = :diff AND ";
-        }
         if ($search!=null) {
             $whereState = $whereState . "Workouts.title LIKE :search AND ";
         }
+
+        if ($difficulty!=null) {
+            foreach ($difficulty as $i) {
+                $whereState = $whereState . "FIND_IN_SET(:difficulty" . $i . ", Workouts.difficulty) AND ";
+            }
+        }
+
         if ($type!=null) {
             foreach ($type as $i) {
                 $whereState = $whereState . "FIND_IN_SET(:type" . $i . ", Workouts.type) AND ";
             }
         }
+
         if ($equipment!=null) {
             foreach ($equipment as $i) {
                 $whereState = $whereState . "FIND_IN_SET(:equipment" . $i . ", Workouts.equipment) AND ";
             }
         }
+
         if ($muscle!=null) {
             foreach ($muscle as $i) {
                 $whereState = $whereState . "FIND_IN_SET(:muscle" . $i . ", Workouts.muscle_group) AND ";
@@ -126,22 +132,29 @@ class Repo
         $stmt = $this->entityManager
             ->getConnection()
             ->prepare($query);
-        if ($difficulty != null) {
-            $stmt->bindValue('diff', $difficulty);
-        }
+
         if ($search!=null) {
             $stmt->bindValue('search', "%" . $search . "%");
         }
+
         if ($type!=null) {
             foreach ($type as $i) {
                 $stmt->bindValue('type' . $i, $i);
             }
         }
+
         if ($equipment!=null) {
             foreach ($equipment as $i) {
                 $stmt->bindValue('equipment' . $i, $i);
             }
         }
+
+        if ($difficulty!=null) {
+            foreach ($difficulty as $i) {
+                $stmt->bindValue('difficulty' . $i, $i);
+            }
+        }
+
         if ($muscle!=null) {
             foreach ($muscle as $i) {
                 $stmt->bindValue('muscle' . $i, $i);
