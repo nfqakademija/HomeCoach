@@ -27,13 +27,16 @@ $(function () {
 
     var labels = []
 
+    //sudeda ne tuos (per mazai) labeliu
     for (var i = 0; i < datasets_arr.length; i++){
+        console.log('datasets_arr['+i+'] = '+ datasets_arr[i]);
         if (datasets_arr[i].length > 1){
             //issiaiskinti kodel cia reikia dvieju [0] kad veiktu teisingai
             labels.push(datasets_arr[i][0][0]);
             console.log("labelis: "+ datasets_arr[i][0][0])
         }
     }
+    console.log('datasets_arr[0][0] = '+ datasets_arr[0][0]);
 
     // console.log("dates = " + dates);
     // console.log("weightValues = " + weightValues);
@@ -72,13 +75,16 @@ $(function () {
         var last_label = '';
         var last_color = '';
         for (var i = 0; i < datasets_arr.length; i++){
-            return {
-                label: dataset[0][1],
-                backgroundColor: "rgba(151,187,205,0.5)",
-                data: [80],
-                // data: datasets_arr[i+1][i][1],
-                borderColor: rotateColors(),
-                borderWidth: 0,
+            for (var j = 0; j < datasets_arr.length; j++) {
+                return {
+                    label: dataset[0][1],
+                    backgroundColor: "rgba(151,187,205,0.5)",
+                    data: [80],
+                    // cia reikia grazinti masyva
+                    // data: datasets_arr[i+1][j][1],
+                    borderColor: rotateColors(),
+                    borderWidth: 0,
+                }
             }
         }
     }
