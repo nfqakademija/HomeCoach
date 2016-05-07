@@ -15,8 +15,10 @@ use AppBundle\Form\CommentType;
 use AppBundle\Form\WorkoutEditType;
 use AppBundle\Form\WorkoutRatingType;
 use AppBundle\Form\WorkoutType;
+use AppBundle\Service\WorkoutService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\User;
 
 class WorkoutController extends Controller
 {
@@ -83,18 +85,7 @@ class WorkoutController extends Controller
         $workoutService = $this->get('app.workout_service');
         $user = $this->getUser();
         $comment = new Comments($user, "");
-        $formFactory = $this->get("form.factory");
-        $forms = [];
-        if ($user != null) {
-            $forms["commentForm"] = $formFactory->createNamed("commentForm", CommentType::class, $comment);
-            $forms["activateForm"] = $formFactory->createNamed("activateForm", ActivateType::class, null, array(
-                'disabled' => $workoutService->enableActivation($user, $workout, $request)
-            ));
-            $forms["rateForm"] = $this->createForm(WorkoutRatingType::class, null);
-        }
-        if ($workoutService->canEdit($user, $workout)) {
-            $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
-        }
+        $forms = $this->createWorkoutForms($user, $workout, $comment, $workoutService, $request);
         if ($workoutService->validateForm($forms["commentForm"], $request)) {
             $workoutService->commentWorkout($workout, $comment);
         }
@@ -114,5 +105,29 @@ class WorkoutController extends Controller
             '@App/Home/queryWorkout.html.twig',
             $workoutService->queryOptions($user, $workout, $forms)
         );
+    }
+
+    /**
+     * @param User $user
+     * @param Workout $workout
+     * @param Comments $comment
+     * @param WorkoutService $workoutService
+     * @param Request $request
+     */
+    private function createWorkoutForms($user, $workout, $comment, $workoutService, $request)
+    {
+        $formFactory = $this->get("form.factory");
+        $forms = [];
+        if ($user != null) {
+            $forms["commentForm"] = $formFactory->createNamed("commentForm", CommentType::class, $comment);
+            $forms["activateForm"] = $formFactory->createNamed("activateForm", ActivateType::class, null, array(
+                'disabled' => $workoutService->enableActivation($user, $workout, $request)
+            ));
+            $forms["rateForm"] = $this->createForm(WorkoutRatingType::class, null);
+        }
+        if ($workoutService->canEdit($user, $workout)) {
+            $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
+        }
+        return $forms;
     }
 }

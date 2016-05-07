@@ -31,11 +31,21 @@ class WorkoutService
     {
         $this->managerRegistry = $managerRegistry;
     }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
     private function getEntityManager()
     {
         return $this->managerRegistry->getManager();
     }
 
+    /**
+     * @param User $user
+     * @param Workout $workout
+     * @param array $forms
+     * @return array
+     */
     public function queryOptions($user, $workout, $forms)
     {
         $options = [];
