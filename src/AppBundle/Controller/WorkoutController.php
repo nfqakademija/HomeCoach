@@ -118,10 +118,10 @@ class WorkoutController extends Controller
 
         if ($request->request->has("editForm")) {
             $editForm->handleRequest($request);
-            if ($request->request->has("delete")) {
+            if ($editForm->getClickedButton()->getName()=="delete") {
                 $workoutService->deleteWorkout($workout);
-            } elseif ($request->request->has("edit") && $workoutService->canEdit($user, $workout)) {
-                $this->redirect("../editWorkout/" . $workout->getId());
+            } elseif ($editForm->getClickedButton()->getName()=="edit" && $workoutService->canEdit($user, $workout)) {
+                return $this->redirect("../editWorkout/" . $workout->getId());
             }
             $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
         }

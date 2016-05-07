@@ -100,6 +100,8 @@
         <br>
     {% endif %}
     <div class="fb-like" data-href="http://homecoach.projektai.nfqakademija.lt/workouts/{{ workout.id }}" data-layout="standard" data-action="like" colorscheme="dark" data-show-faces="true" data-share="true"></div>
+    {{ form_start(editForm) }}
+    {{ form_end(editForm) }}
     <h2 class="description"> Komentarai </h2>
     <ul style="margin-bottom:10px;" class="nav nav-tabs">
         <li><a data-toggle="tab" href="#menu1">Home Coach <span class="badge alert-info">{{ workout.comments|length }}</span> </a></li>
