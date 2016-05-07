@@ -10,7 +10,7 @@ services:
 
     app.WorkoutService:
         class: AppBundle\Service\WorkoutService
-        arguments: [ @doctrine.orm.entity_manager ]
+        arguments: [ @doctrine ]
 
     app.twig_extension:
         class: AppBundle\Twig\DifficultyExtension

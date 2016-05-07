@@ -56,8 +56,7 @@ class WorkoutController extends Controller
         $workout = $this->get('app.Repo')->getWorkout($id);
         $workoutService = $this->get('app.WorkoutService');
         if (!$workoutService->canEdit($user, $workout)) {
-            //Numest i no permissions page.
-            return new Response("NOPE!");
+            return $this->redirect("../");
         }
         $form = $this->createForm(WorkoutType::class, $workout);
         $form->handleRequest($request);
@@ -80,8 +79,7 @@ class WorkoutController extends Controller
     {
         $workout = $this->get('app.repo')->getWorkout($id);
         if (!$workout) {
-            //Numest i no permissions page.
-            return new Response("NOPE!");
+            return $this->redirect("../");
         }
         $workoutService = $this->get('app.workoutservice');
         $user = $this->getUser();
@@ -113,9 +111,10 @@ class WorkoutController extends Controller
                 $workoutService->activateWorkout($user, $workout);
             }
         }
-        $rateForm->handleRequest($request);
-        $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
-
+        if ($rateForm != null) {
+            $rateForm->handleRequest($request);
+            $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
+        }
         if ($request->request->has("editForm")) {
             $editForm->handleRequest($request);
             if ($editForm->getClickedButton()->getName()=="delete") {
@@ -131,9 +130,13 @@ class WorkoutController extends Controller
             $options["form"] = $commentForm->createView();
             $options["formRate"] = $rateForm->createView();
             $options["activateForm"] = $activateForm->createView();
+        } else {
+            $options["form"] = $options["formRate"] = $options["activateForm"] = null;
         }
         if ($workoutService->canEdit($user, $workout)) {
             $options["editForm"] = $editForm->createView();
+        } else {
+            $options["editForm"] = null;
         }
         return $this->render('@App/Home/queryWorkout.html.twig', $options);
     }

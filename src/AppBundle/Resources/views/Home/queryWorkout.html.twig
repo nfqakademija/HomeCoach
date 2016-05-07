@@ -14,8 +14,9 @@
         <div class="col-md-5">
             <div id="difficulty"></div>
             <div style="margin-top:15px;" id="rating"></div>
-            {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
-            {% if app.user is not null and workout.userRating(app.user.id) != 0 %}
+            {% if app.user is not null %}
+                {% if  workout.userRating(app.user.id) != 0 %}
+                    {{ form_start(formRate, {'attr':{'id':'rating'}}) }}
                 <div class="rating">
                     {{ form_widget(formRate.rating.4, {'attr':{'class':'radio_item'}}) }}
                     {{ form_widget(formRate.rating.3, {'attr':{'class':'radio_item'}}) }}
@@ -28,6 +29,7 @@
                     {% endfor %}
                 </div>
                 {{ form_end(formRate) }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="col-md-3">
@@ -39,7 +41,9 @@
     <div class="row">
         <div class="col-md-12">
             <p> {{ workout.description|nl2br }} </p>
+            {% if activateForm is not null %}
             {% include 'AppBundle:Home:activateWorkout.html.twig' with {'form': activateForm} only %}
+            {% endif %}
         </div>
         <div class="col-md-12" style="margin:10px 0px 10px 0px">
             <ul class="tags">
@@ -100,8 +104,10 @@
         <br>
     {% endif %}
     <div class="fb-like" data-href="http://homecoach.projektai.nfqakademija.lt/workouts/{{ workout.id }}" data-layout="standard" data-action="like" colorscheme="dark" data-show-faces="true" data-share="true"></div>
-    {{ form_start(editForm) }}
-    {{ form_end(editForm) }}
+    {% if editForm is not null %}
+        {{ form_start(editForm) }}
+        {{ form_end(editForm) }}
+    {% endif %}
     <h2 class="description"> Komentarai </h2>
     <ul style="margin-bottom:10px;" class="nav nav-tabs">
         <li><a data-toggle="tab" href="#menu1">Home Coach <span class="badge alert-info">{{ workout.comments|length }}</span> </a></li>

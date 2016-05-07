@@ -10,7 +10,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 use UserBundle\Entity\WorkoutHistory;
@@ -18,19 +18,22 @@ use UserBundle\Entity\WorkoutHistory;
 class WorkoutService
 {
     /**
-     * @var EntityManager
+     * @var ManagerRegistry
      */
-    private $entityManager;
+    private $managerRegistry;
 
     /**
      * WorkoutService constructor.
-     * @param EntityManager $entityManager
+     * @param ManagerRegistry $managerRegistry
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->entityManager = $entityManager;
+        $this->managerRegistry = $managerRegistry;
     }
-
+    private function getEntityManager()
+    {
+        return $this->managerRegistry->getManager();
+    }
     /**
      * @param User $user
      * @param Workout $workout
@@ -53,8 +56,8 @@ class WorkoutService
      */
     public function saveWorkout($workout)
     {
-        $this->entityManager->persist($workout);
-        $this->entityManager->flush();
+        $this->getEntityManager()->persist($workout);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -86,9 +89,9 @@ class WorkoutService
         $user->setActiveWorkout($workout);
         $user->addWorkoutHistory($history);
 
-        $this->entityManager->persist($history);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->getEntityManager()->persist($history);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -101,8 +104,8 @@ class WorkoutService
         if (isset($score)) {
             if ($score!=0) {
                 $workout->setUserRating($user, $score);
-                $this->entityManager->persist($workout);
-                $this->entityManager->flush();
+                $this->getEntityManager()->persist($workout);
+                $this->getEntityManager()->flush();
             }
         }
     }
@@ -118,17 +121,8 @@ class WorkoutService
         $comments[] = $comment;
         $workout->setComments($comments);
 
-        $this->entityManager->persist($comment);
-        $this->entityManager->persist($workout);
-        $this->entityManager->flush();
-    }
-
-    /**
-     * @param Workout $workout
-     */
-    public function deleteWorkout($workout)
-    {
-        $this->entityManager->remove($workout);
-        $this->entityManager->flush();
+        $this->getEntityManager()->persist($comment);
+        $this->getEntityManager()->persist($workout);
+        $this->getEntityManager()->flush();
     }
 }
