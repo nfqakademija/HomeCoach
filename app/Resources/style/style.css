@@ -526,3 +526,16 @@ select
     text-align: center;
     color: white;
 }
+
+.rateInfo
+{
+    color:white;
+    font-family: Oswald;
+    font-weight: 700;
+    font-size:21px;
+}
+
+.affix
+{
+    top:60px;
+}

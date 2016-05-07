@@ -8,11 +8,6 @@ services:
         class: AppBundle\Service\Repo
         arguments: [ @doctrine.orm.entity_manager ]
 
-    app.twig_extension:
-        class: AppBundle\Twig\DifficultyExtension
-        public: false
-        tags:
-            - { name: twig.extension }
 services:
     app.form.registration:
         class: UserBundle\Form\RegistrationType

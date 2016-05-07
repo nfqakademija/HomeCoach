@@ -50,6 +50,18 @@
     <script src="{{ asset('js/commentLengthControl.js') }}"></script>
     <script src="{{ asset('js/ratings.js') }}"></script>
     <script src="{{ asset('js/facebookPlugin.js') }}"></script>
+    <script>
+        $('body').scrollspy({ target: '#scrollSpy' });
+        $(function(){
+            $('.nav-tabs li a').click(function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+                // If we are showing the scrollspy tab, let the
+                // plugin refresh itself so it can function properly
+                $('body').scrollspy('refresh');
+            });
+        });
+    </script>
 {% endblock %}
 {% endblock %}
 </html>

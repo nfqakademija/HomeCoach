@@ -14,33 +14,54 @@
         </div>
     </div>
     <ul style="margin-bottom:10px;" class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#createdWorkouts"> Sukurtos programos </a></li>
-        <li><a data-toggle="tab" href="#history"> Istorija </a></li>
-        <li><a data-toggle="tab" href="#active">Aktyvi programa </a></li>
+        <li class="active"><a data-toggle="tab" href="#createdWorkouts"> Sukurtos programos <span class="badge alert-info">{{ user.createdWorkouts|length }}</span></a></li>
+        {% if app.user is not null %}
+            {% if app.user.id == user.id %}
+                {% if user.workoutHistory|length != 0 %}
+                    <li><a data-toggle="tab" href="#history"> Istorija <span class="badge alert-info">{{ user.createdWorkouts|length }}</span> </a></li>
+                {% endif %}
+
+                {% if user.activeWorkout is not null %}
+                 <li><a data-toggle="tab" href="#active">Aktyvi programa </a></li>
+                {% endif %}
+            {% endif %}
+        {% endif %}
     </ul>
-    <div class="tab-content">
+    <div class="tab-content" data-spy="scroll" data-target="#scrollSpy">
         <div id="createdWorkouts" class="tab-pane fade in active">
             {% if user.createdWorkouts is not null %}
-                {% for workout in user.createdWorkouts %}
-                    <section class="col-md-4>">
-                        <div class="box">
-                            <h3><span class="infoStar">{{ workout.rating }} &starf;</span></h3>
+                <div class="row">
+                    <nav class="col-md-4" id="scrollSpy">
+                        <ul style="overflow-y: scroll; height: 400px;" class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="200">
+                            {% for workout in user.createdWorkouts %}
+                                <li><a href="#sectionCreated{{ workout.id }}"> {{ workout.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    <div class="col-md-8">
+                    {% for workout in user.createdWorkouts %}
+                        <div style="margin-bottom: 10px;" class="box" id="sectionCreated{{ workout.id }}">
+                            {% if workout.rating is not null %}
+                                <h3><span class="infoStar">{{ workout.rating }} &starf;</span></h3>
+                            {% endif %}
                             <h2 style="font-family: Oswald"><a href="../workouts/{{ workout.id }}"> {{ workout.title }}</a> </h2>
                             <p> Pasirinko <span class="badge alert-info">{{ workout.activations|length }}</span> </p>
-                            <p>{{ workout.description[:300] }}</p>
+                            <p>{{ workout.description[:150] }}</p>
                             <a href="../workouts/{{ workout.id }}" class="button">Daugiau</a>
                         </div>
-                    </section>
                     {% endfor %}
+                    </div>
+                </div>
             {% endif %}
         </div>
-        <br>
         {% if app.user is not null %}
             {% if app.user.id == user.id %}
                 {% if user.activeWorkout is not null %}
                     <div id="active" class="tab-pane fade">
                         <div class="box">
-                            <h3><span class="infoStar">{{ user.activeWorkout.rating }} &starf;</span></h3>
+                            {% if user.activeWorkout.rating is not null %}
+                                <h3><span class="infoStar">{{ user.activeWorkout.rating }} &starf;</span></h3>
+                            {% endif %}
                             <h2 style="font-family: Oswald"><a href="workouts/{{ user.activeWorkout.id }}"> {{ user.activeWorkout.title }}</a> </h2>
                             <p>{{ user.activeWorkout.description[:300] }}</p>
                             <a href="../workouts/{{ user.activeWorkout.id }}" class="button">Daugiau</a>
@@ -48,20 +69,26 @@
                     </div>
                 {% endif %}
                 {% if user.workoutHistory|length != 0 %}
-                    <div id="history" class="tab-pane fade">
-                        {% for history in user.workoutHistory %}
-                                <div class="box">
-                                    <h3><span class="infoStar">{{ history.Workout.rating }} &starf;</span></h3>
-                                    <h2 style="font-family: Oswald"><a href="workouts/{{ history.Workout.id }}"> {{ history.Workout.title }} </a> </h2>
-                                    <p> Pasirinkta: {{ history.date|date('Y-m-d') }} </p>
-                                    <p>{{ history.Workout.description[:300] }}</p>
-                                    <a href="../workouts/{{ history.Workout.id }}" class="button">Daugiau</a>
+                        <div id="history" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-12">
+                                {% for history in user.workoutHistory %}
+                                    <div style="margin-bottom: 10px;" class="box" id="#sectionHistory{{ history.id }}">
+                                        {% if history.Workout.rating is not null %}
+                                            <h3><span class="infoStar">{{ history.Workout.rating }} &starf;</span></h3>
+                                        {% endif %}
+                                        <h2 style="font-family: Oswald"><a href="workouts/{{ history.Workout.id }}"> {{ history.Workout.title }} </a> </h2>
+                                        <p> Pasirinkta: {{ history.date|date('Y-m-d') }} </p>
+                                        <p>{{ history.Workout.description[:300] }}</p>
+                                        <a href="../workouts/{{ history.Workout.id }}" class="button">Daugiau</a>
+                                    </div>
+                                {% endfor %}
                                 </div>
-                                <br>
-                        {% endfor %}
-                    </div>
+                            </div>
+                        </div>
                 {% endif %}
             {% endif %}
         {% endif %}
     </div>
+    <div class="affixEnd"></div>
 {% endblock %}
