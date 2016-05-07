@@ -10,6 +10,10 @@ app.createWorkout:
     path:     /createWorkout
     defaults: { _controller: AppBundle:Workout:createWorkout}
 
+app.editWorkout:
+    path:     /editWorkout/{id}
+    defaults: { _controller: AppBundle:Workout:editWorkout}
+
 app.showWorkout:
     path:     /workouts/{id}
     defaults: { _controller: AppBundle:Workout:showWorkout}
