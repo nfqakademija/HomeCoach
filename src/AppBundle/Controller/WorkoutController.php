@@ -17,7 +17,6 @@ use AppBundle\Form\WorkoutRatingType;
 use AppBundle\Form\WorkoutType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class WorkoutController extends Controller
 {
@@ -32,7 +31,7 @@ class WorkoutController extends Controller
         if ($user==null) {
             return $this->redirectToRoute('fos_user_security_login');
         }
-        $workoutService = $this->get('app.workoutservice');
+        $workoutService = $this->get('app.workout_service');
         $workout = new Workout($user);
         $form = $this->createForm(WorkoutType::class, $workout);
         $form->handleRequest($request);
@@ -53,8 +52,8 @@ class WorkoutController extends Controller
     public function editWorkoutAction($id, Request $request)
     {
         $user = $this->getUser();
-        $workout = $this->get('app.Repo')->getWorkout($id);
-        $workoutService = $this->get('app.WorkoutService');
+        $workout = $this->get('app.repo')->getWorkout($id);
+        $workoutService = $this->get('app.workout_service');
         if (!$workoutService->canEdit($user, $workout)) {
             return $this->redirect("../");
         }
@@ -81,63 +80,39 @@ class WorkoutController extends Controller
         if (!$workout) {
             return $this->redirect("../");
         }
-        $workoutService = $this->get('app.workoutservice');
+        $workoutService = $this->get('app.workout_service');
         $user = $this->getUser();
         $comment = new Comments($user, "");
-
-        $commentForm = null;
-        $activateForm = null;
-        $editForm = null;
-        $rateForm = null;
+        $formFactory = $this->get("form.factory");
+        $forms = [];
         if ($user != null) {
-            $commentForm = $this->get('form.factory')->createNamed("commentForm", CommentType::class, $comment);
-            $activateForm = $this->get('form.factory')->createNamed("activateForm", ActivateType::class, null, array(
+            $forms["commentForm"] = $formFactory->createNamed("commentForm", CommentType::class, $comment);
+            $forms["activateForm"] = $formFactory->createNamed("activateForm", ActivateType::class, null, array(
                 'disabled' => $workoutService->enableActivation($user, $workout, $request)
             ));
-            $rateForm = $this->createForm(WorkoutRatingType::class, null);
+            $forms["rateForm"] = $this->createForm(WorkoutRatingType::class, null);
         }
         if ($workoutService->canEdit($user, $workout)) {
-            $editForm = $this->get('form.factory')->createNamed("editForm", WorkoutEditType::class, null);
+            $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
         }
-        if ($request->request->has("commentForm")) {
-            $commentForm->handleRequest($request);
-            if ($commentForm->isValid()) {
-                $workoutService->commentWorkout($workout, $comment);
-            }
+        if ($workoutService->validateForm($forms["commentForm"], $request)) {
+            $workoutService->commentWorkout($workout, $comment);
         }
-        if ($request->request->has("activateForm")) {
-            $activateForm->handleRequest($request);
-            if ($activateForm->isValid()) {
-                $workoutService->activateWorkout($user, $workout);
-            }
+        if ($workoutService->validateForm($forms["activateForm"], $request)) {
+            $workoutService->activateWorkout($user, $workout);
         }
-        if ($rateForm != null) {
-            $rateForm->handleRequest($request);
-            $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
+        if ($forms["rateForm"] != null) {
+            $forms["rateForm"]->handleRequest($request);
+            $workoutService->rateWorkout($user, $workout, $forms["rateForm"]->get("rating")->getData());
         }
-        if ($request->request->has("editForm")) {
-            $editForm->handleRequest($request);
-            if ($editForm->getClickedButton()->getName()=="delete") {
-                $workoutService->deleteWorkout($workout);
-            } elseif ($editForm->getClickedButton()->getName()=="edit" && $workoutService->canEdit($user, $workout)) {
-                return $this->redirect("../editWorkout/" . $workout->getId());
-            }
-            $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
+        if ($workoutService->validateForm($forms["editForm"], $request) &&
+            $forms["editForm"]->getClickedButton()->getName()=="edit" &&
+            $workoutService->canEdit($user, $workout)) {
+            return $this->redirect("../editWorkout/" . $workout->getId());
         }
-        $options = [];
-        $options["workout"] = $workout;
-        if ($user != null) {
-            $options["form"] = $commentForm->createView();
-            $options["formRate"] = $rateForm->createView();
-            $options["activateForm"] = $activateForm->createView();
-        } else {
-            $options["form"] = $options["formRate"] = $options["activateForm"] = null;
-        }
-        if ($workoutService->canEdit($user, $workout)) {
-            $options["editForm"] = $editForm->createView();
-        } else {
-            $options["editForm"] = null;
-        }
-        return $this->render('@App/Home/queryWorkout.html.twig', $options);
+        return $this->render(
+            '@App/Home/queryWorkout.html.twig',
+            $workoutService->queryOptions($user, $workout, $forms)
+        );
     }
 }

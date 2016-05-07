@@ -11,6 +11,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 use UserBundle\Entity\WorkoutHistory;
@@ -33,6 +34,41 @@ class WorkoutService
     private function getEntityManager()
     {
         return $this->managerRegistry->getManager();
+    }
+
+    public function queryOptions($user, $workout, $forms)
+    {
+        $options = [];
+        $options["workout"] = $workout;
+        if ($user != null) {
+            $options["form"] = $forms["commentForm"]->createView();
+            $options["formRate"] = $forms["rateForm"]->createView();
+            $options["activateForm"] = $forms["activateForm"]->createView();
+        } else {
+            $options["form"] = $options["formRate"] = $options["activateForm"] = null;
+        }
+        if ($this->canEdit($user, $workout)) {
+            $options["editForm"] = $forms["editForm"]->createView();
+        } else {
+            $options["editForm"] = null;
+        }
+        return $options;
+    }
+
+    /**
+     * @param Form $form
+     * @param Request $request
+     * @return bool
+     */
+    public function validateForm($form, Request $request)
+    {
+        if ($request->request->has($form->getName())) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                return true;
+            }
+        }
+        return false;
     }
     /**
      * @param User $user

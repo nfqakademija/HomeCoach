@@ -8,9 +8,9 @@ services:
         class: AppBundle\Service\Repo
         arguments: [ @doctrine.orm.entity_manager ]
 
-    app.WorkoutService:
+    app.workout_service:
         class: AppBundle\Service\WorkoutService
-        arguments: [ @doctrine ]
+        arguments: [ '@doctrine' ]
 
     app.twig_extension:
         class: AppBundle\Twig\DifficultyExtension

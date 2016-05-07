@@ -8,7 +8,6 @@
 
 namespace AppBundle\Form;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,8 +26,6 @@ class WorkoutEditType extends AbstractType
         $builder
             ->add('edit', SubmitType::class, array(
                 'label' => "Redaguoti",))
-            ->add('delete', SubmitType::class, array(
-                'label' => "Ištrinti",))
             ->getForm();
     }
 }
