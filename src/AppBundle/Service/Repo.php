@@ -17,7 +17,7 @@ class Repo
      * @var EntityManager
      */
     public $entityManager;
-
+    const pageLength=4;
     /**
      * @return EntityManager
      */
@@ -88,7 +88,7 @@ class Repo
     {
         $whereState="WHERE ";
         $sortState="Workouts." . $sort;
-        $start = $page*4;
+        $start = $page*self::pageLength;
 
         if ($search!=null) {
             $whereState = $whereState . "Workouts.title LIKE :search AND ";
@@ -96,7 +96,7 @@ class Repo
 
         if ($difficulty!=null) {
             foreach ($difficulty as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:difficulty" . $i . ", Workouts.difficulty) AND ";
+                $whereState = $whereState . "FIND_IN_SET(:difficulty" . $i . ", Workouts.difficulty) OR  ";
             }
         }
 
@@ -127,7 +127,7 @@ class Repo
         $query = "SELECT Workouts.id,title, Workouts.rating,description, data_created, " .
             "Workouts.creator_id, Workouts.difficulty, username FROM Workouts " .
             "LEFT JOIN fos_user ON fos_user.id=Workouts.creator_id " . $whereState .
-            " ORDER BY " . $sortState . " DESC LIMIT " . $start . ",4";
+            " ORDER BY " . $sortState . " DESC LIMIT " . $start . "," . self::pageLength;
 
         $stmt = $this->entityManager
             ->getConnection()
@@ -162,7 +162,7 @@ class Repo
         }
 
         $stmt->execute();
-
+        //var_dump($query);
         $workouts = $stmt->fetchAll();
         return $workouts;
     }
