@@ -10,8 +10,13 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
+use AppBundle\Form\ActivateType;
+use AppBundle\Form\CommentType;
+use AppBundle\Form\WorkoutEditType;
+use AppBundle\Form\WorkoutRatingType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 use UserBundle\Entity\WorkoutHistory;
@@ -39,7 +44,56 @@ class WorkoutService
     {
         return $this->managerRegistry->getManager();
     }
-
+    /**
+     * @param null|User $user
+     * @param Workout $workout
+     * @param Comments $comment
+     * @param Request $request
+     * @param FormFactory $formFactory
+     * @return array
+     */
+    public function createWorkoutForms($user, $workout, $comment, $request, $formFactory)
+    {
+        $forms = [];
+        if ($user != null) {
+            $forms["commentForm"] = $formFactory->createNamed("commentForm", CommentType::class, $comment);
+            $forms["activateForm"] = $formFactory->createNamed("activateForm", ActivateType::class, null, array(
+                'disabled' => $this->enableActivation($user, $workout, $request)
+            ));
+            $forms["rateForm"] = $formFactory->create(WorkoutRatingType::class, null);
+        }
+        if ($this->canEdit($user, $workout)) {
+            $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
+        }
+        return $forms;
+    }
+    /**
+     * @param User $user
+     * @param Workout $workout
+     * @param Comments $comment
+     * @param array $forms
+     * @param Request $request
+     * @return bool
+     */
+    public function handleForms($user, $workout, $comment, $forms, $request)
+    {
+        if ($this->validateForm($forms["commentForm"], $request)) {
+            $this->commentWorkout($workout, $comment);
+        }
+        if ($this->validateForm($forms["activateForm"], $request)) {
+            $this->activateWorkout($user, $workout);
+        }
+        if ($forms["rateForm"] != null) {
+            $forms["rateForm"]->handleRequest($request);
+            $this->rateWorkout($user, $workout, $forms["rateForm"]->get("rating")->getData());
+        }
+        if ($this->validateForm($forms["editForm"], $request) &&
+            $forms["editForm"]->getClickedButton()->getName()=="edit" &&
+            $this->canEdit($user, $workout)) {
+            return true;
+        }
+        return false;
+    }
     /**
      * @param User $user
      * @param Workout $workout

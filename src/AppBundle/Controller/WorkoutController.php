@@ -85,20 +85,11 @@ class WorkoutController extends Controller
         $workoutService = $this->get('app.workout_service');
         $user = $this->getUser();
         $comment = new Comments($user, "");
-        $forms = $this->createWorkoutForms($user, $workout, $comment, $workoutService, $request);
-        if ($workoutService->validateForm($forms["commentForm"], $request)) {
-            $workoutService->commentWorkout($workout, $comment);
-        }
-        if ($workoutService->validateForm($forms["activateForm"], $request)) {
-            $workoutService->activateWorkout($user, $workout);
-        }
-        if ($forms["rateForm"] != null) {
-            $forms["rateForm"]->handleRequest($request);
-            $workoutService->rateWorkout($user, $workout, $forms["rateForm"]->get("rating")->getData());
-        }
-        if ($workoutService->validateForm($forms["editForm"], $request) &&
-            $forms["editForm"]->getClickedButton()->getName()=="edit" &&
-            $workoutService->canEdit($user, $workout)) {
+        $forms = $workoutService->
+        createWorkoutForms($user, $workout, $comment, $request, $this->get("form.factory"));
+
+        //Jeigu paspaudzia "edit" mygtuka ir turi visas teises, redirectinamas i editWorkout
+        if ($workoutService->handleForms($user, $workout, $comment, $forms, $request)==true) {
             return $this->redirect("../editWorkout/" . $workout->getId());
         }
         return $this->render(
@@ -106,28 +97,5 @@ class WorkoutController extends Controller
             $workoutService->queryOptions($user, $workout, $forms)
         );
     }
-
-    /**
-     * @param User $user
-     * @param Workout $workout
-     * @param Comments $comment
-     * @param WorkoutService $workoutService
-     * @param Request $request
-     */
-    private function createWorkoutForms($user, $workout, $comment, $workoutService, $request)
-    {
-        $formFactory = $this->get("form.factory");
-        $forms = [];
-        if ($user != null) {
-            $forms["commentForm"] = $formFactory->createNamed("commentForm", CommentType::class, $comment);
-            $forms["activateForm"] = $formFactory->createNamed("activateForm", ActivateType::class, null, array(
-                'disabled' => $workoutService->enableActivation($user, $workout, $request)
-            ));
-            $forms["rateForm"] = $this->createForm(WorkoutRatingType::class, null);
-        }
-        if ($workoutService->canEdit($user, $workout)) {
-            $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
-        }
-        return $forms;
-    }
+    
 }
