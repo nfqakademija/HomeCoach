@@ -61,9 +61,13 @@ class WorkoutService
                 'disabled' => $this->enableActivation($user, $workout, $request)
             ));
             $forms["rateForm"] = $formFactory->create(WorkoutRatingType::class, null);
+        } else {
+            $forms["commentForm"] = $forms["activateForm"] = $forms["rateForm"] = null;
         }
         if ($this->canEdit($user, $workout)) {
             $forms["editForm"] = $formFactory->createNamed("editForm", WorkoutEditType::class, null);
+        } else {
+            $forms["editForm"] = null;
         }
         return $forms;
     }
@@ -126,6 +130,9 @@ class WorkoutService
      */
     public function validateForm($form, Request $request)
     {
+        if ($form == null) {
+            return false;
+        }
         if ($request->request->has($form->getName())) {
             $form->handleRequest($request);
             if ($form->isValid()) {
