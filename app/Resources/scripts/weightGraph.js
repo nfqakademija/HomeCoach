@@ -11,32 +11,43 @@ $(function () {
             // dates.push(key);
             // weightValues.push(obj[key]);
             // obj_arr.push([key, obj[key]]);
-            if (/^[a-zA-Z]+$/.test(obj[key])){
+            //if (/^[a-zA-Z0-9]+$/.test(obj[key])){
+            //    if (dataset.length > 0){
+            //        datasets_arr.push(dataset);
+            //        console.log('dataset: '+dataset);
+            //    };
+            //    dataset = [];
+            //    dataset.push([key, obj[key]]);
+            //} else {
+            //    dataset.push([key, obj[key]]);
+            //}
+
+            if (/^[0-9]{2,3}$/.test(obj[key])){
+                dataset.push([key, obj[key]]);
+            } else {
                 if (dataset.length > 0){
                     datasets_arr.push(dataset);
                     console.log('dataset: '+dataset);
-                };
+                }
                 dataset = [];
                 dataset.push([key, obj[key]]);
-            } else {
-                dataset.push([key, obj[key]]);
-            }
 
+            }
         }
     }
 
     var labels = []
 
-    //sudeda ne tuos (per mazai) labeliu
     for (var i = 0; i < datasets_arr.length; i++){
         console.log('datasets_arr['+i+'] = '+ datasets_arr[i]);
         if (datasets_arr[i].length > 1){
-            //issiaiskinti kodel cia reikia dvieju [0] kad veiktu teisingai
-            labels.push(datasets_arr[i][0][0]);
-            console.log("labelis: "+ datasets_arr[i][0][0])
+            for (var j = 1; j < datasets_arr[i].length; j++){
+                labels.push(datasets_arr[i][j][0]);
+                console.log("labelis: "+ datasets_arr[i][j][0])
+            }
         }
     }
-    console.log('datasets_arr[0][0] = '+ datasets_arr[0][0]);
+    //console.log('datasets_arr[0][0] = '+ datasets_arr[0][0]);
 
     // console.log("dates = " + dates);
     // console.log("weightValues = " + weightValues);
@@ -55,12 +66,12 @@ $(function () {
     //     var key = obj_arr[i][0];
     //     var value = obj_arr[i][1];
     //
-    //    
+    //
     // }
 
     var colors = ['white', 'green', 'red', 'blue'];
 
-    console.log("datasets_arr[1][1][1] =" + datasets_arr[1][1][1]);
+    //console.log("datasets_arr[1][1][1] =" + datasets_arr[1][1][1]);
 
     function rotateColors() {
         var first_color = colors.shift();
@@ -90,11 +101,20 @@ $(function () {
     }
 
     var barChartData = {
-        //TODO pakeisti i datas kada buvo padaryti svorio irasai 
+        //TODO pakeisti i datas kada buvo padaryti svorio irasai
         labels: labels,
         //TODO kiekvienam svorio irasui sukurti atskira dataseto irasa ir kiekvienam priskirti workouta (pagal tai ir uzvadinti "label". skirtingiems labeliams uzdeti skirtingas spalvas
         datasets: [
-            loadDatasets()
+            //loadDatasets()
+            {
+                label: dataset[0][1],
+                backgroundColor: "rgba(151,187,205,0.5)",
+                data: [80],
+                // cia reikia grazinti masyva
+                // data: datasets_arr[i+1][j][1],
+                borderColor: rotateColors(),
+                borderWidth: 0,
+            }
         ]
 
     };
