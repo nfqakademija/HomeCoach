@@ -12,10 +12,12 @@ use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
 use AppBundle\Form\ActivateType;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\WorkoutEditType;
 use AppBundle\Form\WorkoutRatingType;
 use AppBundle\Form\WorkoutType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\WorkoutHistory;
 
 class WorkoutController extends Controller
@@ -31,13 +33,37 @@ class WorkoutController extends Controller
         if ($user==null) {
             return $this->redirectToRoute('fos_user_security_login');
         }
+        $workoutService = $this->get('app.workoutservice');
         $workout = new Workout($user);
         $form = $this->createForm(WorkoutType::class, $workout);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($workout);
-            $em->flush();
+            $workoutService->saveWorkout($workout);
+            return $this->redirect("../workouts/" . $workout->getId());
+        }
+        return $this->render('@App/Home/createWorkout.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+    /**
+     * Edit a Workout
+     * @param int $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editWorkoutAction($id, Request $request)
+    {
+        $user = $this->getUser();
+        $workout = $this->get('app.Repo')->getWorkout($id);
+        $workoutService = $this->get('app.WorkoutService');
+        if (!$workoutService->canEdit($user, $workout)) {
+            //Numest i no permissions page.
+            return new Response("NOPE!");
+        }
+        $form = $this->createForm(WorkoutType::class, $workout);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $workoutService->saveWorkout($workout);
             return $this->redirect("../workouts/" . $workout->getId());
         }
         return $this->render('@App/Home/createWorkout.html.twig', array(
@@ -53,105 +79,60 @@ class WorkoutController extends Controller
      */
     public function showWorkoutAction($id, Request $request)
     {
-        $repo = $this->get('app.repo');
-        $workout = $repo->getWorkout($id);
-
+        $workout = $this->get('app.repo')->getWorkout($id);
         if (!$workout) {
-            throw $this->createNotFoundException(
-                'No workout found for id '.$id
-            );
+            //Numest i no permissions page.
+            return new Response("NOPE!");
         }
-        //Komentaru forma imest.
+        $workoutService = $this->get('app.workoutservice');
         $user = $this->getUser();
         $comment = new Comments($user, "");
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
-            $parent = $this->get('request')->get('parent');
-            if ($parent==null) {
-                $comment->setWorkout($workout);
-                $comments = $workout->getComments();
-                $comments[] = $comment;
-                $workout->setComments($comments);
-                $em->persist($workout);
-            } else {
-                $parent_comm = $this->getDoctrine()
-                    ->getRepository('AppBundle:Comments')
-                    ->find($parent);
-                $comment->setParent($parent_comm);
-                $comments = $parent_comm->getSubComments();
-                $comments[] = $comment;
-                $parent_comm->setSubComments($comments);
-                $em->persist($parent_comm);
-            }
-            $em->persist($comment);
-            $em->flush();
+        $commentForm = null;
+        $activateForm = null;
+        $editForm = null;
+        $rateForm = null;
+        if ($user != null) {
+            $commentForm = $this->get('form.factory')->createNamed("commentForm", CommentType::class, $comment);
+            $activateForm = $this->get('form.factory')->createNamed("activateForm", ActivateType::class, null, array(
+                'disabled' => $workoutService->enableActivation($user, $workout, $request)
+            ));
+            $rateForm = $this->get('form.factory')->createNamed("rateForm", WorkoutRatingType::class, null);
         }
-
-        $activationForm = null;
-        if ($this->getUser() != null) {
-            $activationForm = $this->activateWorkout($workout->getId(), $request);
+        if ($workoutService->canEdit($user, $workout)) {
+            $editForm = $this->get('form.factory')->createNamed("editForm", WorkoutEditType::class, null);
         }
-
-        $formRate = $this->createForm(WorkoutRatingType::class);
-        $formRate->handleRequest($request);
-        $data = $formRate->get("rating")->getData();
-        if (isset($data)) {
-            if ($data!=0) {
-                $workout->setUserRating($this->getUser(), $data);
-                $doc = $this->getDoctrine()->getManager();
-                $doc->persist($workout);
-                $doc->flush();
+        if ($request->request->has("commentForm")) {
+            $commentForm->handleRequest($request);
+            if ($commentForm->isValid()) {
+                $workoutService->commentWorkout($workout, $comment);
             }
+        }
+        if ($request->request->has("activateForm")) {
+            $activateForm->handleRequest($request);
+            if ($activateForm->isValid()) {
+                $workoutService->activateWorkout($user, $workout);
+            }
+        }
+        if ($request->request->has("rateForm")) {
+            $rateForm->handleRequest($request);
+            $workoutService->rateWorkout($user, $workout, $request->get("rating")->getData());
+        }
+        if ($request->request->has("editForm")) {
+            $editForm->handleRequest($request);
+            if ($request->request->has("delete")) {
+                $workoutService->deleteWorkout($workout);
+            } elseif ($request->request->has("edit") && $workoutService->canEdit($user, $workout)) {
+                $this->redirect("../editWorkout/" . $workout->getId());
+            }
+            $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
         }
 
         return $this->render('@App/Home/queryWorkout.html.twig', array(
             "workout" => $workout,
-            "form" => $form->createView(),
-            "formRate" => $formRate->createView(),
-            "activateForm" => $activationForm
+            "form" => $commentForm->createView(),
+            "formRate" => $rateForm->createView(),
+            "activateForm" => $activateForm->createView()
         ));
-    }
-
-    /**
-     * Handles activation.
-     * @param $id
-     * @param Request $request
-     * @return \Symfony\Component\Form\FormView
-     */
-    public function activateWorkout($id, Request $request)
-    {
-        $workout = $this->getDoctrine()
-            ->getRepository('AppBundle:Workout')
-            ->find($id);
-        $disabled = false;
-        if ($request->request->has("activateForm")) {
-            $disabled=true;
-        } elseif ($this->getUser()->getActiveWorkout()!=null) {
-            if ($this->getUser()->getActiveWorkout()->getId() == $id) {
-                $disabled = true;
-            }
-        }
-        $form = $this->get('form.factory')->createNamed("activateForm", ActivateType::class, null, array(
-        'disabled' => $disabled
-        ));
-        if ($request->request->has("activateForm")) {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $user = $this->getUser();
-                if ($user != null) {
-                    $history = new WorkoutHistory($user, $workout);
-                    $user->setActiveWorkout($workout);
-                    $user->addWorkoutHistory($history);
-                    $doc = $this->getDoctrine()->getManager();
-                    $doc->persist($history);
-                    $doc->persist($user);
-                    $doc->flush();
-                }
-            }
-        }
-        return $form->createView();
     }
 }

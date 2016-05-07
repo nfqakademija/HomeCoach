@@ -8,6 +8,10 @@ services:
         class: AppBundle\Service\Repo
         arguments: [ @doctrine.orm.entity_manager ]
 
+    app.WorkoutService:
+        class: AppBundle\Service\WorkoutService
+        arguments: [ @doctrine.orm.entity_manager ]
+
     app.twig_extension:
         class: AppBundle\Twig\DifficultyExtension
         public: false
