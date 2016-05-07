@@ -18,7 +18,6 @@ use AppBundle\Form\WorkoutType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use UserBundle\Entity\WorkoutHistory;
 
 class WorkoutController extends Controller
 {
@@ -126,12 +125,16 @@ class WorkoutController extends Controller
             }
             $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
         }
-
-        return $this->render('@App/Home/queryWorkout.html.twig', array(
-            "workout" => $workout,
-            "form" => $commentForm->createView(),
-            "formRate" => $rateForm->createView(),
-            "activateForm" => $activateForm->createView()
-        ));
+        $options = [];
+        $options["workout"] = $workout;
+        if ($user != null) {
+            $options["form"] = $commentForm->createView();
+            $options["formRate"] = $rateForm->createView();
+            $options["activateForm"] = $activateForm->createView();
+        }
+        if ($workoutService->canEdit($user, $workout)) {
+            $options["editForm"] = $editForm->createView();
+        }
+        return $this->render('@App/Home/queryWorkout.html.twig', $options);
     }
 }
