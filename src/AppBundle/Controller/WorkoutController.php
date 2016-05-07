@@ -97,7 +97,7 @@ class WorkoutController extends Controller
             $activateForm = $this->get('form.factory')->createNamed("activateForm", ActivateType::class, null, array(
                 'disabled' => $workoutService->enableActivation($user, $workout, $request)
             ));
-            $rateForm = $this->get('form.factory')->createNamed("rateForm", WorkoutRatingType::class, null);
+            $rateForm = $this->createForm(WorkoutRatingType::class, null);
         }
         if ($workoutService->canEdit($user, $workout)) {
             $editForm = $this->get('form.factory')->createNamed("editForm", WorkoutEditType::class, null);
@@ -114,10 +114,9 @@ class WorkoutController extends Controller
                 $workoutService->activateWorkout($user, $workout);
             }
         }
-        if ($request->request->has("rateForm")) {
-            $rateForm->handleRequest($request);
-            $workoutService->rateWorkout($user, $workout, $request->get("rating")->getData());
-        }
+        $rateForm->handleRequest($request);
+        $workoutService->rateWorkout($user, $workout, $rateForm->get("rating")->getData());
+
         if ($request->request->has("editForm")) {
             $editForm->handleRequest($request);
             if ($request->request->has("delete")) {
