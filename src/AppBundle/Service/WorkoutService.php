@@ -135,7 +135,7 @@ class WorkoutService
         return false;
     }
     /**
-     * @param User $user
+     * @param null|User $user
      * @param Workout $workout
      * @return bool
      */

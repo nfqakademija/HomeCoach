@@ -10,15 +10,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
 use AppBundle\Entity\Workout;
-use AppBundle\Form\ActivateType;
-use AppBundle\Form\CommentType;
-use AppBundle\Form\WorkoutEditType;
-use AppBundle\Form\WorkoutRatingType;
 use AppBundle\Form\WorkoutType;
-use AppBundle\Service\WorkoutService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use UserBundle\Entity\User;
 
 class WorkoutController extends Controller
 {
@@ -97,5 +91,4 @@ class WorkoutController extends Controller
             $workoutService->queryOptions($user, $workout, $forms)
         );
     }
-    
 }
