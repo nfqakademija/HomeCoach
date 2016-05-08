@@ -38,8 +38,7 @@ class HomeController extends Controller
         $type = $request->query->get("type");
         $equipment = $request->query->get("equipment");
         $muscle = $request->query->get("muscle");
-
-        $this->get("app.repo")->entityManager = $this->getDoctrine()->getEntityManager();
+        
         $workouts = $this->getDoctrine()->getRepository('AppBundle:Workout')->
         getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
         $serializer = $this->get('jms_serializer');
