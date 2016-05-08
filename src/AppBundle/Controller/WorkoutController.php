@@ -29,9 +29,9 @@ class WorkoutController extends Controller
         }
         $workoutService = $this->get('app.workout_service');
         $workout = new Workout($user);
+        
         $form = $this->createForm(WorkoutType::class, $workout);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($workoutService->validateForm($form, $request)) {
             $workoutService->saveWorkout($workout);
             return $this->redirect("../workouts/" . $workout->getId());
         }
@@ -48,14 +48,17 @@ class WorkoutController extends Controller
     public function editWorkoutAction($id, Request $request)
     {
         $user = $this->getUser();
-        $workout = $this->get('app.repo')->getWorkout($id);
+        if ($user==null) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
         $workoutService = $this->get('app.workout_service');
+        $workout = $this->getDoctrine()->getRepository('AppBundle:Workout')->find($id);
         if (!$workoutService->canEdit($user, $workout)) {
             return $this->redirect("../");
         }
+        
         $form = $this->createForm(WorkoutType::class, $workout);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($workoutService->validateForm($form, $request)) {
             $workoutService->saveWorkout($workout);
             return $this->redirect("../workouts/" . $workout->getId());
         }
@@ -72,17 +75,20 @@ class WorkoutController extends Controller
      */
     public function showWorkoutAction($id, Request $request)
     {
-        $workout = $this->get('app.repo')->getWorkout($id);
+        $workout = $this->getDoctrine()->getRepository('AppBundle:Workout')->find($id);
         if (!$workout) {
             return $this->redirect("../");
         }
         $workoutService = $this->get('app.workout_service');
         $user = $this->getUser();
         $comment = new Comments($user, "");
+        //Sukuria visas reikalingas formas.
         $forms = $workoutService->
         createWorkoutForms($user, $workout, $comment, $request, $this->get("form.factory"));
-
-        //Jeigu paspaudzia "edit" mygtuka ir turi visas teises, redirectinamas i editWorkout
+        /**
+         * Handlina formas.
+         * Jeigu paspaudzia "edit" mygtuka ir turi visas teises, redirectinamas i editWorkout
+         */
         if ($workoutService->handleForms($user, $workout, $comment, $forms, $request)==true) {
             return $this->redirect("../editWorkout/" . $workout->getId());
         }

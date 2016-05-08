@@ -40,7 +40,8 @@ class HomeController extends Controller
         $muscle = $request->query->get("muscle");
 
         $this->get("app.repo")->entityManager = $this->getDoctrine()->getEntityManager();
-        $workouts = $this->get("app.repo")->getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
+        $workouts = $this->getDoctrine()->getRepository('AppBundle:Workout')->
+        getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
         $serializer = $this->get('jms_serializer');
         $json = $serializer->serialize($workouts, "json");
 
