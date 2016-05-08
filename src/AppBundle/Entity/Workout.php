@@ -44,7 +44,7 @@ class Workout
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min=150, minMessage="Turi būti mažiausiai 150 simboliai")
+     * @Assert\Length(min=50, minMessage="Aprašymas turi turėti mažiausiai 50 simbolių")
      */
     protected $description;
 

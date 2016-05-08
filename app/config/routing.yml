@@ -1,3 +1,9 @@
 app:
     resource: @AppBundle/Resources/config/routing.yml
     type: yaml
+
+fos_user_registration_confirmed:
+    pattern: /
+    defaults: { _controller: AppBundle:Home:Index }
+    requirements:
+        _method: GET
