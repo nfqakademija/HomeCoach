@@ -20,7 +20,8 @@ use UserBundle\Entity\User;
 class Workout
 {
     const TYPES = ["Jėga", "Ištvermė", "Vikrumas", "Svorio metimas", "Svorio priaugimas"];
-    const EQUIPMENTS = ["Jogos kamuolys", "Dviratis", "Suoliukas", "Skersinis", "Hanteliai", "Štanga", "Specialūs treniruokliai"];
+    const EQUIPMENTS = ["Jogos kamuolys", "Dviratis", "Suoliukas", "Skersinis",
+        "Hanteliai", "Štanga", "Specialūs treniruokliai"];
     const MUSCLES = ["Nugara", "Pečiai", "Krūtinė", "Bicepsas", "Tricepsas", "Dilbis", "Pilvo presas", "Kojos"];
     /**
      * @ORM\Column(type="integer")
