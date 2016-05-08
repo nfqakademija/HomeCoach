@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\DBAL\Driver\Statement;
 use \Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,6 +13,9 @@ use \Doctrine\ORM\EntityRepository;
  */
 class WorkoutRepository extends EntityRepository
 {
+    /**
+     * Po kiek uzkrauti workouts per viena uzklausa.
+     */
     const PAGE_LENGTH = 4;
     /**
      * @param $page
@@ -39,23 +43,10 @@ class WorkoutRepository extends EntityRepository
             }
         }
 
-        if ($type!=null) {
-            foreach ($type as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:type" . $i . ", Workouts.type) AND ";
-            }
-        }
+        $whereState = $whereState . $this->searchTags($type, "type");
+        $whereState = $whereState . $this->searchTags($equipment, "equipment");
+        $whereState = $whereState . $this->searchTags($muscle, "muscle_group");
 
-        if ($equipment!=null) {
-            foreach ($equipment as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:equipment" . $i . ", Workouts.equipment) AND ";
-            }
-        }
-
-        if ($muscle!=null) {
-            foreach ($muscle as $i) {
-                $whereState = $whereState . "FIND_IN_SET(:muscle" . $i . ", Workouts.muscle_group) AND ";
-            }
-        }
 
         if ($whereState=="WHERE ") {
             $whereState="";
@@ -71,38 +62,52 @@ class WorkoutRepository extends EntityRepository
         $stmt = $this->getEntityManager()
             ->getConnection()
             ->prepare($query);
-
         if ($search!=null) {
             $stmt->bindValue('search', "%" . $search . "%");
         }
 
-        if ($type!=null) {
-            foreach ($type as $i) {
-                $stmt->bindValue('type' . $i, $i);
-            }
-        }
+        $this->bindTags($type, "type", $stmt);
+        $this->bindTags($equipment, "equipment", $stmt);
+        $this->bindTags($muscle, "muscle_group", $stmt);
 
-        if ($equipment!=null) {
-            foreach ($equipment as $i) {
-                $stmt->bindValue('equipment' . $i, $i);
-            }
-        }
-
-        if ($difficulty!=null) {
-            foreach ($difficulty as $i) {
-                $stmt->bindValue('difficulty' . $i, $i);
-            }
-        }
-
-        if ($muscle!=null) {
-            foreach ($muscle as $i) {
-                $stmt->bindValue('muscle' . $i, $i);
-            }
-        }
+        /**
+         * Funkcija tinka bindint ir difficulty array.
+         */
+        $this->bindTags($difficulty, "difficulty", $stmt);
 
         $stmt->execute();
         //var_dump($query);
         $workouts = $stmt->fetchAll();
         return $workouts;
+    }
+
+    /**
+     * @param array $tags
+     * @param string $tag_group
+     * @return string
+     */
+    private function searchTags($tags, $tag_group)
+    {
+        $whereState = "";
+        if ($tags != null) {
+            foreach ($tags as $i) {
+                $whereState = $whereState . "FIND_IN_SET(:" . $tag_group . $i . ", Workouts." . $tag_group . ") AND ";
+            }
+        }
+        return $whereState;
+    }
+
+    /**
+     * @param array $tags
+     * @param string $tag_group
+     * @param Statement $stmt
+     */
+    private function bindTags($tags, $tag_group, $stmt)
+    {
+        if ($tags != null) {
+            foreach ($tags as $i) {
+                $stmt->bindValue($tag_group.$i, $i);
+            }
+        }
     }
 }
