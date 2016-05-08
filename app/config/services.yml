@@ -8,6 +8,10 @@ services:
         class: AppBundle\Service\Repo
         arguments: [ @doctrine.orm.entity_manager ]
 
+    app.workout_service:
+        class: AppBundle\Service\WorkoutService
+        arguments: [ '@doctrine' ]
+
 services:
     app.form.registration:
         class: UserBundle\Form\RegistrationType
