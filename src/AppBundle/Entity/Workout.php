@@ -15,6 +15,7 @@ use UserBundle\Entity\User;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="Workouts")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkoutRepository")
  */
 class Workout
 {

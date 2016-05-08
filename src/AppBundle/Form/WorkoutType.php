@@ -75,7 +75,7 @@ class WorkoutType extends AbstractType
                 'expanded' => true,
                 'multiple' => true
             ))
-            ->add('save', SubmitType::class, array('label' => 'Pridėti programą'))
+            ->add('save', SubmitType::class, array('label' => 'Išsaugoti programą'))
             ->getForm();
     }
 }
