@@ -7,56 +7,61 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/headerStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/bodyStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('css/workoutInputFormStyle.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('fonts/glyphicons-haflings-regular.ttf') }}">
+        <link rel="stylesheet" href="{{ asset('assets/jquery.rateyo.min.css') }}">
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/JerseyM54.ttf') }}">
         <link rel="stylesheet" href="{{ asset('css/workoutStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/workoutShowStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/homePageNew.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/registerStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/workoutDetailsStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/navigation.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/tags.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/pageStyle.css') }}"/>
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
 {% block body %}
-<div class="container">
-    {% block container %}
-        {% block header %}
-            {% include "::inc/header.html.twig" %}
-        {% endblock %}
-    <div class="container-fluid text-center">
-        <div class="row content">
-            {% block sideBarLeft %}
-                {% include "::inc/left_column.html.twig" %}
-            {% endblock %}
-            <div class="col-sm-7 text-left">
-                {% block content %}
+    {% include "::inc/header.html.twig" %}
+    <div class="container">
+        {% block container %}
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-10 text-left form">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <div class="col-md-1">
+
+                </div>
                 {% endblock %}
             </div>
-
-            {% block sideBarRight %}
-                {% include "::inc/right_column.html.twig" %}
-            {% endblock %}
-            
-    {% endblock %}
         </div>
     </div>
-</div>
-{% block footer %}
-{% include "::inc/footer.html.twig" %}
-{% endblock %}
+    {% block footer %}
+        {% include "::inc/footer.html.twig" %}
+    {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('assets/angular.min.js') }}"></script>
     <script src="{{ asset('assets/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/workoutModule.js') }}"></script>
+    <script src="{{ asset('assets/jquery.rateyo.min.js') }}"></script>
     <script src="{{ asset('js/commentLengthControl.js') }}"></script>
     <script src="{{ asset('js/ratings.js') }}"></script>
-    <script src="{{ asset('js/smoothscroll.js') }}"></script>
-    <script src="{{ asset('js/wow.min.js') }}"></script>
-    <script src="{{ asset('js/formMoves.js') }}"></script>
+    <script src="{{ asset('js/facebookPlugin.js') }}"></script>
+    <script>
+        $('body').scrollspy({ target: '#scrollSpy' });
+        $(function(){
+            $('.nav-tabs li a').click(function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+                // If we are showing the scrollspy tab, let the
+                // plugin refresh itself so it can function properly
+                $('body').scrollspy('refresh');
+            });
+        });
+    </script>
 {% endblock %}
 {% endblock %}
 </html>

@@ -2,18 +2,20 @@ $('input[class=radio_item]').on('change', function() {
     $(this).closest("form").submit();
 });
 
-$('#rating').submit(function(e) {
-    e.preventDefault();
-    var form = $(this);
-    $.ajax({
-        type: form.attr('method'),
-        url: form.attr('action'),
-        data: form.serialize()
-    })
-    .done(function()
-    {
-        window.location.reload();
-    })
-});
+function initAjaxForm()
+{
+    $('body').on('submit', '.ajaxForm', function (e) {
 
+        e.preventDefault();
+
+        $.ajax({
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize()
+            })
+            .done(function (data) {
+                $('#activateForm_activate').text("Programa aktyvuota").attr("disabled",true).attr("class","");
+            })
+    });
+}
 

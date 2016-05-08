@@ -1,7 +1,7 @@
 {% block content %}
     {% if form is not null %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_start(form, {'attr': {'class': 'ajaxForm'}}) }}
+    {{ form_widget(form.activate, {'attr': {'class': 'activateButton'}}) }}
     {{ form_end(form) }}
     {% endif %}
     <br>

@@ -513,3 +513,29 @@ select
     font-weight: 700;
     font-family:Oswald;
 }
+
+.activateButton:hover
+{
+    background-color: orange;
+}
+
+.title
+{
+    font-family: Oswald;
+    font-size: 50px;
+    text-align: center;
+    color: white;
+}
+
+.rateInfo
+{
+    color:white;
+    font-family: Oswald;
+    font-weight: 700;
+    font-size:21px;
+}
+
+.affix
+{
+    top:60px;
+}

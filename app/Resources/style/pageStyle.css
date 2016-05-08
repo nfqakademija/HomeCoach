@@ -119,6 +119,7 @@ input[type=text] {
     background-repeat: no-repeat;
     background-position: 10px 10px;
     padding-left: 40px;
+	width: 100%;
 }
 
 input[type=text]:focus {

@@ -15,11 +15,13 @@ use UserBundle\Entity\User;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="Workouts")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkoutRepository")
  */
 class Workout
 {
     const TYPES = ["Jėga", "Ištvermė", "Vikrumas", "Svorio metimas", "Svorio priaugimas"];
-    const EQUIPMENTS = ["Kamuolys", "Dviratis", "Vienaratis", "Vienaragis"]; // TODO: Surasyt iranga.
+    const EQUIPMENTS = ["Jogos kamuolys", "Dviratis", "Suoliukas", "Skersinis",
+        "Hanteliai", "Štanga", "Specialūs treniruokliai"];
     const MUSCLES = ["Nugara", "Pečiai", "Krūtinė", "Bicepsas", "Tricepsas", "Dilbis", "Pilvo presas", "Kojos"];
     /**
      * @ORM\Column(type="integer")
@@ -44,7 +46,7 @@ class Workout
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min=150, minMessage="Turi būti mažiausiai 150 simboliai")
+     * @Assert\Length(min=50, minMessage="Aprašymas turi turėti mažiausiai 50 simbolių")
      */
     protected $description;
 

@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         <link rel="stylesheet" href="{{ asset('css/workoutDetailsStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/navigation.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/tags.css') }}"/>
     {% endblock %}
     {% block canonical_meta %}{% endblock %}
 </head>
@@ -48,6 +49,9 @@
     <script src="{{ asset('js/commentLengthControl.js') }}"></script>
     <script src="{{ asset('js/ratings.js') }}"></script>
     <script src="{{ asset('js/facebookPlugin.js') }}"></script>
+    <script>
+        initAjaxForm();
+    </script>
     <script>
         $(function () {
             var rating = "{{ workout.rating }}";

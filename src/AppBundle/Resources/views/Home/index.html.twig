@@ -1,4 +1,4 @@
-{% extends "::base2.html.twig" %}
+{% extends "::homePageTemplate.html.twig" %}
 {% block title %}
     Home Coach
 {% endblock %}
@@ -9,7 +9,7 @@
                 <div class="col-md-12 col-sm-12">
                     <h1 class="home wow fadeInDown"> HOME <span class="homeSpan">COACH</span></h1>
                     {% if app.user is not null %}
-                        <a href="{{ path('app.createWorkout') }}" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">SUKURTI PROGRAMĄ</a>
+                        <a href="{{ path('app.createWorkout') }}" name="create" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">SUKURTI PROGRAMĄ</a>
                     {% else %}
                         <a href="/login" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.4s">PRISIJUNGTI</a>
                     {% endif %}
@@ -22,6 +22,7 @@
         </div>
     </section>
     {% if app.user and app.user.activeworkout is not null %}
+        <h2 id="activeWorkout" class="title"> Aktyvi programa </h2>
         <div class="row" id="activeWorkout">
             <div class="box col-md-4">
                 <h2 style="font-family: Oswald"><a href="workouts/{{ app.user.activeworkout.id }}"> {{ app.user.activeworkout.title }}</a> </h2>
@@ -41,7 +42,7 @@
                 <div class="tab-content" id="form_schedule">
                     {% for i in 0..6 %}
                         <div id="day{{ i+1 }}" class="tab-pane fade {% if i==first %} active in {% endif %}">
-                            <p style="word-break: break-all; color:white;"> {{ app.user.activeworkout.schedule[i] }} </p>
+                            <p style="color:white;"> {{ app.user.activeworkout.schedule[i] }} </p>
                         </div>
                     {% endfor %}
                 </div>
@@ -52,19 +53,7 @@
         <div ng-app="workoutApp" ng-controller="workoutsController">
 
             <div style="margin-top:45px;">
-                <input type="text" placeholder="Paieška pagal pavadinimą" id="search" ng-change="searchInput(param)" ng-model="param.searchKey">
-
-                <select id="selectBox"  ng-init="difficultySelected='all'" ng-model="diffucultySelected" ng-change="difficultyChange()">
-                    <option ng-selected="true" value="all"> Visos </option>
-                    <option value="5"> Labai sunki </option>
-                    <option value="4"> Sunki </option>
-                    <option value="3"> Vidutinė </option>
-                    <option value="2"> Lengva </option>
-                    <option value="1"> Labai lengva </option>
-                </select>
-                <span style="color:white;"> Rikiuoti pagal </span>
-                <input type="button" id="dateButton" value="Datą" ng-click="sortByDate()">  </input>
-                <input type="button" id="ratingButton" value="Reitingą" ng-click="sortByRatings()">  </input>
+                <input type="text" placeholder="Paieška pagal pavadinimą arba autorių" id="search" ng-change="searchInput(param)" ng-model="param.searchKey">
             </div>
             <br/>
             <div class="container">
@@ -73,22 +62,31 @@
                         <div class="button-group">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Įranga <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
+                                <ul id="equipment" class="dropdown-menu">
                                     <li ng-repeat="equipment in equipmentChoices"><a href="#" class="small" data-value="{[{ equipment.index }]}" tabIndex="-1"><input type="checkbox" value="00"/>&nbsp;{[{ equipment.title }]}</a></li>
                                 </ul>
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Tipas <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
+                                <ul id="type" class="dropdown-menu">
                                     <li ng-repeat="type in typeChoices"><a href="#" class="small" data-value="{[{ type.index }]}" tabIndex="-1"><input type="checkbox" value="00"/>&nbsp; {[{ type.title }]}</a></li>
                                 </ul>
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Raumenys <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
+                                <ul id="muscle" class="dropdown-menu">
                                     <li ng-repeat="muscle in muscleChoices"><a href="#" class="small" data-value="{[{ muscle.index }]}" tabIndex="-1"><input type="checkbox"/>&nbsp;{[{ muscle.title }]}</a></li>
                                 </ul>
                             </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"> Sudėtingumas <span class="caret"></span></button>
+                                <ul id="diff" class="dropdown-menu">
+                                    <li ng-repeat="difficulty in difficultyChoices"><a href="#" class="small" data-value="{[{ difficulty.index }]}" tabIndex="-1"><input type="checkbox"/>&nbsp;{[{ difficulty.title }]}</a></li>
+                                </ul>
+                            </div>
+                            <span class="rateInfo"> Rikiuoti pagal </span>
+                            <input type="button" id="dateButton" value="Datą" ng-click="sortByDate()">  </input>
+                            <input type="button" id="ratingButton" value="Reitingą" ng-click="sortByRatings()">  </input>
                         </div>
                     </div>
                 </div>

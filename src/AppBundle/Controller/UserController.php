@@ -23,10 +23,8 @@ class UserController extends Controller
      */
     public function showCoachesAction()
     {
-        $repo = $this->get('app.repo')
-            ->getRepo('UserBundle:User');
+        $repo = $this->getDoctrine()->getRepository('UserBundle:User');
 
-        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $coaches = $repo->findAll();
         $json = json_encode($coaches);
 
@@ -42,10 +40,8 @@ class UserController extends Controller
      */
     public function browseUsersAction()
     {
-        $repo = $this->get('app.repo')
-            ->getRepo('UserBundle:User');
+        $repo = $this->getDoctrine()->getRepository('UserBundle:User');
 
-        //reiks pakeisti ta findAll ir implementuoti searcho funkcijas
         $users = $repo->findAll();
         $json = json_encode($users);
 
@@ -60,9 +56,8 @@ class UserController extends Controller
      */
     public function showProfileAction($id, Request $request)
     {
-        $repo = $this->get('app.repo');
+        $repo = $this->getDoctrine()->getRepository('UserBundle:User');
         $user = $repo
-            ->getRepo('UserBundle:User')
             ->find($id);
         
         //sutvarkyti kad rodytu tik tavo svori, o kitu ne
@@ -75,7 +70,7 @@ class UserController extends Controller
             if (isset($weight)) {
                 if ($weight != 0) {
                     $user->addWeight(date('Ymdis'), $weight);  // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
-                    $em = $repo->getEntityManager();
+                    $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($user);
                     $em->flush();
                 }

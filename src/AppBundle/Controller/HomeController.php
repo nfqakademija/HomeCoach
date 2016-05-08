@@ -23,10 +23,27 @@ class HomeController extends Controller
 
     public function showWorkoutsPageAction(Request $request)
     {
-        $repo = $this->get('app.repo');
-        $workouts = $repo->getWorkoutsPage($request);
+        $page = $request->query->get("page");
+        if ($page==null) {
+            $page = 0;
+        }
+        $sort = $request->query->get("sort");
+        if ($sort==null || $sort=="rating") {
+            $sort = "rating";
+        } else {
+            $sort = "data_created";
+        }
+        $difficulty = $request->query->get("difficulty");
+        $search = $request->query->get("search");
+        $type = $request->query->get("type");
+        $equipment = $request->query->get("equipment");
+        $muscle = $request->query->get("muscle");
+
+        $workouts = $this->getDoctrine()->getRepository('AppBundle:Workout')->
+        getWorkouts($page, $sort, $difficulty, $search, $type, $equipment, $muscle);
         $serializer = $this->get('jms_serializer');
         $json_workouts = $serializer->serialize($workouts, "json");
+
         return new Response($json_workouts);
     }
 }
