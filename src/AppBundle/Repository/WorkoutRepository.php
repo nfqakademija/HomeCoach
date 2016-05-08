@@ -43,17 +43,16 @@ class WorkoutRepository extends EntityRepository
                 $whereState = $whereState . "FIND_IN_SET(:difficulty" . $i . ", Workouts.difficulty) OR  ";
             }
             $whereState=substr($whereState, 0, -5);
-            $whereState = $whereState.")";
+            $whereState = $whereState.") AND ";
         }
 
         $whereState = $whereState . $this->searchTags($type, "type");
         $whereState = $whereState . $this->searchTags($equipment, "equipment");
         $whereState = $whereState . $this->searchTags($muscle, "muscle_group");
 
-
         if ($whereState=="WHERE ") {
             $whereState="";
-        } elseif (substr($whereState, strlen($whereState-5)) == "AND ") {
+        } elseif (substr($whereState, strlen($whereState)-5) == " AND ") {
             $whereState=substr($whereState, 0, -5);
         }
 
