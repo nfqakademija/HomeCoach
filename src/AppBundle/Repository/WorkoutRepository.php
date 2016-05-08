@@ -38,9 +38,12 @@ class WorkoutRepository extends EntityRepository
         }
 
         if ($difficulty!=null) {
+            $whereState = $whereState."(";
             foreach ($difficulty as $i) {
                 $whereState = $whereState . "FIND_IN_SET(:difficulty" . $i . ", Workouts.difficulty) OR  ";
             }
+            $whereState=substr($whereState, 0, -5);
+            $whereState = $whereState.")";
         }
 
         $whereState = $whereState . $this->searchTags($type, "type");
@@ -50,7 +53,7 @@ class WorkoutRepository extends EntityRepository
 
         if ($whereState=="WHERE ") {
             $whereState="";
-        } else {
+        } elseif (substr($whereState, strlen($whereState-5)) == "AND ") {
             $whereState=substr($whereState, 0, -5);
         }
 
@@ -76,7 +79,6 @@ class WorkoutRepository extends EntityRepository
         $this->bindTags($difficulty, "difficulty", $stmt);
 
         $stmt->execute();
-        //var_dump($query);
         $workouts = $stmt->fetchAll();
         return $workouts;
     }
