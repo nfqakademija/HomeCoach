@@ -8,20 +8,6 @@ $(function () {
     //this will be used for looping through json fields
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-            // dates.push(key);
-            // weightValues.push(obj[key]);
-            // obj_arr.push([key, obj[key]]);
-            //if (/^[a-zA-Z0-9]+$/.test(obj[key])){
-            //    if (dataset.length > 0){
-            //        datasets_arr.push(dataset);
-            //        console.log('dataset: '+dataset);
-            //    };
-            //    dataset = [];
-            //    dataset.push([key, obj[key]]);
-            //} else {
-            //    dataset.push([key, obj[key]]);
-            //}
-
             if (/^[0-9]{2,3}$/.test(obj[key])){
                 dataset.push([key, obj[key]]);
             } else {
@@ -79,6 +65,8 @@ $(function () {
         return "\""+colors[0]+"\"";
     }
 
+    var datasets = [];
+
     function loadDatasets() {
         //gali tekti perdaryti kad ne tik datasetus loadintu bet ir visa barChartData
         //last_label loope updeitinsi pamates kad weight susideda is raidziu (vadinasi ten workouto pavadinimas) ir pagal tai uzdesi labeli.
@@ -87,42 +75,43 @@ $(function () {
         var last_color = '';
         for (var i = 0; i < datasets_arr.length; i++){
             for (var j = 0; j < datasets_arr.length; j++) {
-                return {
-                    label: dataset[0][1],
+                datasets.push({
+                    label: datasets_arr[i][0][1],
                     backgroundColor: "rgba(151,187,205,0.5)",
-                    data: [80],
+                    //data: [80],
                     // cia reikia grazinti masyva
-                    // data: datasets_arr[i+1][j][1],
+                    data: datasets_arr[i][j][1],
                     borderColor: rotateColors(),
                     borderWidth: 0,
-                }
+                });
             }
         }
+        return datasets;
     }
 
     var barChartData = {
         //TODO pakeisti i datas kada buvo padaryti svorio irasai
         labels: labels,
         //TODO kiekvienam svorio irasui sukurti atskira dataseto irasa ir kiekvienam priskirti workouta (pagal tai ir uzvadinti "label". skirtingiems labeliams uzdeti skirtingas spalvas
-        datasets: [
-            //loadDatasets()
-            {
-                label: dataset[0][1],
-                backgroundColor: "rgba(151,187,205,0.5)",
-                data: [80],
-                // cia reikia grazinti masyva
-                // data: datasets_arr[i+1][j][1],
-                borderColor: rotateColors(),
-                borderWidth: 0,
-            }
-        ]
+        datasets:
+            loadDatasets()
+        //{
+        //    label: dataset[0][1],
+        //    backgroundColor: "rgba(151,187,205,0.5)",
+        //    data: [80],
+        //    // cia reikia grazinti masyva
+        //    // data: datasets_arr[i+1][j][1],
+        //    borderColor: rotateColors(),
+        //    borderWidth: 0,
+        //}
+
 
     };
 
     window.onload = function () {
         var ctx = document.getElementById("myChart");
         window.myBar = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: barChartData,
             options: {
                 responsive: true,
