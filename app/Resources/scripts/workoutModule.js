@@ -18,10 +18,10 @@ workoutApp.controller('workoutsController', function ($scope, $http) {
         {"title":"Jogos kamuolys", "index":10},
         {"title":"Dviratis", "index":11},
         {"title":"Suoliukas", "index":12},
-        {"title":"Skersinis", "index":14},
-        {"title":"Hanteliai", "index":15},
-        {"title":"Štanga", "index":16},
-        {"title":"Specialūs treniruokliai", "index":17}
+        {"title":"Skersinis", "index":13},
+        {"title":"Hanteliai", "index":14},
+        {"title":"Štanga", "index":15},
+        {"title":"Specialūs treniruokliai", "index":16}
     ];
 
     $scope.typeChoices = [
@@ -29,7 +29,7 @@ workoutApp.controller('workoutsController', function ($scope, $http) {
         {"title":"Ištvermė", "index":21},
         {"title":"Vikrumas", "index":22},
         {"title":"Svorio metimas", "index":23},
-        {"title":"Svorio priaugimas", "index":23}
+        {"title":"Svorio priaugimas", "index":24}
     ];
 
     $scope.muscleChoices = [

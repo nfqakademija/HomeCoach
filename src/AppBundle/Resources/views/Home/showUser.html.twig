@@ -15,34 +15,11 @@
             <h2 style="color: white; margin:0px;"> <span class="glyphicon glyphicon-envelope"></span> {{ user.email }} </h2>
         </div>
     </div>
-    {% if weightForm is defined %}
-
-        {% block graph %}
-            <canvas id="myChart" width="400" height="170"></canvas>
-        {% endblock %}
-        {% block javascripts %}
-            {{ parent() }}
-            <script src="{{ asset('assets/Chart.min.js') }}"></script>
-            <script src="{{ asset('js/weightGraph.js') }}"></script>
-            <script>
-                var data = {{ data|json_encode|raw }};
-            </script>
-        {% endblock %}
-    {% endif %}
-    {% if app.user is not null %}
-        {% if app.user.id == user.id %}
-            {{ form_start(weightForm) }}
-            {{ form_errors(weightForm) }}
-            <span class="weightDescription"> Svoris: </span>
-            {{ form_widget(weightForm.svoris, {'attr':{'class':'weightInput','min':0}}) }}
-            {{ form_widget(weightForm.save, {'attr':{'class':'weightSave'}}) }}
-            {{ form_end(weightForm) }}
-        {% endif %}
-    {% endif %}
     <ul style="margin:10px 0px 10px 0px;" class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#createdWorkouts"> Sukurtos programos <span class="badge alert-info">{{ user.createdWorkouts|length }}</span></a></li>
+        <li><a data-toggle="tab" href="#createdWorkouts"> Sukurtos programos <span class="badge alert-info">{{ user.createdWorkouts|length }}</span></a></li>
         {% if app.user is not null %}
             {% if app.user.id == user.id %}
+                <li class="active"><a data-toggle="tab" href="#graph"> Grafikas </a></li>
                 {% if user.workoutHistory|length != 0 %}
                     <li><a data-toggle="tab" href="#history"> Istorija <span class="badge alert-info">{{ user.workoutHistory|length }}</span> </a></li>
                 {% endif %}
@@ -54,17 +31,21 @@
         {% endif %}
     </ul>
     <div class="tab-content" data-spy="scroll" data-target="#scrollSpy">
+    {% if not app.user %}
         <div id="createdWorkouts" class="tab-pane fade in active">
+    {% else %}
+        <div id="createdWorkouts" class="tab-pane fade">
+    {% endif %}
             {% if user.createdWorkouts|length !=0 %}
                 <div class="row">
-                    <nav class="col-md-4" id="scrollSpy">
-                        <ul style="overflow-y: auto; height: 400px;" class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="570">
+                    <nav class="col-md-5" id="scrollSpy">
+                        <ul style="overflow-y: auto; height: 400px;" class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="270">
                             {% for workout in user.createdWorkouts %}
                                 <li><a href="#sectionCreated{{ workout.id }}"> {{ workout.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </nav>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                     {% for workout in user.createdWorkouts %}
                         <div style="margin-bottom: 10px;" class="box" id="sectionCreated{{ workout.id }}">
                             {% if workout.rating is not null %}
@@ -89,6 +70,31 @@
         </div>
         {% if app.user is not null %}
             {% if app.user.id == user.id %}
+                <div id="graph" class="tab-pane fade in active">
+                    {% if weightForm is defined %}
+                        {% block graph %}
+                        <canvas id="myChart" width="400" height="170"></canvas>
+                        {% endblock %}
+                        {% block javascripts %}
+                        {{ parent() }}
+                        <script src="{{ asset('assets/Chart.min.js') }}"></script>
+                        <script src="{{ asset('js/weightGraph.js') }}"></script>
+                        <script>
+                            var data = {{ data|json_encode|raw }};
+                        </script>
+                        {% endblock %}
+                    {% endif %}
+                    {% if app.user is not null %}
+                        {% if app.user.id == user.id %}
+                            {{ form_start(weightForm) }}
+                            {{ form_errors(weightForm) }}
+                            <span class="weightDescription"> Svoris: </span>
+                            {{ form_widget(weightForm.svoris, {'attr':{'class':'weightInput','min':0}}) }}
+                            {{ form_widget(weightForm.save, {'attr':{'class':'weightSave'}}) }}
+                            {{ form_end(weightForm) }}
+                        {% endif %}
+                    {% endif %}
+                </div>
                 {% if user.activeWorkout is not null %}
                     <div id="active" class="tab-pane fade">
                         <div class="box">
