@@ -11,8 +11,8 @@
 
         </div>
         <div class="col-md-6">
-            <h2 style="color: white; margin:0px;"> <span class="glyphicon glyphicon-user"></span> {{ user.name }} {{ user.surname }} </h2> <br>
-            <h2 style="color: white; margin:0px;"> <span class="glyphicon glyphicon-envelope"></span> {{ user.email }} </h2>
+            <h2 class="userInfo"> <span class="glyphicon glyphicon-user"></span> {{ user.name }} {{ user.surname }} </h2> <br>
+            <h2 class="userInfo"> <span class="glyphicon glyphicon-envelope"></span> {{ user.email }} </h2>
         </div>
     </div>
     <ul style="margin:10px 0px 10px 0px;" class="nav nav-tabs">
@@ -71,6 +71,7 @@
         {% if app.user is not null %}
             {% if app.user.id == user.id %}
                 <div id="graph" class="tab-pane fade in active">
+                    <h4 class="description"> Įveskite savo svorį ir stebėkite kitimą </h4>
                     {% if weightForm is defined %}
                         {% block graph %}
                         <canvas id="myChart" width="400" height="170"></canvas>
@@ -89,7 +90,7 @@
                             {{ form_start(weightForm) }}
                             {{ form_errors(weightForm) }}
                             <span class="weightDescription"> Svoris: </span>
-                            {{ form_widget(weightForm.svoris, {'attr':{'class':'weightInput','min':0}}) }}
+                            {{ form_widget(weightForm.svoris, {'attr':{'class':'weightInput','min':10, 'max':999}}) }}
                             {{ form_widget(weightForm.save, {'attr':{'class':'weightSave'}}) }}
                             {{ form_end(weightForm) }}
                         {% endif %}
@@ -101,7 +102,7 @@
                             {% if user.activeWorkout.rating is not null %}
                                 <h3><span class="infoStar">{{ user.activeWorkout.rating }} &starf;</span></h3>
                             {% endif %}
-                            <h2 style="font-family: Oswald"><a href="workouts/{{ user.activeWorkout.id }}"> {{ user.activeWorkout.title }}</a> </h2>
+                            <h2 style="font-family: Oswald"><a href="/workouts/{{ user.activeWorkout.id }}"> {{ user.activeWorkout.title }}</a> </h2>
                             <p>{{ user.activeWorkout.description[:300] }}</p>
                             <a href="../workouts/{{ user.activeWorkout.id }}" class="button">Daugiau</a>
                         </div>
@@ -116,7 +117,7 @@
                                         {% if history.Workout.rating is not null %}
                                             <h3><span class="infoStar">{{ history.Workout.rating }} &starf;</span></h3>
                                         {% endif %}
-                                        <h2 style="font-family: Oswald"><a href="workouts/{{ history.Workout.id }}"> {{ history.Workout.title }} </a> </h2>
+                                        <h2 style="font-family: Oswald"><a href="/workouts/{{ history.Workout.id }}"> {{ history.Workout.title }} </a> </h2>
                                         <p> Pasirinkta: {{ history.date|date('Y-m-d') }} </p>
                                         <p>{{ history.Workout.description[:300] }}</p>
                                         <a href="../workouts/{{ history.Workout.id }}" class="button">Daugiau</a>
