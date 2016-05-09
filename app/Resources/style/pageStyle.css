@@ -135,3 +135,31 @@ input[type=text]:focus {
     font-weight: 700;
     font-size:20px;
 }
+
+input
+{
+	color: black;
+}
+
+.weightSave
+{
+	width: 200px;
+}
+
+.weightSave:hover
+{
+	background: #fcbe07;
+}
+
+.weightDescription
+{
+	font-family: "DejaVu Sans";
+	font-weight: 700;
+	font-size:30px;
+}
+
+.weightInput
+{
+	height: 50px;
+	width: 100px;
+}

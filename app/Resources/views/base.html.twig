@@ -7,11 +7,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/bootstrap.min.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('assets/jquery.rateyo.min.css') }}">
         <link rel="stylesheet" href="{{ asset('fonts/Oswald-Light.ttf') }}">
-        <link rel="stylesheet" href="{{ asset('fonts/JerseyM54.ttf') }}">
         <link rel="stylesheet" href="{{ asset('css/workoutStyle.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/commentsStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         <link rel="stylesheet" href="{{ asset('css/workoutDetailsStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/navigation.css') }}"/>
@@ -41,15 +38,12 @@
         </div>
     </div>
     {% block footer %}
-        {% include "::inc/footer.html.twig" %}
+
     {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('assets/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/jquery.rateyo.min.js') }}"></script>
-    <script src="{{ asset('js/commentLengthControl.js') }}"></script>
-    <script src="{{ asset('js/ratings.js') }}"></script>
-    <script src="{{ asset('js/facebookPlugin.js') }}"></script>
     <script>
         $('body').scrollspy({ target: '#scrollSpy' });
         $(function(){

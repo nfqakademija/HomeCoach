@@ -29,7 +29,7 @@ class WeightType extends AbstractType
     {
         $builder
             ->add('svoris', IntegerType::class, array('data' => 0))
-            ->add('save', SubmitType::class, array('label' => 'Issaugoti'))
+            ->add('save', SubmitType::class, array('label' => 'Išsaugoti'))
             ->getForm();
     }
 }
