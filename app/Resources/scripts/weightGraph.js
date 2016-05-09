@@ -42,7 +42,7 @@ $(function () {
         labels: labels,
         datasets: [
             {
-                label: "Svorio (kg) kitimas begant laikui",
+                label: "Svoris",
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",

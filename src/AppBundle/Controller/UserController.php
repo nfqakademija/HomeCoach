@@ -65,11 +65,11 @@ class UserController extends Controller
 
             $weightForm = $this->createForm(WeightType::class);
             $weightForm->handleRequest($request);
-            $weight = $weightForm->get('weight')->getData();
+            $weight = $weightForm->get('svoris')->getData();
 
             if (isset($weight)) {
                 if ($weight != 0) {
-                    $user->addWeight(date('Ymdis'), $weight);  // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
+                    $user->addWeight(date('Y m d i s'), $weight);  // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($user);
                     $em->flush();
@@ -79,7 +79,7 @@ class UserController extends Controller
             $workout_history = $user->getWorkoutHistory();
             $workouts_arr = [];
             foreach ($workout_history as $work_hist) {
-                $workouts_arr[$work_hist->getDate()->format('Ymdis')] = $work_hist->getWorkout()->getTitle(); // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
+                $workouts_arr[$work_hist->getDate()->format('Y m d i s')] = $work_hist->getWorkout()->getTitle(); // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
             }
         
             $weights_arr = $user->getWeight();    
