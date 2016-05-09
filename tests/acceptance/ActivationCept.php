@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('Check if workout activation');
+$I->wantTo('Check if workout activation works');
 $I->amOnPage('/');
 $I->click('PRISIJUNGTI');
 $I->fillField('_username','test');
