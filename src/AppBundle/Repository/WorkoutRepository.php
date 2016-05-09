@@ -16,7 +16,7 @@ class WorkoutRepository extends EntityRepository
     /**
      * Po kiek uzkrauti workouts per viena uzklausa.
      */
-    const PAGE_LENGTH = 4;
+    const PAGE_LENGTH = 6;
     /**
      * @param $page
      * @param $sort
