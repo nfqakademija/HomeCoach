@@ -74,7 +74,11 @@
                             <p> Pasirinko <span class="badge alert-info">{{ workout.activations|length }}</span> </p>
                             <p>{{ workout.description[:150] }}</p>
                             <a href="../workouts/{{ workout.id }}" class="button">Daugiau</a>
-                            <a href="../editWorkout/{{ workout.id }}" class="button">Keisti</a>
+                            {% if app.user is not null %}
+                                {% if app.user.id == user.id %}
+                                    <a href="../editWorkout/{{ workout.id }}" class="button">Keisti</a>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     {% endfor %}
                     </div>
