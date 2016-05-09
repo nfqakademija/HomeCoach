@@ -59,30 +59,29 @@ class UserController extends Controller
         $repo = $this->getDoctrine()->getRepository('UserBundle:User');
         $user = $repo
             ->find($id);
-        
-        //sutvarkyti kad rodytu tik tavo svori, o kitu ne
-//        if ($id === $this->getUser()->getId()) {
-
             $weightForm = $this->createForm(WeightType::class);
             $weightForm->handleRequest($request);
             $weight = $weightForm->get('svoris')->getData();
-
-            if (isset($weight)) {
-                if ($weight != 0) {
-                    $user->addWeight(date('Y m d i s'), $weight);  // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
-                    $em = $this->getDoctrine()->getEntityManager();
-                    $em->persist($user);
-                    $em->flush();
-                }
-            };
+        if (isset($weight)) {
+            if ($weight != 0) {
+                // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais,
+                // kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
+                $user->addWeight(date('Y m d i s'), $weight);
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($user);
+                $em->flush();
+            }
+        };
 
             $workout_history = $user->getWorkoutHistory();
             $workouts_arr = [];
-            foreach ($workout_history as $work_hist) {
-                $workouts_arr[$work_hist->getDate()->format('Y m d i s')] = $work_hist->getWorkout()->getTitle(); // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais, kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
-            }
+        foreach ($workout_history as $work_hist) {
+            // date formate 'is' po to nutrinti. kol kas uzdetas testavimo sumetimais,
+            // kad galeciau ta pacia diena pridejes matyti skirtingus rezultatus
+            $workouts_arr[$work_hist->getDate()->format('Y m d i s')] = $work_hist->getWorkout()->getTitle();
+        }
         
-            $weights_arr = $user->getWeight();    
+            $weights_arr = $user->getWeight();
 
             $merged_array = $workouts_arr + $weights_arr;
             ksort($merged_array);
@@ -94,11 +93,5 @@ class UserController extends Controller
                 'data' => $data,
                 'weightForm' => $weightForm->createView()
             ));
-//        };
-
-        return $this->render('@App/Home/showUser.html.twig', array(
-            'user' => $user,
-        ));
-        
     }
 }
