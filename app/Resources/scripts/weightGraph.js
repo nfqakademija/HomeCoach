@@ -10,7 +10,8 @@ $(function () {
                     dataset.push([dataset.pop()[1] + " --- " + key , obj[key]]);
                     is_workout = false;
                 } else {
-                    dataset.push([key, obj[key]]);
+                    dataset.pop();
+                    dataset.push([obj[key] + " --- " + key, obj[key]]);
                     is_workout = true;
                 }
             } else {
@@ -18,10 +19,9 @@ $(function () {
                     dataset.push([key, obj[key]]);
                     is_workout = false;
                 } else {
-                    dataset.push([key, obj[key]]);
+                    dataset.push([obj[key] + " --- " + key, obj[key]]);
                     is_workout = true;
                 }
-
             }
         }
     }
@@ -30,7 +30,6 @@ $(function () {
 
     for (var j = 0; j < dataset.length; j++){
         labels.push(dataset[j][0]);
-        console.log("labelis: "+ dataset[j][0])
     }
     var weights_arr = [];
 
